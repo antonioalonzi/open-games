@@ -1,0 +1,17 @@
+body {
+    margin: 0;
+}
+
+#header {
+    height: 20px;
+}
+
+#header-left {
+    position: relative;
+    float: left;
+}
+
+#header-right {
+    posiiton: relative;
+    float: right;
+}
