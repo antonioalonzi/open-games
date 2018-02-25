@@ -18,7 +18,6 @@ The application is written using:
  * Install maven
  * Install npm
  
-       npm i webpack -S
        npm i webpack-cli -D
 
 
