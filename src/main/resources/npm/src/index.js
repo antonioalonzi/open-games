@@ -1,6 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter as Router, Link, Route} from "react-router-dom";
+import {Login} from "./login/Login";
 
 class Header extends React.Component {
     render () {
@@ -26,14 +27,6 @@ class App extends React.Component {
                     <Route path="/login" component={Login} />
                 </div>
             </Router>
-        );
-    }
-}
-
-class Login extends React.Component {
-    render() {
-        return (
-            <div>Login</div>
         );
     }
 }
