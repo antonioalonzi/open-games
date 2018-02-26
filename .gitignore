@@ -1,4 +1,4 @@
-.idea
-target
-/src/main/resources/npm/node_modules
+/.idea
+/target
+node_modules
 /src/main/resources/static/app

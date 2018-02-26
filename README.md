@@ -12,21 +12,16 @@ The application is written using:
 
 
 
-### Configure
+### Requisites
 
  * Install JDK 1.8
  * Install maven
  * Install npm
- 
-       npm i webpack-cli -D
 
 
 
 ### Build & Run
 
-    cd src/main/resources/npm
     npm install
-    ./node_modules/.bin/webpack -d
-    cd -
-
+    npm run build
     mvn spring-boot:run
