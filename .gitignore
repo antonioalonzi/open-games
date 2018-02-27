@@ -1,4 +1,5 @@
 /.idea
+/open-games.iml
 /target
 node_modules
 /src/main/resources/static/app
