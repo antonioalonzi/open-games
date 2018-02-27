@@ -23,5 +23,5 @@ The application is written using:
 ### Build & Run
 
     npm install
-    npm run build
+    npm run build-dev
     mvn spring-boot:run
