@@ -9,7 +9,11 @@ describe("test header", () => {
 
     // Then
     const headerLeft = component.find("#header-left");
-    const openGamesLink = headerLeft.find("Link");
-    expect(openGamesLink.length).toEqual(1);
+    const headerLeftLinks = headerLeft.find("NavLink");
+    expect(headerLeftLinks.length).toEqual(1);
+
+    const headerRight = component.find("#header-right");
+    const headerRightLinks = headerRight.find("NavLink");
+    expect(headerRightLinks.length).toEqual(1);
   });
 });

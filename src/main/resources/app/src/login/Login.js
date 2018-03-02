@@ -4,7 +4,7 @@ export class Login extends React.Component {
   render() {
     return (
       <div className="form-container" id="login-form">
-        <div>Login</div>
+        <h1>Login</h1>
         <form action="/api/login">
           <div className="form-row">
             <div className="form-col-25">
