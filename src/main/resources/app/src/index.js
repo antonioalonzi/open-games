@@ -6,21 +6,21 @@ import {Login} from "./login/Login";
 import {Menu} from "./menu/Menu";
 
 class App extends React.Component {
-    render () {
-        return (
-            <Router>
-                <div>
-                    <Header/>
-                    <Menu/>
-                    <div id="content">
-                      <Switch>
-                        <Route path="/login" component={Login} />
-                      </Switch>
-                    </div>
-                </div>
-            </Router>
-        );
-    }
+  render() {
+    return (
+      <Router>
+        <div>
+          <Header/>
+          <Menu/>
+          <div id="content">
+            <Switch>
+              <Route path="/login" component={Login}/>
+            </Switch>
+          </div>
+        </div>
+      </Router>
+    );
+  }
 }
 
 render(<App/>, document.getElementById('app'));
