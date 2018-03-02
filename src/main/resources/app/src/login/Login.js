@@ -1,11 +1,27 @@
 import React from "react";
+import axios from "axios";
 
 export class Login extends React.Component {
+  handlerSubmit(event) {
+    event.preventDefault();
+    const formData = {
+      username: "antonio",
+      password: "password"
+    };
+
+    axios.post("/api/login", formData)
+      .then(function (response) {
+        if (response.data.loginResponseStatus === "SUCCESS") {
+          alert(response.data.message);
+        }
+      });
+  }
+
   render() {
     return (
       <div className="form-container" id="login-form">
         <h1>Login</h1>
-        <form action="/api/login">
+        <form action="" onSubmit={this.handlerSubmit}>
           <div className="form-row">
             <div className="form-col-25">
               <label htmlFor="username">Username</label>
