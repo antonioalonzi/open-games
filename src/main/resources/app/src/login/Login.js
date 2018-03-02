@@ -3,7 +3,7 @@ import React from "react";
 export class Login extends React.Component {
   render() {
     return (
-      <div className="form-container">
+      <div className="form-container" id="login-form">
         <div>Login</div>
         <form action="/api/login">
           <div className="form-row">
