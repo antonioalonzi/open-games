@@ -1,7 +1,11 @@
 import React from "react";
-import axios from "axios";
 
 export class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handlerSubmit = this.handlerSubmit.bind(this);
+  }
+
   handlerSubmit(event) {
     event.preventDefault();
     const formData = {
@@ -9,12 +13,7 @@ export class Login extends React.Component {
       password: "password"
     };
 
-    axios.post("/api/login", formData)
-      .then(function (response) {
-        if (response.data.loginResponseStatus === "SUCCESS") {
-          alert(response.data.message);
-        }
-      });
+    this.props.sendMessage('/api/login', formData);
   }
 
   render() {
