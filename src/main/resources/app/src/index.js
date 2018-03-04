@@ -6,6 +6,7 @@ import {Login} from "./login/Login";
 import {Menu} from "./menu/Menu";
 import {Welcome} from "./welcome/Welcome";
 import SockJsClient from "react-stomp";
+import {Messages} from "./messages/Messages";
 
 class App extends React.Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class App extends React.Component {
           <Header/>
           <Menu/>
           <div id="content">
+            <Messages />
             <Switch>
               <Route path="/" exact={true} component={Welcome} />
               <Route path="/login" render={() => <Login sendMessage={this.sendMessage} />} />

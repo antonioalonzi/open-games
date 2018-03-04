@@ -1,4 +1,4 @@
-package com.aa.opengames.authentication;
+package com.aa.opengames.authentication.login;
 
 public class LoginRequest {
   public String getUsername() {
