@@ -13,7 +13,7 @@ export class Login extends React.Component {
       password: "password"
     };
 
-    this.props.sendMessage('/api/login', formData);
+    this.props.sendMessage("/api/auth/login", formData);
   }
 
   render() {

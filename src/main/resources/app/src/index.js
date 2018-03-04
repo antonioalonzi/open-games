@@ -14,7 +14,7 @@ class App extends React.Component {
   }
 
   sendMessage(url, msg) {
-    this.clientRef.sendMessage("/api/login", JSON.stringify(msg));
+    this.clientRef.sendMessage(url, JSON.stringify(msg));
   }
 
   render() {

@@ -8,7 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class OpenGamesWebConfiguration implements WebMvcConfigurer {
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
-    registry.addViewController("/{spring:login}").setViewName("forward:/");
+    registry.addViewController("/").setViewName("forward:/index.html");
+    registry.addViewController("/{spring:login}").setViewName("forward:/index.html");
     //registry.addViewController("/**/{spring:\\w+}").setViewName("forward:/");
     //registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}").setViewName("forward:/");
   }

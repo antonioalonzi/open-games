@@ -13,7 +13,7 @@ public class LoginController {
 
   private final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-  @MessageMapping("/login")
+  @MessageMapping("/auth/login")
   @SendTo("/messages")
   public LoginResponse login(LoginRequest loginRequest) {
     LOGGER.info("Login request received for username '{}'", loginRequest.getUsername());
