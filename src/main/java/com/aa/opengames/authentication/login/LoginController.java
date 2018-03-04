@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import java.util.Optional;
@@ -24,7 +24,7 @@ public class LoginController {
   private UserService userService;
 
   @MessageMapping("/auth/login")
-  @SendToUser("/auth/login")
+  @SendTo("/topic/messages")
   public LoginResponse login(LoginRequest loginRequest) {
     LOGGER.info("Login request received for username '{}'", loginRequest.getUsername());
     Optional<User> user = userService.getUser(loginRequest.getUsername());

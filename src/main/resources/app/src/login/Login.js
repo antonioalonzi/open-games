@@ -9,7 +9,7 @@ export class Login extends React.Component {
   handlerSubmit(event) {
     event.preventDefault();
     const formData = {
-      username: "antonio",
+      username: "guest",
       password: "password"
     };
 

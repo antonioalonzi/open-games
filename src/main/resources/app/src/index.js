@@ -18,12 +18,16 @@ class App extends React.Component {
     this.clientRef.sendMessage(url, JSON.stringify(msg));
   }
 
+  onMessage(msg) {
+    console.log(msg);
+  }
+
   render() {
     return (
       <Router>
         <div>
           <SockJsClient url="http://localhost:8080/open-games-ws" topics={["/topic/messages"]}
-                        onMessage={(msg) => { console.log(msg); }}
+                        onMessage={(msg) => { this.onMessage(msg) }}
                         ref={ (client) => { this.clientRef = client }} />
           <Header/>
           <Menu/>
