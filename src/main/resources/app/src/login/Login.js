@@ -1,4 +1,5 @@
 import React from "react";
+import {Label} from "../form/Form";
 
 export class Login extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export class Login extends React.Component {
         <form action="" onSubmit={this.handlerSubmit}>
           <div className="form-row">
             <div className="form-col-25">
-              <label htmlFor="username">Username</label>
+              <Label name={"Username"}/>
             </div>
             <div className="form-col-75">
               <input type="text" id="username" name="username" placeholder="Your username..."/>
@@ -31,7 +32,7 @@ export class Login extends React.Component {
           </div>
           <div className="form-row">
             <div className="form-col-25">
-              <label htmlFor="password">Password</label>
+              <Label name={"password"}/>
             </div>
             <div className="form-col-75">
               <input type="password" id="password" name="password" placeholder="Your password..."/>

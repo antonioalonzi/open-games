@@ -21,7 +21,7 @@ class App extends React.Component {
     this.setState({
       stompClient: stompClient
     });
-    stompClient.connect({}, (frame) => {
+    stompClient.connect({}, () => {
       this.sessionId = socket._transport.url.split("/")[5];
 
       stompClient.subscribe("/topic/events", (event) => {
