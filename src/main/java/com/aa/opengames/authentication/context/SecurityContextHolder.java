@@ -1,9 +1,7 @@
 package com.aa.opengames.authentication.context;
 
 import com.aa.opengames.user.User;
-
 import java.util.HashMap;
-import java.util.UUID;
 
 public class SecurityContextHolder {
 
@@ -17,7 +15,4 @@ public class SecurityContextHolder {
     return USERS.get(token);
   }
 
-  public static String generateNewToken() {
-    return UUID.randomUUID().toString();
-  }
 }
