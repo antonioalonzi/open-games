@@ -1,5 +1,5 @@
-import React from "react";
-import {Label} from "../form/Form";
+import React from 'react';
+import {Label} from '../form/Form';
 
 export class Login extends React.Component {
   constructor(props) {
@@ -10,11 +10,11 @@ export class Login extends React.Component {
   handlerSubmit(event) {
     event.preventDefault();
     const formData = {
-      username: "guest",
-      password: "password"
+      username: 'guest',
+      password: 'password'
     };
 
-    this.props.sendMessage("/api/auth/login", formData);
+    this.props.sendMessage('/api/auth/login', formData);
   }
 
   render() {
@@ -24,7 +24,7 @@ export class Login extends React.Component {
         <form action="" onSubmit={this.handlerSubmit}>
           <div className="form-row">
             <div className="form-col-25">
-              <Label name={"Username"}/>
+              <Label name={'Username'}/>
             </div>
             <div className="form-col-75">
               <input type="text" id="username" name="username" placeholder="Your username..."/>
@@ -32,7 +32,7 @@ export class Login extends React.Component {
           </div>
           <div className="form-row">
             <div className="form-col-25">
-              <Label name={"password"}/>
+              <Label name={'password'}/>
             </div>
             <div className="form-col-75">
               <input type="password" id="password" name="password" placeholder="Your password..."/>

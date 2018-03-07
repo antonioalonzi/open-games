@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export class Messages extends React.Component {
   constructor(props) {
