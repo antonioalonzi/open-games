@@ -1,14 +1,40 @@
 import React from 'react';
-import {Label} from '../form/Form';
+import {Input, Submit} from '../form/Form';
+import {Utils} from "../utils/Utils";
 
 export class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.handlerSubmit = this.handlerSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.state = {
+      username: '',
+      password: '',
+      errors: {}
+    }
   }
 
-  handlerSubmit(event) {
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  handleSubmit(event) {
     event.preventDefault();
+
+    if (Utils.isBlank(this.state.username)) {
+      alert('username is blank');
+    }
+
+    if (Utils.isBlank(this.state.password)) {
+      alert('password is blank');
+    }
+
     const formData = {
       username: 'guest',
       password: 'password'
@@ -21,26 +47,10 @@ export class Login extends React.Component {
     return (
       <div className="form-container" id="login-form">
         <h1>Login</h1>
-        <form action="" onSubmit={this.handlerSubmit}>
-          <div className="form-row">
-            <div className="form-col-25">
-              <Label name={'Username'}/>
-            </div>
-            <div className="form-col-75">
-              <input type="text" id="username" name="username" placeholder="Your username..."/>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-col-25">
-              <Label name={'password'}/>
-            </div>
-            <div className="form-col-75">
-              <input type="password" id="password" name="password" placeholder="Your password..."/>
-            </div>
-          </div>
-          <div className="form-row">
-            <input type="submit" value="Submit"/>
-          </div>
+        <form action="" onSubmit={this.handleSubmit}>
+          <Input type={'text'} name={'Username'} value={this.state.username} onChange={this.handleInputChange}/>
+          <Input type={'password'} name={'Password'} value={this.state.password} onChange={this.handleInputChange}/>
+          <Submit/>
         </form>
       </div>
     );
