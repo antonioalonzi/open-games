@@ -8,13 +8,13 @@ describe('test login', () => {
     const component = shallow(<Login/>);
 
     // Then
-    const usernameInput = component.find('input[name=\'username\']');
+    const usernameInput = component.find('input[name="username"]');
     expect(usernameInput.length).toEqual(1);
 
-    const passwordInput = component.find('input[name=\'password\']');
+    const passwordInput = component.find('input[name="password"]');
     expect(passwordInput.length).toEqual(1);
 
-    const submitButton = component.find('input[type=\'submit\']');
+    const submitButton = component.find('input[type="submit"]');
     expect(submitButton.length).toEqual(1);
   });
 
@@ -23,7 +23,7 @@ describe('test login', () => {
     const component = shallow(<Login/>);
 
     // When
-    component.find('input[type=\'submit\']').simulate('click');
+    component.find('input[type="submit"]').simulate('click');
 
     // Then
     const errorDiv = component.find('div.error');

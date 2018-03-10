@@ -2,6 +2,62 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
+export class Form extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+
+    let fields = {};
+    this.props.children.forEach(function(child) {
+      if (child.props.name) {
+        fields[child.props.name.toLowerCase()] = '';
+      }
+    });
+
+    this.state = {
+      fields: fields
+    }
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      fields: {
+        [name]: value
+      }
+    });
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+
+    this.props.onFormSubmit(this.state);
+  }
+
+  render() {
+    return (
+      <form action="" onSubmit={this.onSubmit}>
+        {this.props.children.map((child, index) => {
+          return React.cloneElement(child, {
+            formState: this.state,
+            handleInputChange: this.handleInputChange,
+            key: index
+          });
+        })}
+      </form>
+    );
+  }
+}
+
+Form.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired
+};
+
+
 export class Label extends React.Component {
   render() {
     const lowerCaseName = this.props.name.toLowerCase();
@@ -17,6 +73,10 @@ Label.propTypes = {
 
 
 export class Input extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const lowerCaseName = this.props.name.toLowerCase();
     return (
@@ -25,7 +85,13 @@ export class Input extends React.Component {
           <Label name={this.props.name}/>
         </div>
         <div className="form-col-75">
-          <input type="text" id={lowerCaseName} name={lowerCaseName} placeholder={this.props.name + '...'} value={this.props.value} onChange={this.props.onChange}/>
+          <div>
+            <input type="text" id={lowerCaseName} name={lowerCaseName} placeholder={this.props.name + '...'}
+                   value={this.props.formState.fields[lowerCaseName]} onChange={this.props.handleInputChange}/>
+          </div>
+          <div className="form-error">
+            {/*{this.props.errors[lowerCaseName]}*/}
+          </div>
         </div>
       </div>
     );
@@ -34,9 +100,7 @@ export class Input extends React.Component {
 
 Input.propTypes = {
   type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  onChange: PropTypes.function
+  name: PropTypes.string.isRequired
 };
 
 

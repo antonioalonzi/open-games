@@ -1,57 +1,46 @@
 import React from 'react';
-import {Input, Submit} from '../form/Form';
-import {Utils} from "../utils/Utils";
+import {Form, Input, Submit} from '../form/Form';
 
 export class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.state = {
-      username: '',
-      password: '',
-      errors: {}
-    }
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+  onFormSubmit(formObject) {
+    let errors = {};
 
-    this.setState({
-      [name]: value
-    });
-  }
+    console.log(formObject);
 
-  handleSubmit(event) {
-    event.preventDefault();
-
-    if (Utils.isBlank(this.state.username)) {
-      alert('username is blank');
-    }
-
-    if (Utils.isBlank(this.state.password)) {
-      alert('password is blank');
-    }
-
-    const formData = {
-      username: 'guest',
-      password: 'password'
-    };
-
-    this.props.sendMessage('/api/auth/login', formData);
+    // if (Utils.isBlank(this.state.username)) {
+    //   errors['username'] = 'Username is mandatory.';
+    // }
+    //
+    // if (Utils.isBlank(this.state.password)) {
+    //   errors['password'] = 'Password is mandatory.';
+    // }
+    //
+    // this.setState({errors: errors});
+    //
+    // if (errors === {}) {
+    //   const formData = {
+    //     username: 'guest',
+    //     password: 'password'
+    //   };
+    //
+    //   this.props.sendMessage('/api/auth/login', formData);
+    // }
   }
 
   render() {
     return (
       <div className="form-container" id="login-form">
         <h1>Login</h1>
-        <form action="" onSubmit={this.handleSubmit}>
-          <Input type={'text'} name={'Username'} value={this.state.username} onChange={this.handleInputChange}/>
-          <Input type={'password'} name={'Password'} value={this.state.password} onChange={this.handleInputChange}/>
+        <Form onFormSubmit={this.onFormSubmit}>
+          <Input type={'text'} name={'Username'}/>
+          <Input type={'password'} name={'Password'}/>
           <Submit/>
-        </form>
+        </Form>
       </div>
     );
   }

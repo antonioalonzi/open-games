@@ -155,7 +155,11 @@ input[type=submit]:hover {
     clear: both;
 }
 
-
+.form-error {
+    color: #ff7788;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
 
 #content {
     padding: 20px 30px 20px 270px;
