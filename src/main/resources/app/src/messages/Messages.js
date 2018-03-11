@@ -25,11 +25,28 @@ export class Messages extends React.Component {
 
   onMessage(event) {
     const messageId = this.generateMessageId();
-    let messages = this.state.messages;
-    messages.push({
+    this.addMessage({
       id: messageId,
       type: event.value.type,
       text: event.value.text
+    });
+    setTimeout(() => {this.removeMessage(messageId)}, 10000);
+  }
+
+  addMessage(message) {
+    let messages = this.state.messages;
+    messages.push(message);
+    this.setState({
+      messages: messages
+    });
+  }
+
+  removeMessage(messageId) {
+    let messages = this.state.messages;
+    messages.forEach((message, index) => {
+      if (message.id === messageId) {
+        messages.splice(index, 1);
+      }
     });
     this.setState({
       messages: messages
