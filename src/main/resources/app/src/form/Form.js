@@ -11,7 +11,12 @@ export class Form extends React.Component {
     let fields = {};
     this.props.children.forEach(function(child) {
       if (child.props.name) {
-        fields[child.props.name.toLowerCase()] = '';
+        fields[child.props.name.toLowerCase()] = {
+          displayName: child.props.name,
+          mandatory: child.props.mandatory,
+          value: '',
+          errors: []
+        };
       }
     });
 
@@ -25,17 +30,63 @@ export class Form extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
+    let fields = this.state.fields;
+    fields[name] = {
+      value: value,
+      errors: []
+    };
+
     this.setState({
-      fields: {
-        [name]: value
-      }
+      fields: fields
     });
   }
 
   onSubmit(event) {
     event.preventDefault();
+    this.validateFields();
+    this.props.onFormSubmit(this.createForm(), this.isFormValid());
+  }
 
-    this.props.onFormSubmit(this.state);
+  createForm() {
+    let form = {};
+    for (let fieldName in this.state.fields) {
+      let field = this.state.fields[fieldName];
+      form[fieldName] = field.value;
+    }
+    return form;
+  }
+
+  validateFields() {
+    for (let fieldName in this.state.fields) {
+      let field = this.state.fields[fieldName];
+      this.validateField(fieldName, field);
+    }
+  }
+
+  validateField(fieldName, field) {
+    this.mandatoryFieldValidation(field, fieldName);
+  }
+
+  mandatoryFieldValidation(field, fieldName) {
+    if (field.mandatory) {
+      if (field.value.trim() === '') {
+        let fields = this.state.fields;
+        fields[fieldName].errors = [field.displayName + ' is mandatory.'];
+        this.setState({
+          fields: fields
+        });
+      }
+    }
+  }
+
+  isFormValid() {
+    for (let fieldName in this.state.fields) {
+      let field = this.state.fields[fieldName];
+      if (field.errors.length > 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   render() {
@@ -58,6 +109,7 @@ Form.propTypes = {
 };
 
 
+
 export class Label extends React.Component {
   render() {
     const lowerCaseName = this.props.name.toLowerCase();
@@ -70,6 +122,31 @@ export class Label extends React.Component {
 Label.propTypes = {
   name: PropTypes.string.isRequired
 };
+
+
+
+export class FormError extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    if (this.props.errors.length > 0) {
+      return (
+        <div className="form-error">
+          {this.props.errors[0]}
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+}
+
+FormError.propTypes = {
+  errors: PropTypes.array.isRequired
+};
+
 
 
 export class Input extends React.Component {
@@ -86,12 +163,10 @@ export class Input extends React.Component {
         </div>
         <div className="form-col-75">
           <div>
-            <input type="text" id={lowerCaseName} name={lowerCaseName} placeholder={this.props.name + '...'}
-                   value={this.props.formState.fields[lowerCaseName]} onChange={this.props.handleInputChange}/>
+            <input type={this.props.type} id={lowerCaseName} name={lowerCaseName} placeholder={this.props.name + '...'}
+                   value={this.props.formState.fields[lowerCaseName].value} onChange={this.props.handleInputChange}/>
           </div>
-          <div className="form-error">
-            {/*{this.props.errors[lowerCaseName]}*/}
-          </div>
+          <FormError errors={this.props.formState.fields[lowerCaseName].errors} />
         </div>
       </div>
     );
@@ -100,15 +175,21 @@ export class Input extends React.Component {
 
 Input.propTypes = {
   type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  mandatory: PropTypes.bool
 };
 
 
+
 export class Submit extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="form-row">
-        <input type="submit" value="Submit"/>
+        <input type="submit" value={this.props.value}/>
       </div>
     );
   }

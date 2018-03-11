@@ -5,10 +5,32 @@ import {Form, Input, Submit} from "./Form";
 describe('test login', () => {
   it('should submit a form', () => {
     // Given
-    const handleSubmit = jest.fn();
+    const onFormSubmit = jest.fn();
     const form = mount(
-      <Form onSubmit={handleSubmit}>
+      <Form onFormSubmit={onFormSubmit}>
         <Input type={'text'} name={'aField'}/>
+        <Submit/>
+      </Form>
+    );
+
+    // When
+    form.find('input[name="afield"]').simulate('change', { target: { name: 'afield', value: 'aValue' } });
+    form.find('input[type="submit"]').simulate('submit');
+
+    // Then
+    expect(onFormSubmit.mock.calls.length).toEqual(1);
+    expect(onFormSubmit.mock.calls[0][0]).toEqual({afield: 'aValue'});
+    expect(onFormSubmit.mock.calls[0][1]).toEqual(true);
+
+    expect(form.find('.form-error').length).toEqual(0);
+  });
+
+  it('should display an error if mandatory field is missing', () => {
+    // Given
+    const onFormSubmit = jest.fn();
+    const form = mount(
+      <Form onFormSubmit={onFormSubmit}>
+        <Input type={'text'} name={'aMandatoryField'} mandatory={true}/>
         <Submit/>
       </Form>
     );
@@ -17,6 +39,32 @@ describe('test login', () => {
     form.find('input[type="submit"]').simulate('submit');
 
     // Then
-    expect(handleSubmit.mock.calls.length).toBe(1);
+    expect(onFormSubmit.mock.calls.length).toEqual(1);
+    expect(onFormSubmit.mock.calls[0][0]).toEqual({amandatoryfield: ''});
+    expect(onFormSubmit.mock.calls[0][1]).toEqual(false);
+
+    expect(form.find('.form-error').length).toEqual(1);
+    expect(form.find('.form-error').text()).toEqual('aMandatoryField is mandatory.');
+  });
+
+  it('should not display an error if a non mandatory field is missing', () => {
+    // Given
+    const onFormSubmit = jest.fn();
+    const form = mount(
+      <Form onFormSubmit={onFormSubmit}>
+        <Input type={'text'} name={'aNonMandatoryField'}/>
+        <Submit/>
+      </Form>
+    );
+
+    // When
+    form.find('input[type="submit"]').simulate('submit');
+
+    // Then
+    expect(onFormSubmit.mock.calls.length).toEqual(1);
+    expect(onFormSubmit.mock.calls[0][0]).toEqual({anonmandatoryfield: ''});
+    expect(onFormSubmit.mock.calls[0][1]).toEqual(true);
+
+    expect(form.find('.form-error').length).toEqual(0);
   });
 });

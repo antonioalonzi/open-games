@@ -7,29 +7,10 @@ export class Login extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  onFormSubmit(formObject) {
-    let errors = {};
-
-    console.log(formObject);
-
-    // if (Utils.isBlank(this.state.username)) {
-    //   errors['username'] = 'Username is mandatory.';
-    // }
-    //
-    // if (Utils.isBlank(this.state.password)) {
-    //   errors['password'] = 'Password is mandatory.';
-    // }
-    //
-    // this.setState({errors: errors});
-    //
-    // if (errors === {}) {
-    //   const formData = {
-    //     username: 'guest',
-    //     password: 'password'
-    //   };
-    //
-    //   this.props.sendMessage('/api/auth/login', formData);
-    // }
+  onFormSubmit(formData, valid) {
+    if (valid) {
+      this.props.sendMessage('/api/auth/login', formData);
+    }
   }
 
   render() {
@@ -37,9 +18,9 @@ export class Login extends React.Component {
       <div className="form-container" id="login-form">
         <h1>Login</h1>
         <Form onFormSubmit={this.onFormSubmit}>
-          <Input type={'text'} name={'Username'}/>
-          <Input type={'password'} name={'Password'}/>
-          <Submit/>
+          <Input type={'text'} name={'Username'} mandatory={true}/>
+          <Input type={'password'} name={'Password'} mandatory={true}/>
+          <Submit value={'Login'}/>
         </Form>
       </div>
     );
