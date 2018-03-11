@@ -20,7 +20,6 @@ describe('test login', () => {
     // Then
     expect(onFormSubmit.mock.calls.length).toEqual(1);
     expect(onFormSubmit.mock.calls[0][0]).toEqual({afield: 'aValue'});
-    expect(onFormSubmit.mock.calls[0][1]).toEqual(true);
 
     expect(form.find('.form-error').length).toEqual(0);
   });
@@ -39,9 +38,7 @@ describe('test login', () => {
     form.find('input[type="submit"]').simulate('submit');
 
     // Then
-    expect(onFormSubmit.mock.calls.length).toEqual(1);
-    expect(onFormSubmit.mock.calls[0][0]).toEqual({amandatoryfield: ''});
-    expect(onFormSubmit.mock.calls[0][1]).toEqual(false);
+    expect(onFormSubmit.mock.calls.length).toEqual(0);
 
     expect(form.find('.form-error').length).toEqual(1);
     expect(form.find('.form-error').text()).toEqual('aMandatoryField is mandatory.');
@@ -63,7 +60,6 @@ describe('test login', () => {
     // Then
     expect(onFormSubmit.mock.calls.length).toEqual(1);
     expect(onFormSubmit.mock.calls[0][0]).toEqual({anonmandatoryfield: ''});
-    expect(onFormSubmit.mock.calls[0][1]).toEqual(true);
 
     expect(form.find('.form-error').length).toEqual(0);
   });

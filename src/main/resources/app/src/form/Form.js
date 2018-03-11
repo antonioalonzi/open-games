@@ -44,7 +44,9 @@ export class Form extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     this.validateFields();
-    this.props.onFormSubmit(this.createForm(), this.isFormValid());
+    if (this.isFormValid()) {
+      this.props.onFormSubmit(this.createForm());
+    }
   }
 
   createForm() {

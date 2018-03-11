@@ -7,10 +7,8 @@ export class Login extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  onFormSubmit(formData, valid) {
-    if (valid) {
-      this.props.sendMessage('/api/auth/login', formData);
-    }
+  onFormSubmit(formData) {
+    this.props.sendMessage('/api/auth/login', formData);
   }
 
   render() {
