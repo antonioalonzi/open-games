@@ -8,11 +8,15 @@ import {Welcome} from "./welcome/Welcome";
 import SockJs from "sockjs-client"
 import Stomp from "@stomp/stompjs"
 import {Messages} from "./messages/Messages";
+import {Utils} from "./utils/Utils";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.sendMessage = this.sendMessage.bind(this);
+    this.state = {
+      stompClient: {}
+    }
   }
 
   componentDidMount() {
@@ -29,7 +33,8 @@ class App extends React.Component {
       });
 
       stompClient.subscribe("/user/" + this.sessionId + "/events", (event) => {
-        console.log("received user event", event);
+        const eventBody = JSON.parse(event.body);
+        Utils.dispatchEvent(eventBody.type, eventBody.value);
       });
     });
   }

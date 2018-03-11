@@ -2,7 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 import {Form, Input, Submit} from "./Form";
 
-describe('test login', () => {
+describe('test form', () => {
   it('should submit a form', () => {
     // Given
     const onFormSubmit = jest.fn();

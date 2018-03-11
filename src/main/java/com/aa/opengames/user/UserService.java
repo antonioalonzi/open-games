@@ -8,8 +8,8 @@ import java.util.Optional;
 public class UserService {
 
   public Optional<User> getUser(String username) {
-    if (username.equals("guest")) {
-      return Optional.of(new User("guest"));
+    if (username.startsWith("guest")) {
+      return Optional.of(new User(username));
     }
     return Optional.empty();
   }

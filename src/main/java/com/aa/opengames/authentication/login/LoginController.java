@@ -4,6 +4,7 @@ import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseS
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.SUCCESS;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
+import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserService;
@@ -36,9 +37,15 @@ public class LoginController {
     Optional<User> user = userService.getUser(loginRequest.getUsername());
     if (user.isPresent()) {
       SecurityContextHolder.addUser(sessionId, user.get());
-      eventSender.sendToUser(sessionId, new LoginResponse(SUCCESS, "Login Successful.", sessionId));
+      eventSender.sendToUser(sessionId, new Event(
+          "login-event",
+          new LoginResponse(SUCCESS, "Login Successful.", sessionId)
+      ));
     } else {
-      eventSender.sendToUser(sessionId, new LoginResponse(ERROR, "Username/Password are incorrect."));
+      eventSender.sendToUser(sessionId, new Event(
+          "login-event",
+          new LoginResponse(ERROR, "Username/Password are incorrect.")
+      ));
     }
   }
 

@@ -131,12 +131,6 @@ input[type=submit]:hover {
     background-color: #274e27;
 }
 
-.form-container {
-    border-radius: 5px;
-    background-color: #333;
-    padding: 20px;
-}
-
 .form-col-25 {
     float: left;
     width: 25%;
@@ -163,6 +157,27 @@ input[type=submit]:hover {
 
 #content {
     padding: 20px 30px 20px 270px;
+}
+
+#messages-container {
+    margin-bottom: 16px;
+    margin-left: 20px
+}
+
+#messages-container div {
+    margin-bottom: 16px;
+}
+
+#messages-container span {
+    padding: 6px 12px 6px 12px;
+}
+
+#messages-container .message-info {
+    background-color: #274e27;
+}
+
+#messages-container .message-error {
+    background-color: #884433;
 }
 
 

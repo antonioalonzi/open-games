@@ -25,13 +25,13 @@ public class EventSender {
     this.objectMapper = objectMapper;
   }
 
-  public void sendToAll(Object event) {
+  public void sendToAll(Event event) {
     String eventString = serializeToString(event);
     LOGGER.info("Sending event to all: {}", eventString);
     webSocketTemplate.convertAndSend("/topic/events", eventString);
   }
 
-  public void sendToUser(String sessionId, Object event) {
+  public void sendToUser(String sessionId, Event event) {
     String eventString = serializeToString(event);
     LOGGER.info("Sending event: {}", eventString);
     webSocketTemplate.convertAndSendToUser(sessionId, "/events", eventString);
