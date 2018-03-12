@@ -39,7 +39,7 @@ public class LoginController {
       SecurityContextHolder.addUser(sessionId, user.get());
       eventSender.sendToUser(sessionId, new Event(
           "login-event",
-          new LoginResponse(SUCCESS, "Login Successful.", sessionId)
+          new LoginResponse(SUCCESS, "Login Successful.", new LoginResponse.UserDetails(sessionId, user.get().getUsername()))
       ));
     } else {
       eventSender.sendToUser(sessionId, new Event(

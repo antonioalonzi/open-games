@@ -15,11 +15,12 @@ class App extends React.Component {
     super(props);
     this.sendMessage = this.sendMessage.bind(this);
     this.state = {
-      stompClient: {}
+      stompClient: null,
+      user: null
     }
-  }
+  };
 
-  componentDidMount() {
+  componentWillMount() {
     let socket = new SockJs("/open-games-ws");
     let stompClient = Stomp.over(socket);
     this.setState({
@@ -34,7 +35,9 @@ class App extends React.Component {
 
       stompClient.subscribe("/user/" + this.sessionId + "/events", (event) => {
         const eventBody = JSON.parse(event.body);
-        Utils.dispatchEvent(eventBody.type, eventBody.value);
+        switch (eventBody.type) {
+          case 'login-event': this.login(eventBody.value); break;
+        }
       });
     });
   }
@@ -43,11 +46,22 @@ class App extends React.Component {
     this.state.stompClient.send(url, {}, JSON.stringify(message));
   }
 
+  login(loginResponse) {
+    if (loginResponse.loginResponseStatus === 'ERROR') {
+      Utils.dispatchEvent('message', {type: 'error', text: loginResponse.message});
+    } else {
+      Utils.dispatchEvent('message', {type: 'info', text: loginResponse.message});
+      this.setState({
+        user: loginResponse.userDetails
+      });
+    }
+  }
+
   render() {
     return (
       <Router>
         <div>
-          <Header/>
+          <Header user={this.state.user}/>
           <Menu/>
           <div id="content">
             <Messages />

@@ -10,7 +10,7 @@ export class Messages extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     Utils.addEventListener('message', this._onMessage);
     Utils.messagesComponent = this;
   }
