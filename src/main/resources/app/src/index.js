@@ -67,7 +67,9 @@ class App extends React.Component {
             <Messages />
             <Switch>
               <Route path="/" exact={true} component={Welcome} />
-              <Route path="/login" render={() => <Login sendMessage={this.sendMessage} />} />
+              <Route path="/portal/" exact={true} component={Welcome} />
+              <Route path="/portal/index.html" exact={true} component={Welcome} />
+              <Route path="/portal/login" render={() => <Login sendMessage={this.sendMessage} />} />
             </Switch>
           </div>
         </div>

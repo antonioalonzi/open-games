@@ -7,10 +7,10 @@ export class Menu extends React.Component {
       <div id="menu">
         <ul>
           <li>
-            <NavLink to="/page-1">Page 1</NavLink>
+            <NavLink to="/portal/page-1">Page 1</NavLink>
           </li>
           <li>
-            <NavLink to="/page-2">Page 2</NavLink>
+            <NavLink to="/portal/page-2">Page 2</NavLink>
           </li>
         </ul>
       </div>

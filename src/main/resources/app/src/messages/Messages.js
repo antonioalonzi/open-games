@@ -30,7 +30,7 @@ export class Messages extends React.Component {
       type: event.value.type,
       text: event.value.text
     });
-    setTimeout(() => {this.removeMessage(messageId)}, 10000);
+    setTimeout(() => {this.removeMessage(messageId)}, 6000);
   }
 
   addMessage(message) {

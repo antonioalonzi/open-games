@@ -6,7 +6,7 @@ export class HeaderLeft extends React.Component {
   render() {
     return (
       <div id="header-left">
-        <NavLink to="/">Open Games</NavLink>
+        <NavLink to="/portal/">Open Games</NavLink>
       </div>
     );
   }
@@ -19,13 +19,13 @@ export class HeaderRight extends React.Component {
       return (
         <div id="header-right">
           <span>Welcome {this.props.user.username}</span>
-          <NavLink to="/logout">Logout</NavLink>
+          <NavLink to="/portal/logout">Logout</NavLink>
         </div>
       );
     } else {
       return (
         <div id="header-right">
-          <NavLink to="/login">Login</NavLink>
+          <NavLink to="/portal/login">Login</NavLink>
         </div>
       );
     }
