@@ -62,7 +62,7 @@ h6 {
     height: 40px;
 }
 
-#header a, span {
+#header a, #header span {
     float: left;
     display: block;
     text-align: center;
