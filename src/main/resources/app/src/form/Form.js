@@ -14,7 +14,7 @@ export class Form extends React.Component {
         fields[child.props.name.toLowerCase()] = {
           displayName: child.props.name,
           mandatory: child.props.mandatory,
-          value: '',
+          value: child.props.value,
           errors: []
         };
       }
@@ -178,7 +178,8 @@ export class Input extends React.Component {
 Input.propTypes = {
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  mandatory: PropTypes.bool
+  mandatory: PropTypes.bool,
+  value: PropTypes.string
 };
 
 

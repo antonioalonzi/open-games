@@ -4,14 +4,6 @@ public class Event {
   private String type;
   private Object value;
 
-  public Event() {
-  }
-
-  public Event(String type, Object value) {
-    this.type = type;
-    this.value = value;
-  }
-
   public String getType() {
     return type;
   }
@@ -26,5 +18,32 @@ public class Event {
 
   public void setValue(Object value) {
     this.value = value;
+  }
+
+
+  public static class EventBuilder {
+    private String type;
+    private Object value;
+
+    public static EventBuilder eventBuilder() {
+     return new EventBuilder();
+    }
+
+    public EventBuilder type(String type) {
+      this.type = type;
+      return this;
+    }
+
+    public EventBuilder value(Object value) {
+      this.value = value;
+      return this;
+    }
+
+    public Event build() {
+      Event event = new Event();
+      event.setType(type);
+      event.setValue(value);
+      return event;
+    }
   }
 }

@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
@@ -18,7 +17,7 @@ public class GenerateTestDatabase {
 
   @Test
   public void generate() {
-    User guest = new User("guest");
-    userRepository.save(guest);
+    userRepository.deleteAll();
+    userRepository.save(new User("guest", "password"));
   }
 }
