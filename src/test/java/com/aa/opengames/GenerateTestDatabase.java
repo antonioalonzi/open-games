@@ -1,5 +1,7 @@
 package com.aa.opengames;
 
+import static com.aa.opengames.user.User.UserBuilder.userBuilder;
+
 import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;
 import org.junit.Test;
@@ -18,6 +20,11 @@ public class GenerateTestDatabase {
   @Test
   public void generate() {
     userRepository.deleteAll();
-    userRepository.save(new User("guest", "password"));
+    userRepository.save(
+        userBuilder()
+            .username("guest")
+            .password("password")
+            .build()
+    );
   }
 }

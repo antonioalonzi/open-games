@@ -15,6 +15,7 @@ export class Login extends React.Component {
     return (
       <div id="login-form">
         <h1>Login</h1>
+        <div>Use guest / password</div>
         <Form onFormSubmit={this.onFormSubmit}>
           <Input type={'text'} name={'Username'} mandatory={true} value={'guest'}/>
           <Input type={'password'} name={'Password'} mandatory={true} value={'password'}/>

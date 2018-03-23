@@ -1,7 +1,9 @@
 package com.aa.opengames.authentication.login;
 
+import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseBuilder.loginResponseBuilder;
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.ERROR;
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.SUCCESS;
+import static com.aa.opengames.authentication.login.LoginResponse.UserDetails.UserDetailsBuilder.userDetailsBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
@@ -39,16 +41,24 @@ public class LoginController {
       SecurityContextHolder.addUser(sessionId, user);
       eventSender.sendToUser(sessionId, eventBuilder()
           .type("login-event")
-          .value(new LoginResponse(SUCCESS, "Login Successful.", new LoginResponse.UserDetails(sessionId, user.getUsername())))
-          .build()
-      );
+          .value(loginResponseBuilder()
+              .setLoginResponseStatus(SUCCESS)
+              .setMessage("Login Successful.")
+              .setUserDetails(userDetailsBuilder()
+                  .token(sessionId)
+                  .username(user.getUsername())
+                  .build())
+              .build())
+          .build());
 
     } else {
       eventSender.sendToUser(sessionId, eventBuilder()
           .type("login-event")
-          .value(new LoginResponse(ERROR, "Username/Password are incorrect."))
-          .build()
-      );
+          .value(loginResponseBuilder()
+              .setLoginResponseStatus(ERROR)
+              .setMessage("Username/Password are incorrect.")
+              .build())
+          .build());
     }
   }
 
