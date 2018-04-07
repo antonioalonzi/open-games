@@ -1,12 +1,12 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import {Messages} from "./Messages";
-import {Utils} from "../utils/Utils";
+import {Messages} from './Messages';
+import {Utils} from '../utils/Utils';
 
 describe('test messages', () => {
   it('should display some messages', () => {
     // Given
-    const component = mount(<body><Messages/></body>);
+    const component = mount(<Messages/>);
 
     // When
     Utils.dispatchEvent('message', {type: 'error', text: 'First error.'});

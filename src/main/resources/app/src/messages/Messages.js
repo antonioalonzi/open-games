@@ -1,5 +1,5 @@
 import React from 'react';
-import {Utils} from "../utils/Utils";
+import {Utils} from '../utils/Utils';
 
 export class Messages extends React.Component {
   constructor(props) {
@@ -7,7 +7,7 @@ export class Messages extends React.Component {
     this.state = {
       messages: [],
       lastId: 0
-    }
+    };
   }
 
   componentWillMount() {
@@ -30,7 +30,7 @@ export class Messages extends React.Component {
       type: event.value.type,
       text: event.value.text
     });
-    setTimeout(() => {this.removeMessage(messageId)}, 6000);
+    setTimeout(() => {this.removeMessage(messageId);}, 6000);
   }
 
   addMessage(message) {

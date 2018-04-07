@@ -14,7 +14,7 @@ export class Form extends React.Component {
         fields[child.props.name.toLowerCase()] = {
           displayName: child.props.name,
           mandatory: child.props.mandatory,
-          value: child.props.value,
+          value: child.props.value ? child.props.value : '',
           errors: []
         };
       }
@@ -22,7 +22,7 @@ export class Form extends React.Component {
 
     this.state = {
       fields: fields
-    }
+    };
   }
 
   handleInputChange(event) {
@@ -166,7 +166,7 @@ export class Input extends React.Component {
         <div className="form-col-75">
           <div>
             <input type={this.props.type} id={lowerCaseName} name={lowerCaseName} placeholder={this.props.name + '...'}
-                   value={this.props.formState.fields[lowerCaseName].value} onChange={this.props.handleInputChange}/>
+              value={this.props.formState.fields[lowerCaseName].value} onChange={this.props.handleInputChange}/>
           </div>
           <FormError errors={this.props.formState.fields[lowerCaseName].errors} />
         </div>
