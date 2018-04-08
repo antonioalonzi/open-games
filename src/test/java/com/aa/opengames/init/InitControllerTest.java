@@ -2,10 +2,12 @@ package com.aa.opengames.init;
 
 import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
+import static com.aa.opengames.game.GamePublishedEvent.GamePublishedEventBuilder.gamePublishedEventBuilder;
 import static com.aa.opengames.user.User.UserBuilder.userBuilder;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
+import static org.mockito.Mockito.times;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 import com.aa.opengames.event.Event;
@@ -53,12 +55,20 @@ public class InitControllerTest {
     initController.init(sessionHeader);
 
     // Then
-    Event event = eventBuilder()
+    Mockito.verify(eventSender, times(2)).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
+
+    assertThat(eventCaptor.getAllValues().get(0), sameBeanAs(eventBuilder()
         .type("user-logged-in")
         .value(userLoggedInEventBuilder().username(username).build())
-        .build();
+        .build()));
 
-    Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
-    assertThat(eventCaptor.getValue(), sameBeanAs(event));
+    assertThat(eventCaptor.getAllValues().get(1), sameBeanAs(eventBuilder()
+        .type("game-published")
+        .value(gamePublishedEventBuilder()
+            .label("tic-tac-toe")
+            .name("Tic Tac Toe")
+            .description("Simple implementation of Tic Tac Toe.")
+            .build())
+        .build()));
   }
 }

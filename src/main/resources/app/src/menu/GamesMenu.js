@@ -7,9 +7,10 @@ export class GamesMenu extends React.Component {
     return (
       <div id="games-menu" className={this.props.className}>
         <ul>
-          <li>
-            <NavLink to="/portal/game/tic-tac-toe">TicTacToe</NavLink>
-          </li>
+          {
+            this.props.games
+              .map(game => (<li key={game.label}><NavLink to={`/portal/game/${game.label}`}>{game.name}</NavLink></li>))
+          }
         </ul>
       </div>
     )
@@ -17,5 +18,6 @@ export class GamesMenu extends React.Component {
 }
 
 GamesMenu.propTyeps = {
-  className: PropTypes.object
+  className: PropTypes.object.isRequired,
+  games: PropTypes.array.isRequired
 }

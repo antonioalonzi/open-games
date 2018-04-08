@@ -8,14 +8,19 @@ export class Game extends React.Component {
   }
 
   componentWillMount() {
-    Utils.checkAuthenticatedUser(this.props.user, this.props.router);
+    Utils.checkAuthenticatedUser(this.props.user, this.props.router)
   }
 
   render() {
+    const gameLabel = this.props.router.match.params.label
+    console.log(gameLabel)
+    const game = this.props.games.filter((game) => game.label===gameLabel)[0]
+    console.log(game)
     return (
       <div id="game-description">
         <div>
-          <p>{this.props.router.match.params.name}</p>
+          <h2>{game.name}</h2>
+          <p>{game.description}</p>
         </div>
       </div>
     )
@@ -25,5 +30,6 @@ export class Game extends React.Component {
 Game.propTyeps = {
   router: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  games: PropTypes.array.isRequired
 }

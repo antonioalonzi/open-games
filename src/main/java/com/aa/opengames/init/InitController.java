@@ -2,8 +2,10 @@ package com.aa.opengames.init;
 
 import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
+import static com.aa.opengames.game.GamePublishedEvent.GamePublishedEventBuilder.gamePublishedEventBuilder;
 
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.game.GameRepository;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +20,13 @@ public class InitController {
   private final Logger LOGGER = LoggerFactory.getLogger(InitController.class);
 
   private UserRepository userRepository;
+  private GameRepository gameRepository;
   private EventSender eventSender;
 
   @Autowired
-  public InitController(UserRepository userRepository, EventSender eventSender) {
+  public InitController(UserRepository userRepository, GameRepository gameRepository, EventSender eventSender) {
     this.userRepository = userRepository;
+    this.gameRepository = gameRepository;
     this.eventSender = eventSender;
   }
 
@@ -37,6 +41,14 @@ public class InitController {
             .username(user.getUsername())
             .build())
         .build()));
-  }
 
+    gameRepository.getAllGames().forEach((game) -> eventSender.sendToUser(sessionId, eventBuilder()
+        .type("game-published")
+        .value(gamePublishedEventBuilder()
+            .label(game.getLabel())
+            .name(game.getName())
+            .description(game.getDescription())
+            .build())
+        .build()));
+  }
 }
