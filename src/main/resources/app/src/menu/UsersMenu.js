@@ -27,10 +27,10 @@ export class UsersMenu extends React.Component {
   }
 
   isCurrentUser(user) {
-    if (!this.props.currentUser) {
+    if (!this.props.user) {
       return false
     } else {
-      return user.username === this.props.currentUser.username
+      return user.username === this.props.user.username
     }
   }
 
@@ -52,5 +52,5 @@ export class UsersMenu extends React.Component {
 
 UsersMenu.propTyeps = {
   className: PropTypes.object.isRequired,
-  currentUser: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired
 }

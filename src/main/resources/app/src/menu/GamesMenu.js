@@ -8,7 +8,7 @@ export class GamesMenu extends React.Component {
       <div id="games-menu" className={this.props.className}>
         <ul>
           <li>
-            <NavLink to="/portal/game/tictactoe">TicTacToe</NavLink>
+            <NavLink to="/portal/game/tic-tac-toe">TicTacToe</NavLink>
           </li>
         </ul>
       </div>
