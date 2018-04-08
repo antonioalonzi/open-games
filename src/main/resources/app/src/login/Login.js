@@ -14,8 +14,7 @@ export class Login extends React.Component {
   }
 
   componentWillUnmount() {
-    // TODO many add the component will unmount
-    //Utils.removeEventListener('login-event', this.onLoginResponse);
+    Utils.removeEventListener('login-event', this.onLoginResponse);
   }
 
   onFormSubmit(formData) {

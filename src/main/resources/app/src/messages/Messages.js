@@ -17,8 +17,7 @@ export class Messages extends React.Component {
   }
 
   componentWillUnmount() {
-    // TODO this does not work
-    // Utils.removeEventListener('message', this.onMessage);
+    Utils.removeEventListener('message', this.onMessage);
   }
 
   onMessage(message) {

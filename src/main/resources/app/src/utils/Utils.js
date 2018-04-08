@@ -17,6 +17,6 @@ export class Utils extends React.Component {
   }
 
   static removeEventListener(type, func) {
-    document.getElementsByName('body')[0].removeEventListener(type, func);
+    document.getElementsByTagName('body')[0].removeEventListener(type, func);
   }
 }
