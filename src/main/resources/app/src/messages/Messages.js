@@ -4,6 +4,7 @@ import {Utils} from '../utils/Utils';
 export class Messages extends React.Component {
   constructor(props) {
     super(props);
+    this.onMessage = this.onMessage.bind(this);
     this.state = {
       messages: [],
       lastId: 0
@@ -11,24 +12,21 @@ export class Messages extends React.Component {
   }
 
   componentWillMount() {
-    Utils.addEventListener('message', this._onMessage);
+    Utils.addEventListener('message', this.onMessage);
     Utils.messagesComponent = this;
   }
 
   componentWillUnmount() {
-    Utils.removeEventListener('message', this._onMessage);
+    // TODO this does not work
+    // Utils.removeEventListener('message', this.onMessage);
   }
 
-  _onMessage(message) {
-    Utils.messagesComponent.onMessage(message);
-  }
-
-  onMessage(event) {
+  onMessage(message) {
     const messageId = this.generateMessageId();
     this.addMessage({
       id: messageId,
-      type: event.value.type,
-      text: event.value.text
+      type: message.value.type,
+      text: message.value.text
     });
     setTimeout(() => {this.removeMessage(messageId);}, 6000);
   }

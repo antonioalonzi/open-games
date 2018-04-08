@@ -14,6 +14,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.sendMessage = this.sendMessage.bind(this);
+    this.setAppState = this.setAppState.bind(this);
     this.state = {
       stompClient: null,
       user: null
@@ -35,33 +36,28 @@ class App extends React.Component {
 
       stompClient.subscribe("/user/" + this.sessionId + "/events", (event) => {
         const eventBody = JSON.parse(event.body);
-        switch (eventBody.type) {
-          case 'login-event': this.login(eventBody.value); break;
-        }
+        Utils.dispatchEvent(eventBody.type, eventBody.value)
       });
     });
+
+    Utils.addEventListener('set-state', this.setAppState);
   }
 
   sendMessage(url, message) {
     this.state.stompClient.send(url, {}, JSON.stringify(message));
   }
 
-  login(loginResponse) {
-    if (loginResponse.loginResponseStatus === 'ERROR') {
-      Utils.dispatchEvent('message', {type: 'error', text: loginResponse.message});
-    } else {
-      Utils.dispatchEvent('message', {type: 'info', text: loginResponse.message});
-      this.setState({
-        user: loginResponse.userDetails
-      });
-    }
+  setAppState(event) {
+    let currentState = this.state;
+    currentState[event.value.key] = event.value.text
+    this.setState(currentState)
   }
 
   render() {
     return (
       <Router>
         <div>
-          <Header user={this.state.user}/>
+          <Header user={this.state.user} />
           <Menu/>
           <div id="content">
             <Messages />
@@ -69,7 +65,7 @@ class App extends React.Component {
               <Route path="/" exact={true} component={Welcome} />
               <Route path="/portal/" exact={true} component={Welcome} />
               <Route path="/portal/index.html" exact={true} component={Welcome} />
-              <Route path="/portal/login" render={() => <Login sendMessage={this.sendMessage} />} />
+              <Route path="/portal/login" render={(router) => <Login router={router} sendMessage={this.sendMessage} />} />
             </Switch>
           </div>
         </div>

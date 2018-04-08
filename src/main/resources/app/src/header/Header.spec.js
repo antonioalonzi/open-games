@@ -1,5 +1,5 @@
 import React from 'react';
-import {Header, HeaderLeft, HeaderRight} from './Header';
+import {Header} from './Header';
 import {shallow} from 'enzyme';
 
 describe('test header', () => {
