@@ -30,6 +30,8 @@ Application is deployed at: https://open-games.herokuapp.com/
 
 To deploy latest code:
 
+    npm run build-dev
+    git add -f src/main/resources/public/js/open-games.js
     git push heroku master
 
 To see production logs
