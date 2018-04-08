@@ -1,44 +1,37 @@
 package com.aa.opengames.user;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserRepository {
 
-  private Map<String, User> users = new HashMap<>();
+  private Set<User> users = new HashSet<>();
 
-  public List<User> getAllUsers() {
-    return users.entrySet().stream()
-        .map(Map.Entry::getValue)
-        .collect(Collectors.toList());
+  public Set<User> getAllUsers() {
+    return users;
   }
 
   public Optional<User> findByUsername(String username) {
-    return Optional.ofNullable(users.get(username));
+    return users.stream()
+        .filter((user) -> user.getUsername().equals(username))
+        .findFirst();
   }
 
   public Optional<User> findByToken(String token) {
-    return users.entrySet().stream()
-        .map(Map.Entry::getValue)
+    return users.stream()
         .filter((user) -> user.getToken().equals(token))
         .findFirst();
   }
 
   public void addUser(User user) {
-    users.put(user.getUsername(), user);
+    users.add(user);
   }
 
   public void removeUser(User user) {
-    removeUser(user.getUsername());
-  }
-
-  public void removeUser(String username) {
-    users.remove(username);
+    users.remove(user);
   }
 
   public void removeAllUsers() {

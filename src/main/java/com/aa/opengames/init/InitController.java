@@ -3,9 +3,11 @@ package com.aa.opengames.init;
 import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 import static com.aa.opengames.game.GamePublishedEvent.GamePublishedEventBuilder.gamePublishedEventBuilder;
+import static com.aa.opengames.table.TableCreatedEvent.TableCreatedEventBuilder.tableCreatedEventBuilder;
 
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.game.GameRepository;
+import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +23,14 @@ public class InitController {
 
   private UserRepository userRepository;
   private GameRepository gameRepository;
+  private TableRepository tableRepository;
   private EventSender eventSender;
 
   @Autowired
-  public InitController(UserRepository userRepository, GameRepository gameRepository, EventSender eventSender) {
+  public InitController(UserRepository userRepository, GameRepository gameRepository, TableRepository tableRepository, EventSender eventSender) {
     this.userRepository = userRepository;
     this.gameRepository = gameRepository;
+    this.tableRepository = tableRepository;
     this.eventSender = eventSender;
   }
 
@@ -48,6 +52,16 @@ public class InitController {
             .label(game.getLabel())
             .name(game.getName())
             .description(game.getDescription())
+            .build())
+        .build()));
+
+    tableRepository.getAllTables().forEach((table) -> eventSender.sendToUser(sessionId, eventBuilder()
+        .type("table-created")
+        .value(tableCreatedEventBuilder()
+            .id(table.getId())
+            .game(table.getGame())
+            .owner(table.getOwner())
+            .status(table.getStatus())
             .build())
         .build()));
   }

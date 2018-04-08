@@ -1,24 +1,35 @@
 package com.aa.opengames.user;
 
+import java.util.Objects;
+
 public class User {
   private String username;
   private String token;
 
-  public String getUsername() {
-    return username;
+  public User(String username, String token) {
+    this.username = username;
+    this.token = token;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public String getUsername() {
+    return username;
   }
 
   public String getToken() {
     return token;
   }
 
-  public User setToken(String token) {
-    this.token = token;
-    return this;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    User user = (User) o;
+    return Objects.equals(username, user.username);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(username);
   }
 
   public static class UserBuilder {
@@ -42,10 +53,7 @@ public class User {
     }
 
     public User build() {
-      User user = new User();
-      user.setUsername(username);
-      user.setToken(token);
-      return user;
+      return new User(username, token);
     }
   }
 }

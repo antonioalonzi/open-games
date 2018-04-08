@@ -1,35 +1,41 @@
 package com.aa.opengames.game;
 
+import java.util.Objects;
+
 public class Game {
   private String label;
   private String name;
   private String description;
 
-  public String getLabel() {
-    return label;
+  public Game(String label, String name, String description) {
+    this.label = label;
+    this.name = name;
+    this.description = description;
   }
 
-  public Game setLabel(String label) {
-    this.label = label;
-    return this;
+  public String getLabel() {
+    return label;
   }
 
   public String getName() {
     return name;
   }
 
-  public Game setName(String name) {
-    this.name = name;
-    return this;
-  }
-
   public String getDescription() {
     return description;
   }
 
-  public Game setDescription(String description) {
-    this.description = description;
-    return this;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Game game = (Game) o;
+    return Objects.equals(label, game.label);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(label);
   }
 
   public static class GameBuilder {
@@ -59,11 +65,7 @@ public class Game {
     }
 
     public Game build() {
-      Game game = new Game();
-      game.setLabel(label);
-      game.setName(name);
-      game.setDescription(description);
-      return game;
+      return new Game(label, name, description);
     }
   }
 }
