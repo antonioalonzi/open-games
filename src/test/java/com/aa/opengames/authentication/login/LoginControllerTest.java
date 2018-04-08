@@ -44,8 +44,7 @@ public class LoginControllerTest {
   public void shouldLoginSuccessfullyWithCorrectCredentials() {
     // Given
     LoginRequest loginRequest = loginRequestBuilder()
-        .username("guest")
-        .password("password")
+        .username("user-1")
         .build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
 
@@ -60,58 +59,8 @@ public class LoginControllerTest {
             .setMessage("Login Successful.")
             .setUserDetails(userDetailsBuilder()
                 .token("sessionId")
-                .username("guest")
+                .username("user-1")
                 .build())
-            .build())
-        .build();
-
-    Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
-    assertThat(eventCaptor.getValue(), sameBeanAs(event));
-  }
-
-  @Test
-  public void shouldFailToLoginWithWrongPassword() {
-    // Given
-    LoginRequest loginRequest = loginRequestBuilder()
-        .username("guest")
-        .password("wrong-password")
-        .build();
-    SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
-
-    // When
-    loginController.login(sessionHeader, loginRequest);
-
-    // Then
-    Event event = eventBuilder()
-        .type("login-event")
-        .value(loginResponseBuilder()
-            .setLoginResponseStatus(ERROR)
-            .setMessage("Username/Password are incorrect.")
-            .build())
-        .build();
-
-    Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
-    assertThat(eventCaptor.getValue(), sameBeanAs(event));
-  }
-
-  @Test
-  public void shouldFailToLoginWithNotExistingUser() {
-    // Given
-    LoginRequest loginRequest = loginRequestBuilder()
-        .username("notExistingUser")
-        .password("password")
-        .build();
-    SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
-
-    // When
-    loginController.login(sessionHeader, loginRequest);
-
-    // Then
-    Event event = eventBuilder()
-        .type("login-event")
-        .value(loginResponseBuilder()
-            .setLoginResponseStatus(ERROR)
-            .setMessage("Username/Password are incorrect.")
             .build())
         .build();
 

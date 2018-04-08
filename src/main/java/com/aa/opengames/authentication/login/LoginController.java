@@ -5,6 +5,7 @@ import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseS
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.SUCCESS;
 import static com.aa.opengames.authentication.login.LoginResponse.UserDetails.UserDetailsBuilder.userDetailsBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
+import static com.aa.opengames.user.User.UserBuilder.userBuilder;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.EventSender;
@@ -35,9 +36,10 @@ public class LoginController {
   public void login(SimpMessageHeaderAccessor headerAccessor, LoginRequest loginRequest) {
     String sessionId = headerAccessor.getSessionId();
     LOGGER.info("Login request received for username '{}'", loginRequest.getUsername());
-    User user = userRepository.findByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
+    User user = userRepository.findByUsername(loginRequest.getUsername());
 
-    if (user != null) {
+    if (user == null) {
+      userRepository.addUser(userBuilder().username(loginRequest.getUsername()).build());
       SecurityContextHolder.addUser(sessionId, user);
       eventSender.sendToUser(sessionId, eventBuilder()
           .type("login-event")
@@ -46,7 +48,7 @@ public class LoginController {
               .setMessage("Login Successful.")
               .setUserDetails(userDetailsBuilder()
                   .token(sessionId)
-                  .username(user.getUsername())
+                  .username(loginRequest.getUsername())
                   .build())
               .build())
           .build());
@@ -56,7 +58,7 @@ public class LoginController {
           .type("login-event")
           .value(loginResponseBuilder()
               .setLoginResponseStatus(ERROR)
-              .setMessage("Username/Password are incorrect.")
+              .setMessage("Username is already used. Please choose another username.")
               .build())
           .build());
     }
