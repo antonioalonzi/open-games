@@ -39,8 +39,9 @@ public class LoginController {
     User user = userRepository.findByUsername(loginRequest.getUsername());
 
     if (user == null) {
-      userRepository.addUser(userBuilder().username(loginRequest.getUsername()).build());
-      SecurityContextHolder.addUser(sessionId, user);
+      User currentUser = userBuilder().username(loginRequest.getUsername()).token(sessionId).build();
+      userRepository.addUser(currentUser);
+      SecurityContextHolder.addUser(sessionId, currentUser);
       eventSender.sendToUser(sessionId, eventBuilder()
           .type("login-event")
           .value(loginResponseBuilder()
@@ -48,7 +49,7 @@ public class LoginController {
               .setMessage("Login Successful.")
               .setUserDetails(userDetailsBuilder()
                   .token(sessionId)
-                  .username(loginRequest.getUsername())
+                  .username(currentUser.getUsername())
                   .build())
               .build())
           .build());
