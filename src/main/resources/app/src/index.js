@@ -3,7 +3,7 @@ import {render} from 'react-dom';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Header} from "./header/Header";
 import {Login} from "./login/Login";
-import {Menu} from "./menu/Menu";
+import {GamesMenu} from "./menu/GamesMenu";
 import SockJs from "sockjs-client"
 import Stomp from "@stomp/stompjs"
 import {Messages} from "./messages/Messages";
@@ -53,11 +53,12 @@ class App extends React.Component {
   }
 
   render() {
+    const gamesMenu = this.state.user ? <GamesMenu/> : null
     return (
       <Router>
         <div>
           <Header user={this.state.user} />
-          <Menu/>
+          {gamesMenu}
           <div id="content">
             <Messages />
             <Switch>
