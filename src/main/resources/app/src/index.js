@@ -31,7 +31,8 @@ class App extends React.Component {
       this.sessionId = socket._transport.url.split("/")[5];
 
       stompClient.subscribe("/topic/events", (event) => {
-        console.log("received topic event: ", event);
+        const eventBody = JSON.parse(event.body);
+        Utils.dispatchEvent(eventBody.type, eventBody.value)
       });
 
       stompClient.subscribe("/user/" + this.sessionId + "/events", (event) => {
@@ -61,8 +62,8 @@ class App extends React.Component {
       <Router>
         <div>
           <Header user={this.state.user} />
-          <GamesMenu sMenu className={hiddenIfNotLoggedIn} />
-          <UsersMenu className={hiddenIfNotLoggedIn} />
+          <GamesMenu className={hiddenIfNotLoggedIn} />
+          <UsersMenu className={hiddenIfNotLoggedIn} currentUser={this.state.user} />
           <div id="content">
             <Messages />
             <Switch>

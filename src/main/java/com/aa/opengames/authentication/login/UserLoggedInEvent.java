@@ -12,16 +12,16 @@ public class UserLoggedInEvent {
     return this;
   }
 
-  public static class UserConnectedEventBuilder {
+  public static class UserLoggedInEventBuilder {
     private String username;
 
-    private UserConnectedEventBuilder() {}
+    private UserLoggedInEventBuilder() {}
 
-    public static UserConnectedEventBuilder userConnectedEventBuilder() {
-      return new UserConnectedEventBuilder();
+    public static UserLoggedInEventBuilder userLoggedInEventBuilder() {
+      return new UserLoggedInEventBuilder();
     }
 
-    public UserConnectedEventBuilder username(String username) {
+    public UserLoggedInEventBuilder username(String username) {
       this.username = username;
       return this;
     }

@@ -4,6 +4,7 @@ import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseB
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.ERROR;
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.SUCCESS;
 import static com.aa.opengames.authentication.login.LoginResponse.UserDetails.UserDetailsBuilder.userDetailsBuilder;
+import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 import static com.aa.opengames.user.User.UserBuilder.userBuilder;
 
@@ -54,6 +55,12 @@ public class LoginController {
                   .build())
               .build())
           .build());
+
+      eventSender.sendToAll(eventBuilder()
+          .type("user-logged-in")
+          .value(userLoggedInEventBuilder().username(currentUser.getUsername()).build())
+          .build()
+      );
 
     } else {
       eventSender.sendToUser(sessionId, eventBuilder()

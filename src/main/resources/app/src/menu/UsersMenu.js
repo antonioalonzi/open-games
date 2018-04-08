@@ -20,24 +20,30 @@ export class UsersMenu extends React.Component {
   }
 
   onUserLoggedIn(event) {
-    console.log(event);
-    const loggedInUsers = this.state.loggedInUsers;
-    loggedInUsers.push({
-      'username': event.value.username
-    });
-    this.setState({
-      loggedInUsers: loggedInUsers
-    });
+    const user = {username: event.value.username};
+    this.setState(prevState => ({
+      loggedInUsers: [...prevState.loggedInUsers, user]
+    }));
+  }
+
+  isCurrentUser(user) {
+    if (!this.props.currentUser) {
+      return false;
+    } else {
+      return user.username === this.props.currentUser.username;
+    }
   }
 
   render() {
     return (
       <div id="users-menu" className={this.props.className}>
-        Other logged in users ({this.state.loggedInUsers.length}):
+        Other logged in users ({this.state.loggedInUsers.length - 1}):
         <ul>
-          {this.state.loggedInUsers.map(user => (
-            <li key={user.username}>{user.username}</li>
-          ))}
+          {
+            this.state.loggedInUsers
+              .filter(user => !this.isCurrentUser(user))
+              .map(user => (<li key={user.username}>{user.username}</li>))
+          }
         </ul>
       </div>
     );
@@ -45,5 +51,6 @@ export class UsersMenu extends React.Component {
 }
 
 UsersMenu.propTyeps = {
-  className: PropTypes.object
+  className: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired
 };

@@ -1,6 +1,6 @@
 package com.aa.opengames.init;
 
-import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserConnectedEventBuilder.userConnectedEventBuilder;
+import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 
 import com.aa.opengames.event.EventSender;
@@ -33,7 +33,7 @@ public class InitController {
 
     userRepository.getAllUsers().forEach((user) -> eventSender.sendToUser(sessionId, eventBuilder()
         .type("user-logged-in")
-        .value(userConnectedEventBuilder()
+        .value(userLoggedInEventBuilder()
             .username(user.getUsername())
             .build())
         .build()));

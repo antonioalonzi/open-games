@@ -42,13 +42,13 @@ public class LoginControllerTest {
   @Before
   public void setup() {
     Mockito.reset(eventSender);
+    userRepository.removeAllUsers();
   }
 
   @Test
-  public void shouldLoginSuccessfullyWithCorrectCredentials() {
+  public void shouldLoginSuccessfullyAndSendLoggedInEvent() {
     // Given
     String username = "user-1";
-    userRepository.removeUser(username);
 
     LoginRequest loginRequest = loginRequestBuilder()
         .username(username)
@@ -59,7 +59,7 @@ public class LoginControllerTest {
     loginController.login(sessionHeader, loginRequest);
 
     // Then
-    Event event = eventBuilder()
+    Event loginEvent = eventBuilder()
         .type("login-event")
         .value(loginResponseBuilder()
             .setLoginResponseStatus(SUCCESS)
@@ -72,14 +72,21 @@ public class LoginControllerTest {
         .build();
 
     Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
-    assertThat(eventCaptor.getValue(), sameBeanAs(event));
+    assertThat(eventCaptor.getValue(), sameBeanAs(loginEvent));
+
+    Event userLoggedInEvent = eventBuilder()
+        .type("user-logged-in")
+        .value(UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder().username(username).build())
+        .build();
+
+    Mockito.verify(eventSender).sendToAll(eventCaptor.capture());
+    assertThat(eventCaptor.getValue(), sameBeanAs(userLoggedInEvent));
   }
 
   @Test
   public void shouldThrowAnErrorIfAnUserWithSameUsernameIsConnected() {
     // Given
     String username = "user-1";
-    userRepository.removeUser(username);
 
     LoginRequest loginRequest = loginRequestBuilder()
         .username(username)
@@ -93,7 +100,7 @@ public class LoginControllerTest {
     loginController.login(sessionHeader, loginRequest);
 
     // Then
-    Event event = eventBuilder()
+    Event loginEvent = eventBuilder()
         .type("login-event")
         .value(loginResponseBuilder()
             .setLoginResponseStatus(ERROR)
@@ -102,6 +109,6 @@ public class LoginControllerTest {
         .build();
 
     Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
-    assertThat(eventCaptor.getValue(), sameBeanAs(event));
+    assertThat(eventCaptor.getValue(), sameBeanAs(loginEvent));
   }
 }

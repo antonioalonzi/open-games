@@ -40,4 +40,8 @@ public class UserRepository {
   public void removeUser(String username) {
     users.remove(username);
   }
+
+  public void removeAllUsers() {
+    users.clear();
+  }
 }
