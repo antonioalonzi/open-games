@@ -4,7 +4,6 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Header} from "./header/Header";
 import {Login} from "./login/Login";
 import {Menu} from "./menu/Menu";
-import {Welcome} from "./welcome/Welcome";
 import SockJs from "sockjs-client"
 import Stomp from "@stomp/stompjs"
 import {Messages} from "./messages/Messages";
@@ -62,10 +61,9 @@ class App extends React.Component {
           <div id="content">
             <Messages />
             <Switch>
-              <Route path="/" exact={true} component={Welcome} />
-              <Route path="/portal/" exact={true} component={Welcome} />
-              <Route path="/portal/index.html" exact={true} component={Welcome} />
-              <Route path="/portal/login" render={(router) => <Login router={router} sendMessage={this.sendMessage} />} />
+              <Route path="/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
+              <Route path="/portal/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
+              <Route path="/portal/login" />
             </Switch>
           </div>
         </div>

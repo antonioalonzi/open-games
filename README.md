@@ -19,19 +19,28 @@ The application is written using:
  * Install npm
 
 ### Build & Run
+    
+Build js:
 
     npm install
     npm run build-dev
+
+Run tests:
+    
+    mvn clean test
+    npm run test
+
+Run from command line:
+
     mvn spring-boot:run
 
-### Deploy
+
+## Deployment
 
 Application is deployed at: https://open-games.herokuapp.com/
 
-To deploy latest code:
+To deploy latest code (before build npm):
 
-    npm run build-dev
-    git add -f src/main/resources/public/js/open-games.js
     git push heroku master
 
 To see production logs

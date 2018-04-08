@@ -19,14 +19,12 @@ export class HeaderRight extends React.Component {
       return (
         <div id="header-right">
           <span>Welcome {this.props.user.username}</span>
-          <NavLink to="/portal/logout">Logout</NavLink>
+          <a href={'/portal'}>Logout</a>
         </div>
       );
     } else {
       return (
-        <div id="header-right">
-          <NavLink to="/portal/login">Login</NavLink>
-        </div>
+        <div id="header-right" />
       );
     }
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form, Input, Submit} from '../form/Form';
 import {Utils} from '../utils/Utils';
+import PropTypes from 'prop-types';
 
 export class Login extends React.Component {
   constructor(props) {
@@ -32,16 +33,34 @@ export class Login extends React.Component {
   }
 
   render() {
-    return (
-      <div id="login-form">
-        <h1>Login</h1>
-        <div>Use guest / password</div>
-        <Form onFormSubmit={this.onFormSubmit}>
-          <Input type={'text'} name={'Username'} mandatory={true} value={'guest'}/>
-          <Input type={'password'} name={'Password'} mandatory={true} value={'password'}/>
-          <Submit value={'Login'}/>
-        </Form>
-      </div>
-    );
+    if (this.props.user) {
+      return (
+        <div>
+          <p>Welcome to Open Games.</p>
+          <p>Play online for free a selection of games.</p>
+        </div>
+      );
+    } else {
+      return (
+        <div id="login-form">
+          <h1>Login</h1>
+          <div>
+            <p>Welcome to Open Games.</p>
+            <p>Play online for free a selection of games.</p>
+            <p>Choose an username you want to use.</p>
+          </div>
+          <Form onFormSubmit={this.onFormSubmit}>
+            <Input type={'text'} name={'Username'} mandatory={true}/>
+            <Submit value={'Join'}/>
+          </Form>
+        </div>
+      );
+    }
   }
 }
+
+Login.propTyeps = {
+  router: PropTypes.object.isRequired,
+  sendMessage: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+};
