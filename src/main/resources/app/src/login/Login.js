@@ -23,7 +23,7 @@ export class Login extends React.Component {
   }
 
   onLoginResponse(loginResponse) {
-    if (loginResponse.value.loginResponseStatus === 'ERROR') {
+    if (loginResponse.value.responseStatus === 'ERROR') {
       Utils.dispatchEvent('message', {type: 'error', text: loginResponse.value.message})
     } else {
       Utils.dispatchEvent('message', {type: 'info', text: loginResponse.value.message})

@@ -1,11 +1,11 @@
 package com.aa.opengames.authentication.login;
 
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseBuilder.loginResponseBuilder;
-import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.ERROR;
-import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.SUCCESS;
 import static com.aa.opengames.authentication.login.LoginResponse.UserDetails.UserDetailsBuilder.userDetailsBuilder;
 import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
+import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
+import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
 import static com.aa.opengames.user.User.UserBuilder.userBuilder;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
@@ -47,9 +47,9 @@ public class LoginController {
       eventSender.sendToUser(sessionId, eventBuilder()
           .type("login-event")
           .value(loginResponseBuilder()
-              .setLoginResponseStatus(SUCCESS)
-              .setMessage("Login Successful.")
-              .setUserDetails(userDetailsBuilder()
+              .responseStatus(SUCCESS)
+              .message("Login Successful.")
+              .userDetails(userDetailsBuilder()
                   .token(sessionId)
                   .username(currentUser.getUsername())
                   .build())
@@ -66,8 +66,8 @@ public class LoginController {
       eventSender.sendToUser(sessionId, eventBuilder()
           .type("login-event")
           .value(loginResponseBuilder()
-              .setLoginResponseStatus(ERROR)
-              .setMessage("Username '" + loginRequest.getUsername() + "' is already used. Please choose another one.")
+              .responseStatus(ERROR)
+              .message("Username '" + loginRequest.getUsername() + "' is already used. Please choose another one.")
               .build())
           .build());
     }

@@ -14,14 +14,18 @@ export class Game extends React.Component {
   render() {
     const gameLabel = this.props.router.match.params.label
     const game = this.props.games.filter((game) => game.label===gameLabel)[0]
-    return (
-      <div id="game-description">
-        <div>
-          <h2>{game.name}</h2>
-          <p>{game.description}</p>
+    if (game) {
+      return (
+        <div id="game-description">
+          <div>
+            <h2>{game.name}</h2>
+            <p>{game.description}</p>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return null;
+    }
   }
 }
 

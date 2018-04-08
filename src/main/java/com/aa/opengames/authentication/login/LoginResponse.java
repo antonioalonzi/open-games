@@ -1,22 +1,14 @@
 package com.aa.opengames.authentication.login;
 
-public class LoginResponse {
-  private final LoginResponseStatus loginResponseStatus;
-  private final String message;
+import com.aa.opengames.event.EventResponse;
+
+public class LoginResponse extends EventResponse {
+
   private final UserDetails userDetails;
 
-  private LoginResponse(LoginResponseStatus loginResponseStatus, String message, UserDetails userDetails) {
-    this.loginResponseStatus = loginResponseStatus;
-    this.message = message;
+  private LoginResponse(ResponseStatus responseStatus, String message, UserDetails userDetails) {
+    super(responseStatus, message);
     this.userDetails = userDetails;
-  }
-
-  public LoginResponseStatus getLoginResponseStatus() {
-    return loginResponseStatus;
-  }
-
-  public String getMessage() {
-    return message;
   }
 
   public UserDetails getUserDetails() {
@@ -24,15 +16,7 @@ public class LoginResponse {
   }
 
 
-
-  public enum LoginResponseStatus {
-    SUCCESS, ERROR
-  }
-
-
-  public static class LoginResponseBuilder {
-    private LoginResponseStatus loginResponseStatus;
-    private String message;
+  public static class LoginResponseBuilder extends EventResponseBuilder<LoginResponseBuilder> {
     private UserDetails userDetails;
 
     private LoginResponseBuilder() {}
@@ -41,24 +25,14 @@ public class LoginResponse {
       return new LoginResponseBuilder();
     }
 
-    public LoginResponseBuilder setLoginResponseStatus(LoginResponseStatus loginResponseStatus) {
-      this.loginResponseStatus = loginResponseStatus;
-      return this;
-    }
-
-    public LoginResponseBuilder setMessage(String message) {
-      this.message = message;
-      return this;
-    }
-
-    public LoginResponseBuilder setUserDetails(UserDetails userDetails) {
+    public LoginResponseBuilder userDetails(UserDetails userDetails) {
       this.userDetails = userDetails;
       return this;
     }
 
     public LoginResponse build() {
       return new LoginResponse(
-          loginResponseStatus,
+          responseStatus,
           message,
           userDetails
       );

@@ -2,10 +2,10 @@ package com.aa.opengames.authentication.login;
 
 import static com.aa.opengames.authentication.login.LoginRequest.LoginRequestBuilder.loginRequestBuilder;
 import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseBuilder.loginResponseBuilder;
-import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.ERROR;
-import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseStatus.SUCCESS;
 import static com.aa.opengames.authentication.login.LoginResponse.UserDetails.UserDetailsBuilder.userDetailsBuilder;
 import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
+import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
+import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
@@ -62,9 +62,9 @@ public class LoginControllerTest {
     Event loginEvent = eventBuilder()
         .type("login-event")
         .value(loginResponseBuilder()
-            .setLoginResponseStatus(SUCCESS)
-            .setMessage("Login Successful.")
-            .setUserDetails(userDetailsBuilder()
+            .responseStatus(SUCCESS)
+            .message("Login Successful.")
+            .userDetails(userDetailsBuilder()
                 .token("sessionId")
                 .username(username)
                 .build())
@@ -103,8 +103,8 @@ public class LoginControllerTest {
     Event loginEvent = eventBuilder()
         .type("login-event")
         .value(loginResponseBuilder()
-            .setLoginResponseStatus(ERROR)
-            .setMessage("Username '" + username + "' is already used. Please choose another one." )
+            .responseStatus(ERROR)
+            .message("Username '" + username + "' is already used. Please choose another one." )
             .build())
         .build();
 
