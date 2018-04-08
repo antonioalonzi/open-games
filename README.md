@@ -41,7 +41,6 @@ Application is deployed at: https://open-games.herokuapp.com/
 
 To deploy latest code:
 
-    npm run build-prod
     git push heroku master
 
 To see production logs

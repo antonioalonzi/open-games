@@ -17,10 +17,12 @@ class App extends React.Component {
     this.sendMessage = this.sendMessage.bind(this)
     this.setAppState = this.setAppState.bind(this)
     this.onGamePublished = this.onGamePublished.bind(this)
+    this.onTableCreated = this.onTableCreated.bind(this)
     this.state = {
       stompClient: null,
       user: null,
-      games: []
+      games: [],
+      tables: []
     }
   }
 
@@ -48,6 +50,7 @@ class App extends React.Component {
 
     Utils.addEventListener('set-state', this.setAppState)
     Utils.addEventListener('game-published', this.onGamePublished)
+    Utils.addEventListener('table-created-event', this.onTableCreated)
   }
 
   sendMessage(url, message) {
@@ -71,6 +74,18 @@ class App extends React.Component {
     }))
   }
 
+  onTableCreated(event) {
+    const table = {
+      id: event.value.id,
+      game: event.value.game,
+      owner: event.value.owner,
+      status: event.value.status
+    }
+    this.setState(prevState => ({
+      tables: [...prevState.tables, table]
+    }))
+  }
+
   render() {
     const hiddenIfNotLoggedIn = this.state.user ? '' : 'hidden'
     return (
@@ -84,7 +99,7 @@ class App extends React.Component {
             <Switch>
               <Route path="/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
               <Route path="/portal/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
-              <Route path="/portal/game/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} router={router} sendMessage={this.sendMessage} />} />
+              <Route path="/portal/game/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
             </Switch>
           </div>
         </div>

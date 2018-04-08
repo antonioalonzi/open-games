@@ -6,6 +6,7 @@ export class GamesMenu extends React.Component {
   render() {
     return (
       <div id="games-menu" className={this.props.className}>
+        Games ({this.props.games.length}):
         <ul>
           {
             this.props.games

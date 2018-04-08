@@ -158,20 +158,25 @@ export class Input extends React.Component {
 
   render() {
     const lowerCaseName = this.props.name.toLowerCase()
-    return (
-      <div className="form-row">
-        <div className="form-col-25">
-          <Label name={this.props.name}/>
-        </div>
-        <div className="form-col-75">
-          <div>
-            <input type={this.props.type} id={lowerCaseName} name={lowerCaseName} placeholder={this.props.name + '...'}
-              value={this.props.formState.fields[lowerCaseName].value} onChange={this.props.handleInputChange}/>
+    if (this.props.type === 'hidden') {
+      return <input type={this.props.type} id={lowerCaseName} name={lowerCaseName} value={this.props.formState.fields[lowerCaseName].value} />
+    } else {
+      return (
+        <div className="form-row">
+          <div className="form-col-25">
+            <Label name={this.props.name}/>
           </div>
-          <FormError errors={this.props.formState.fields[lowerCaseName].errors} />
+          <div className="form-col-75">
+            <div>
+              <input type={this.props.type} id={lowerCaseName} name={lowerCaseName}
+                     placeholder={this.props.name + '...'}
+                     value={this.props.formState.fields[lowerCaseName].value} onChange={this.props.handleInputChange}/>
+            </div>
+            <FormError errors={this.props.formState.fields[lowerCaseName].errors}/>
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
