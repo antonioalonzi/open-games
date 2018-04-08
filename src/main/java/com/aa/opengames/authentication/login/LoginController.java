@@ -11,6 +11,7 @@ import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,9 @@ public class LoginController {
   public void login(SimpMessageHeaderAccessor headerAccessor, LoginRequest loginRequest) {
     String sessionId = headerAccessor.getSessionId();
     LOGGER.info("Login request received for username '{}'", loginRequest.getUsername());
-    User user = userRepository.findByUsername(loginRequest.getUsername());
+    Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
 
-    if (user == null) {
+    if (!user.isPresent()) {
       User currentUser = userBuilder().username(loginRequest.getUsername()).token(sessionId).build();
       userRepository.addUser(currentUser);
       SecurityContextHolder.addUser(sessionId, currentUser);
@@ -59,7 +60,7 @@ public class LoginController {
           .type("login-event")
           .value(loginResponseBuilder()
               .setLoginResponseStatus(ERROR)
-              .setMessage("Username is already used. Please choose another username.")
+              .setMessage("Username '" + loginRequest.getUsername() + "' is already used. Please choose another one.")
               .build())
           .build());
     }

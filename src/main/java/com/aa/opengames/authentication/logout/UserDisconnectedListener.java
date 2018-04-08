@@ -1,6 +1,5 @@
 package com.aa.opengames.authentication.logout;
 
-import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +23,10 @@ public class UserDisconnectedListener implements ApplicationListener<SessionDisc
 
   public void onApplicationEvent(SessionDisconnectEvent event) {
     String token = StompHeaderAccessor.wrap(event.getMessage()).getSessionId();
-    User user = userRepository.findByToken(token);
-    if (user != null) {
-      userRepository.removeUser(user);
-      LOGGER.info("User Disconnected [username: {}].", user.getUsername());
-    }
+    userRepository.findByToken(token).ifPresent((user) -> {
+       userRepository.removeUser(user);
+       LOGGER.info("User Disconnected [username: {}].", user.getUsername());
+    });
   }
 }
 

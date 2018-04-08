@@ -1,7 +1,10 @@
 package com.aa.opengames.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,17 +12,21 @@ public class UserRepository {
 
   private Map<String, User> users = new HashMap<>();
 
-  public User findByUsername(String username) {
-    return users.get(username);
+  public List<User> getAllUsers() {
+    return users.entrySet().stream()
+        .map(Map.Entry::getValue)
+        .collect(Collectors.toList());
   }
 
-  public User findByToken(String token) {
-    for (String username : users.keySet()) {
-      if (users.get(username).getToken().equals(token)) {
-        return users.get(username);
-      }
-    }
-    return null;
+  public Optional<User> findByUsername(String username) {
+    return Optional.ofNullable(users.get(username));
+  }
+
+  public Optional<User> findByToken(String token) {
+    return users.entrySet().stream()
+        .map(Map.Entry::getValue)
+        .filter((user) -> user.getToken().equals(token))
+        .findFirst();
   }
 
   public void addUser(User user) {

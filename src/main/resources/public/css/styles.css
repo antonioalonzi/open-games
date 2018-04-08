@@ -53,6 +53,10 @@ h6 {
     font-size: 16px;
 }
 
+.hidden {
+    display: none;
+}
+
 
 
 /**   HEADER   */
@@ -97,9 +101,15 @@ h6 {
 
 
 /**   MENU   */
-#menu {
+#games-menu {
     position: relative;
     float: left;
+    width: 250px;
+}
+
+#users-menu {
+    position: relative;
+    float: right;
     width: 250px;
 }
 

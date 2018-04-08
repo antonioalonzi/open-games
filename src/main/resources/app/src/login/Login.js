@@ -43,7 +43,6 @@ export class Login extends React.Component {
     } else {
       return (
         <div id="login-form">
-          <h1>Login</h1>
           <div>
             <p>Welcome to Open Games.</p>
             <p>Play online for free a selection of games.</p>

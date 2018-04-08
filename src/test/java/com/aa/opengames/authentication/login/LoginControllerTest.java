@@ -13,6 +13,7 @@ import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.user.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,9 @@ public class LoginControllerTest {
   @Autowired
   private EventSender eventSender;
 
+  @Autowired
+  private UserRepository userRepository;
+
   private ArgumentCaptor<Event> eventCaptor = ArgumentCaptor.forClass(Event.class);
 
   @Before
@@ -43,8 +47,11 @@ public class LoginControllerTest {
   @Test
   public void shouldLoginSuccessfullyWithCorrectCredentials() {
     // Given
+    String username = "user-1";
+    userRepository.removeUser(username);
+
     LoginRequest loginRequest = loginRequestBuilder()
-        .username("user-1")
+        .username(username)
         .build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
 
@@ -59,8 +66,38 @@ public class LoginControllerTest {
             .setMessage("Login Successful.")
             .setUserDetails(userDetailsBuilder()
                 .token("sessionId")
-                .username("user-1")
+                .username(username)
                 .build())
+            .build())
+        .build();
+
+    Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
+    assertThat(eventCaptor.getValue(), sameBeanAs(event));
+  }
+
+  @Test
+  public void shouldThrowAnErrorIfAnUserWithSameUsernameIsConnected() {
+    // Given
+    String username = "user-1";
+    userRepository.removeUser(username);
+
+    LoginRequest loginRequest = loginRequestBuilder()
+        .username(username)
+        .build();
+    SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
+
+    loginController.login(sessionHeader, loginRequest);
+    Mockito.reset(eventSender);
+
+    // When
+    loginController.login(sessionHeader, loginRequest);
+
+    // Then
+    Event event = eventBuilder()
+        .type("login-event")
+        .value(loginResponseBuilder()
+            .setLoginResponseStatus(ERROR)
+            .setMessage("Username '" + username + "' is already used. Please choose another one." )
             .build())
         .build();
 

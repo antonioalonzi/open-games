@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import {Header} from "./header/Header";
+import {Header} from "./menu/Header";
 import {Login} from "./login/Login";
 import {GamesMenu} from "./menu/GamesMenu";
+import {UsersMenu} from "./menu/UsersMenu";
 import SockJs from "sockjs-client"
 import Stomp from "@stomp/stompjs"
 import {Messages} from "./messages/Messages";
@@ -37,6 +38,8 @@ class App extends React.Component {
         const eventBody = JSON.parse(event.body);
         Utils.dispatchEvent(eventBody.type, eventBody.value)
       });
+
+      this.sendMessage('/api/init', '{}');
     });
 
     Utils.addEventListener('set-state', this.setAppState);
@@ -53,12 +56,13 @@ class App extends React.Component {
   }
 
   render() {
-    const gamesMenu = this.state.user ? <GamesMenu/> : null
+    const hiddenIfNotLoggedIn = this.state.user ? '' : 'hidden';
     return (
       <Router>
         <div>
           <Header user={this.state.user} />
-          {gamesMenu}
+          <GamesMenu sMenu className={hiddenIfNotLoggedIn} />
+          <UsersMenu className={hiddenIfNotLoggedIn} />
           <div id="content">
             <Messages />
             <Switch>
