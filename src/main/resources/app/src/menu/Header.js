@@ -1,6 +1,6 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React from 'react'
+import {NavLink} from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 export class HeaderLeft extends React.Component {
   render() {
@@ -8,7 +8,7 @@ export class HeaderLeft extends React.Component {
       <div id="header-left">
         <NavLink to="/portal/">Open Games</NavLink>
       </div>
-    );
+    )
   }
 }
 
@@ -21,18 +21,18 @@ export class HeaderRight extends React.Component {
           <span>Welcome {this.props.user.username}</span>
           <a href={'/portal'}>Logout</a>
         </div>
-      );
+      )
     } else {
       return (
         <div id="header-right" />
-      );
+      )
     }
   }
 }
 
 HeaderRight.propTyeps = {
   user: PropTypes.object.isRequired
-};
+}
 
 
 export class Header extends React.Component {
@@ -42,10 +42,10 @@ export class Header extends React.Component {
         <HeaderLeft/>
         <HeaderRight user={this.props.user}/>
       </div>
-    );
+    )
   }
 }
 
 Header.propTyeps = {
   user: PropTypes.object.isRequired
-};
+}

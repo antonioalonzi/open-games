@@ -1,61 +1,61 @@
-import React from 'react';
-import {Utils} from '../utils/Utils';
+import React from 'react'
+import {Utils} from '../utils/Utils'
 
 export class Messages extends React.Component {
   constructor(props) {
-    super(props);
-    this.onMessage = this.onMessage.bind(this);
+    super(props)
+    this.onMessage = this.onMessage.bind(this)
     this.state = {
       messages: [],
       lastId: 0
-    };
+    }
   }
 
   componentWillMount() {
-    Utils.addEventListener('message', this.onMessage);
-    Utils.messagesComponent = this;
+    Utils.addEventListener('message', this.onMessage)
+    Utils.messagesComponent = this
   }
 
   componentWillUnmount() {
-    Utils.removeEventListener('message', this.onMessage);
+    Utils.removeEventListener('message', this.onMessage)
   }
 
   onMessage(message) {
-    const messageId = this.generateMessageId();
+    const messageId = this.generateMessageId()
     this.addMessage({
       id: messageId,
       type: message.value.type,
       text: message.value.text
-    });
-    setTimeout(() => {this.removeMessage(messageId);}, 6000);
+    })
+    setTimeout(() => {this.removeMessage(messageId)}, 6000)
   }
 
   addMessage(message) {
-    let messages = this.state.messages;
-    messages.push(message);
+    let messages = this.state.messages
+    messages.push(message)
     this.setState({
       messages: messages
-    });
+    })
   }
 
   removeMessage(messageId) {
-    let messages = this.state.messages;
+    let messages = this.state.messages
     messages.forEach((message, index) => {
       if (message.id === messageId) {
-        messages.splice(index, 1);
+        messages.splice(index, 1)
       }
-    });
+    })
     this.setState({
       messages: messages
-    });
+    })
   }
 
   generateMessageId() {
-    const messageId = this.state.lastId + 1;
+    const messageId = this.state.lastId + 1
     this.setState({
       lastId: messageId
-    });
-    return messageId;
+    })
+    return messageId
   }
 
   render() {
@@ -67,13 +67,13 @@ export class Messages extends React.Component {
           ))
         }
       </div>
-    );
+    )
   }
 }
 
 export class Message extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
@@ -83,6 +83,6 @@ export class Message extends React.Component {
           {this.props.children}
         </span>
       </div>
-    );
+    )
   }
 }

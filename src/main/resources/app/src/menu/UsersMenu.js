@@ -1,36 +1,36 @@
-import React from 'react';
-import {Utils} from '../utils/Utils';
-import PropTypes from 'prop-types';
+import React from 'react'
+import {Utils} from '../utils/Utils'
+import PropTypes from 'prop-types'
 
 export class UsersMenu extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       loggedInUsers: []
-    };
-    this.onUserLoggedIn = this.onUserLoggedIn.bind(this);
+    }
+    this.onUserLoggedIn = this.onUserLoggedIn.bind(this)
   }
 
   componentWillMount() {
-    Utils.addEventListener('user-logged-in', this.onUserLoggedIn);
+    Utils.addEventListener('user-logged-in', this.onUserLoggedIn)
   }
 
   componentWillUnmount() {
-    Utils.removeEventListener('user-logged-in', this.onUserLoggedIn);
+    Utils.removeEventListener('user-logged-in', this.onUserLoggedIn)
   }
 
   onUserLoggedIn(event) {
-    const user = {username: event.value.username};
+    const user = {username: event.value.username}
     this.setState(prevState => ({
       loggedInUsers: [...prevState.loggedInUsers, user]
-    }));
+    }))
   }
 
   isCurrentUser(user) {
     if (!this.props.currentUser) {
-      return false;
+      return false
     } else {
-      return user.username === this.props.currentUser.username;
+      return user.username === this.props.currentUser.username
     }
   }
 
@@ -46,11 +46,11 @@ export class UsersMenu extends React.Component {
           }
         </ul>
       </div>
-    );
+    )
   }
 }
 
 UsersMenu.propTyeps = {
   className: PropTypes.object.isRequired,
   currentUser: PropTypes.object.isRequired
-};
+}

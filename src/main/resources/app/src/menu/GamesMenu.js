@@ -1,6 +1,6 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React from 'react'
+import {NavLink} from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 export class GamesMenu extends React.Component {
   render() {
@@ -12,10 +12,10 @@ export class GamesMenu extends React.Component {
           </li>
         </ul>
       </div>
-    );
+    )
   }
 }
 
 GamesMenu.propTyeps = {
   className: PropTypes.object
-};
+}
