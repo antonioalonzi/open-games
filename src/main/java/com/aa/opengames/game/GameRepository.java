@@ -1,7 +1,5 @@
 package com.aa.opengames.game;
 
-import static com.aa.opengames.game.Game.GameBuilder.gameBuilder;
-
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,7 @@ public class GameRepository {
   private Set<Game> games = new HashSet<>();
 
   public GameRepository() {
-    games.add(gameBuilder()
+    games.add(Game.builder()
         .label("tic-tac-toe")
         .name("Tic Tac Toe")
         .description("Simple implementation of Tic Tac Toe.")

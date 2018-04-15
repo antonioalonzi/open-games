@@ -1,9 +1,5 @@
 package com.aa.opengames.authentication.login;
 
-import static com.aa.opengames.authentication.login.LoginRequest.LoginRequestBuilder.loginRequestBuilder;
-import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseBuilder.loginResponseBuilder;
-import static com.aa.opengames.authentication.login.LoginResponse.UserDetails.UserDetailsBuilder.userDetailsBuilder;
-import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
@@ -50,7 +46,7 @@ public class LoginControllerTest {
     // Given
     String username = "user-1";
 
-    LoginRequest loginRequest = loginRequestBuilder()
+    LoginRequest loginRequest = LoginRequest.builder()
         .username(username)
         .build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
@@ -59,12 +55,12 @@ public class LoginControllerTest {
     loginController.login(sessionHeader, loginRequest);
 
     // Then
-    Event loginEvent = eventBuilder()
+    Event loginEvent = Event.builder()
         .type("login-event")
-        .value(loginResponseBuilder()
+        .value(LoginResponse.builder()
             .responseStatus(SUCCESS)
             .message("Login Successful.")
-            .userDetails(userDetailsBuilder()
+            .userDetails(LoginResponse.UserDetails.builder()
                 .token("sessionId")
                 .username(username)
                 .build())
@@ -74,7 +70,7 @@ public class LoginControllerTest {
     Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
     assertThat(eventCaptor.getValue(), sameBeanAs(loginEvent));
 
-    Event userLoggedInEvent = eventBuilder()
+    Event userLoggedInEvent = Event.builder()
         .type("user-logged-in")
         .value(UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder().username(username).build())
         .build();
@@ -88,7 +84,7 @@ public class LoginControllerTest {
     // Given
     String username = "user-1";
 
-    LoginRequest loginRequest = loginRequestBuilder()
+    LoginRequest loginRequest = LoginRequest.builder()
         .username(username)
         .build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
@@ -100,9 +96,9 @@ public class LoginControllerTest {
     loginController.login(sessionHeader, loginRequest);
 
     // Then
-    Event loginEvent = eventBuilder()
+    Event loginEvent = Event.builder()
         .type("login-event")
-        .value(loginResponseBuilder()
+        .value(LoginResponse.builder()
             .responseStatus(ERROR)
             .message("Username '" + username + "' is already used. Please choose another one." )
             .build())

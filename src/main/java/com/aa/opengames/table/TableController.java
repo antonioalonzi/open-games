@@ -1,12 +1,9 @@
 package com.aa.opengames.table;
 
-import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
-import static com.aa.opengames.table.CreateTableResponse.CreateTableResponseBuilder.createTableResponseBuilder;
-import static com.aa.opengames.table.Table.TableBuilder.tableBuilder;
-import static com.aa.opengames.table.TableCreatedEvent.TableCreatedEventBuilder.tableCreatedEventBuilder;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
+import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.user.User;
 import java.util.UUID;
@@ -37,7 +34,7 @@ public class TableController {
     User user = SecurityContextHolder.getAndCheckUser(token);
     LOGGER.info("Create Table request received from username '{}'", user.getUsername());
 
-    Table table = tableBuilder()
+    Table table = Table.builder()
         .id(UUID.randomUUID())
         .game(createTableRequest.getGame())
         .owner(user.getUsername())
@@ -45,17 +42,17 @@ public class TableController {
         .build();
 
     tableRepository.addTable(table);
-    eventSender.sendToUser(token, eventBuilder()
+    eventSender.sendToUser(token, Event.builder()
         .type("create-table-response")
-        .value(createTableResponseBuilder()
+        .value(CreateTableResponse.builder()
             .responseStatus(SUCCESS)
             .message("Table successfully created.")
             .build())
         .build());
 
-    eventSender.sendToAll(eventBuilder()
+    eventSender.sendToAll(Event.builder()
         .type("table-created-event")
-        .value(tableCreatedEventBuilder()
+        .value(TableCreatedEvent.builder()
             .id(table.getId())
             .game(table.getGame())
             .owner(table.getOwner())

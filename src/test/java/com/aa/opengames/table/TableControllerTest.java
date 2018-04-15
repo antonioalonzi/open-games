@@ -1,10 +1,6 @@
 package com.aa.opengames.table;
 
-import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseBuilder.loginResponseBuilder;
-import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
-import static com.aa.opengames.table.CreateTableRequest.CreateTableRequestBuilder.createTableRequestBuilder;
-import static com.aa.opengames.table.TableCreatedEvent.TableCreatedEventBuilder.tableCreatedEventBuilder;
 import static com.aa.opengames.utils.TestUtils.loginUser;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
@@ -12,6 +8,7 @@ import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
+import com.aa.opengames.authentication.login.LoginResponse;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import org.junit.Before;
@@ -49,7 +46,7 @@ public class TableControllerTest {
   @Test(expected = RuntimeException.class)
   public void shouldFailIfNotLoggedIn() {
     // Given
-    CreateTableRequest createTableRequest = createTableRequestBuilder().build();
+    CreateTableRequest createTableRequest = CreateTableRequest.builder().build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
 
     // When
@@ -59,7 +56,7 @@ public class TableControllerTest {
   @Test
   public void shouldCreateATableForExistingGame() {
     // Given
-    CreateTableRequest createTableRequest = createTableRequestBuilder().game("tic-tac-toe").build();
+    CreateTableRequest createTableRequest = CreateTableRequest.builder().game("tic-tac-toe").build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
     loginUser(sessionHeader, "user");
 
@@ -67,9 +64,9 @@ public class TableControllerTest {
     tableController.create(sessionHeader, createTableRequest);
 
     // Then
-    Event createTableResponse = eventBuilder()
+    Event createTableResponse = Event.builder()
         .type("create-table-response")
-        .value(loginResponseBuilder()
+        .value(LoginResponse.builder()
             .responseStatus(SUCCESS)
             .message("Table successfully created.")
             .build())
@@ -78,13 +75,13 @@ public class TableControllerTest {
     Mockito.verify(eventSender).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
     assertThat(eventCaptor.getValue(), sameBeanAs(createTableResponse));
 
-    Event createTableEvent = eventBuilder()
+    Event createTableEvent = Event.builder()
         .type("table-created-event")
-        .value(tableCreatedEventBuilder()
+        .value(TableCreatedEvent.builder()
             .id(tableRepository.getAllTables().iterator().next().getId())
             .game("tic-tac-toe")
             .owner("user")
-            .status(TableCreatedEvent.Status.NEW)
+            .status(Table.Status.NEW)
             .build())
         .build();
 

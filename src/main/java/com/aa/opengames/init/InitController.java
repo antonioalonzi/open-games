@@ -1,12 +1,12 @@
 package com.aa.opengames.init;
 
 import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
-import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
-import static com.aa.opengames.game.GamePublishedEvent.GamePublishedEventBuilder.gamePublishedEventBuilder;
-import static com.aa.opengames.table.TableCreatedEvent.TableCreatedEventBuilder.tableCreatedEventBuilder;
 
+import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.game.GamePublishedEvent;
 import com.aa.opengames.game.GameRepository;
+import com.aa.opengames.table.TableCreatedEvent;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
@@ -39,25 +39,25 @@ public class InitController {
     String sessionId = headerAccessor.getSessionId();
     LOGGER.info("Init request received for sessionId '{}'", sessionId);
 
-    userRepository.getAllUsers().forEach((user) -> eventSender.sendToUser(sessionId, eventBuilder()
+    userRepository.getAllUsers().forEach((user) -> eventSender.sendToUser(sessionId, Event.builder()
         .type("user-logged-in")
         .value(userLoggedInEventBuilder()
             .username(user.getUsername())
             .build())
         .build()));
 
-    gameRepository.getAllGames().forEach((game) -> eventSender.sendToUser(sessionId, eventBuilder()
+    gameRepository.getAllGames().forEach((game) -> eventSender.sendToUser(sessionId, Event.builder()
         .type("game-published")
-        .value(gamePublishedEventBuilder()
+        .value(GamePublishedEvent.builder()
             .label(game.getLabel())
             .name(game.getName())
             .description(game.getDescription())
             .build())
         .build()));
 
-    tableRepository.getAllTables().forEach((table) -> eventSender.sendToUser(sessionId, eventBuilder()
+    tableRepository.getAllTables().forEach((table) -> eventSender.sendToUser(sessionId, Event.builder()
         .type("table-created")
-        .value(tableCreatedEventBuilder()
+        .value(TableCreatedEvent.builder()
             .id(table.getId())
             .game(table.getGame())
             .owner(table.getOwner())

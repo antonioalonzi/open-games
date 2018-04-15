@@ -1,14 +1,11 @@
 package com.aa.opengames.authentication.login;
 
-import static com.aa.opengames.authentication.login.LoginResponse.LoginResponseBuilder.loginResponseBuilder;
-import static com.aa.opengames.authentication.login.LoginResponse.UserDetails.UserDetailsBuilder.userDetailsBuilder;
 import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
-import static com.aa.opengames.event.Event.EventBuilder.eventBuilder;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
-import static com.aa.opengames.user.User.UserBuilder.userBuilder;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
+import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;
@@ -41,31 +38,31 @@ public class LoginController {
     Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
 
     if (!user.isPresent()) {
-      User currentUser = userBuilder().username(loginRequest.getUsername()).token(sessionId).build();
+      User currentUser = User.builder().username(loginRequest.getUsername()).token(sessionId).build();
       userRepository.addUser(currentUser);
       SecurityContextHolder.addUser(sessionId, currentUser);
-      eventSender.sendToUser(sessionId, eventBuilder()
+      eventSender.sendToUser(sessionId, Event.builder()
           .type("login-event")
-          .value(loginResponseBuilder()
+          .value(LoginResponse.builder()
               .responseStatus(SUCCESS)
               .message("Login Successful.")
-              .userDetails(userDetailsBuilder()
+              .userDetails(LoginResponse.UserDetails.builder()
                   .token(sessionId)
                   .username(currentUser.getUsername())
                   .build())
               .build())
           .build());
 
-      eventSender.sendToAll(eventBuilder()
+      eventSender.sendToAll(Event.builder()
           .type("user-logged-in")
           .value(userLoggedInEventBuilder().username(currentUser.getUsername()).build())
           .build()
       );
 
     } else {
-      eventSender.sendToUser(sessionId, eventBuilder()
+      eventSender.sendToUser(sessionId, Event.builder()
           .type("login-event")
-          .value(loginResponseBuilder()
+          .value(LoginResponse.builder()
               .responseStatus(ERROR)
               .message("Username '" + loginRequest.getUsername() + "' is already used. Please choose another one.")
               .build())

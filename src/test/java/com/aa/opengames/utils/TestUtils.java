@@ -1,8 +1,7 @@
 package com.aa.opengames.utils;
 
-import static com.aa.opengames.user.User.UserBuilder.userBuilder;
-
 import com.aa.opengames.authentication.context.SecurityContextHolder;
+import com.aa.opengames.user.User;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 public class TestUtils {
@@ -15,6 +14,6 @@ public class TestUtils {
 
   public static void loginUser(SimpMessageHeaderAccessor header, String username) {
     String token = header.getSessionId();
-    SecurityContextHolder.addUser(token, userBuilder().token(token).username(username).build());
+    SecurityContextHolder.addUser(token, User.builder().token(token).username(username).build());
   }
 }
