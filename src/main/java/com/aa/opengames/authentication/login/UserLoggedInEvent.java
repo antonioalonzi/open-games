@@ -1,35 +1,12 @@
 package com.aa.opengames.authentication.login;
 
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
 public class UserLoggedInEvent {
+  public static final String EVENT_TYPE = "user-logged-in";
+
   private String username;
-
-  public String getUsername() {
-    return username;
-  }
-
-  public UserLoggedInEvent setUsername(String username) {
-    this.username = username;
-    return this;
-  }
-
-  public static class UserLoggedInEventBuilder {
-    private String username;
-
-    private UserLoggedInEventBuilder() {}
-
-    public static UserLoggedInEventBuilder userLoggedInEventBuilder() {
-      return new UserLoggedInEventBuilder();
-    }
-
-    public UserLoggedInEventBuilder username(String username) {
-      this.username = username;
-      return this;
-    }
-
-    public UserLoggedInEvent build() {
-      UserLoggedInEvent userLoggedInEvent = new UserLoggedInEvent();
-      userLoggedInEvent.setUsername(username);
-      return userLoggedInEvent;
-    }
-  }
 }

@@ -43,7 +43,7 @@ public class TableController {
 
     tableRepository.addTable(table);
     eventSender.sendToUser(token, Event.builder()
-        .type("create-table-response")
+        .type(CreateTableResponse.EVENT_TYPE)
         .value(CreateTableResponse.builder()
             .responseStatus(SUCCESS)
             .message("Table successfully created.")
@@ -51,7 +51,7 @@ public class TableController {
         .build());
 
     eventSender.sendToAll(Event.builder()
-        .type("table-created-event")
+        .type(TableCreatedEvent.EVENT_TYPE)
         .value(TableCreatedEvent.builder()
             .id(table.getId())
             .game(table.getGame())

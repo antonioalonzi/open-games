@@ -6,6 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class LoginResponse extends EventResponse {
+  public static final String EVENT_TYPE = "login-event";
+
   private final UserDetails userDetails;
 
   @Builder

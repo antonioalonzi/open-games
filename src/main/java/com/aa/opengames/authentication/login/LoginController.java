@@ -1,6 +1,5 @@
 package com.aa.opengames.authentication.login;
 
-import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
 
@@ -42,7 +41,7 @@ public class LoginController {
       userRepository.addUser(currentUser);
       SecurityContextHolder.addUser(sessionId, currentUser);
       eventSender.sendToUser(sessionId, Event.builder()
-          .type("login-event")
+          .type(LoginResponse.EVENT_TYPE)
           .value(LoginResponse.builder()
               .responseStatus(SUCCESS)
               .message("Login Successful.")
@@ -54,14 +53,14 @@ public class LoginController {
           .build());
 
       eventSender.sendToAll(Event.builder()
-          .type("user-logged-in")
-          .value(userLoggedInEventBuilder().username(currentUser.getUsername()).build())
+          .type(UserLoggedInEvent.EVENT_TYPE)
+          .value(UserLoggedInEvent.builder().username(currentUser.getUsername()).build())
           .build()
       );
 
     } else {
       eventSender.sendToUser(sessionId, Event.builder()
-          .type("login-event")
+          .type(LoginResponse.EVENT_TYPE)
           .value(LoginResponse.builder()
               .responseStatus(ERROR)
               .message("Username '" + loginRequest.getUsername() + "' is already used. Please choose another one.")

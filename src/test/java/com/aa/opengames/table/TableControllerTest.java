@@ -8,7 +8,6 @@ import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
-import com.aa.opengames.authentication.login.LoginResponse;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import org.junit.Before;
@@ -65,8 +64,8 @@ public class TableControllerTest {
 
     // Then
     Event createTableResponse = Event.builder()
-        .type("create-table-response")
-        .value(LoginResponse.builder()
+        .type(CreateTableResponse.EVENT_TYPE)
+        .value(CreateTableResponse.builder()
             .responseStatus(SUCCESS)
             .message("Table successfully created.")
             .build())
@@ -76,7 +75,7 @@ public class TableControllerTest {
     assertThat(eventCaptor.getValue(), sameBeanAs(createTableResponse));
 
     Event createTableEvent = Event.builder()
-        .type("table-created-event")
+        .type(TableCreatedEvent.EVENT_TYPE)
         .value(TableCreatedEvent.builder()
             .id(tableRepository.getAllTables().iterator().next().getId())
             .game("tic-tac-toe")

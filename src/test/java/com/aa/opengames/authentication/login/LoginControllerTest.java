@@ -56,7 +56,7 @@ public class LoginControllerTest {
 
     // Then
     Event loginEvent = Event.builder()
-        .type("login-event")
+        .type(LoginResponse.EVENT_TYPE)
         .value(LoginResponse.builder()
             .responseStatus(SUCCESS)
             .message("Login Successful.")
@@ -71,8 +71,8 @@ public class LoginControllerTest {
     assertThat(eventCaptor.getValue(), sameBeanAs(loginEvent));
 
     Event userLoggedInEvent = Event.builder()
-        .type("user-logged-in")
-        .value(UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder().username(username).build())
+        .type(UserLoggedInEvent.EVENT_TYPE)
+        .value(UserLoggedInEvent.builder().username(username).build())
         .build();
 
     Mockito.verify(eventSender).sendToAll(eventCaptor.capture());
@@ -97,7 +97,7 @@ public class LoginControllerTest {
 
     // Then
     Event loginEvent = Event.builder()
-        .type("login-event")
+        .type(LoginResponse.EVENT_TYPE)
         .value(LoginResponse.builder()
             .responseStatus(ERROR)
             .message("Username '" + username + "' is already used. Please choose another one." )

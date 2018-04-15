@@ -1,7 +1,6 @@
 package com.aa.opengames.init;
 
-import static com.aa.opengames.authentication.login.UserLoggedInEvent.UserLoggedInEventBuilder.userLoggedInEventBuilder;
-
+import com.aa.opengames.authentication.login.UserLoggedInEvent;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.game.GamePublishedEvent;
@@ -40,14 +39,14 @@ public class InitController {
     LOGGER.info("Init request received for sessionId '{}'", sessionId);
 
     userRepository.getAllUsers().forEach((user) -> eventSender.sendToUser(sessionId, Event.builder()
-        .type("user-logged-in")
-        .value(userLoggedInEventBuilder()
+        .type(UserLoggedInEvent.EVENT_TYPE)
+        .value(UserLoggedInEvent.builder()
             .username(user.getUsername())
             .build())
         .build()));
 
     gameRepository.getAllGames().forEach((game) -> eventSender.sendToUser(sessionId, Event.builder()
-        .type("game-published")
+        .type(GamePublishedEvent.EVENT_TYPE)
         .value(GamePublishedEvent.builder()
             .label(game.getLabel())
             .name(game.getName())
@@ -56,7 +55,7 @@ public class InitController {
         .build()));
 
     tableRepository.getAllTables().forEach((table) -> eventSender.sendToUser(sessionId, Event.builder()
-        .type("table-created")
+        .type(TableCreatedEvent.EVENT_TYPE)
         .value(TableCreatedEvent.builder()
             .id(table.getId())
             .game(table.getGame())
