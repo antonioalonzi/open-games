@@ -6,6 +6,8 @@ import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
 import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.game.Game;
+import com.aa.opengames.game.GameRepository;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.table.TableUpdatedEvent;
@@ -26,11 +28,13 @@ public class JoinTableController {
   private final Logger LOGGER = LoggerFactory.getLogger(JoinTableController.class);
 
   private TableRepository tableRepository;
+  private GameRepository gameRepository;
   private EventSender eventSender;
 
   @Autowired
-  public JoinTableController(TableRepository tableRepository, EventSender eventSender) {
+  public JoinTableController(TableRepository tableRepository, GameRepository gameRepository, EventSender eventSender) {
     this.tableRepository = tableRepository;
+    this.gameRepository = gameRepository;
     this.eventSender = eventSender;
   }
 
@@ -46,11 +50,17 @@ public class JoinTableController {
       Optional<Table> table = tableRepository.getTableById(joinTableRequest.getTableId());
 
       if (table.isPresent()) {
+        Game game = gameRepository.getGameByLabel(table.get().getGame()).orElseThrow(() -> new RuntimeException("Game with label " + table.get().getGame() + " not found."));
+
         Set<String> joiners = new HashSet<>(table.get().getJoiners());
         joiners.add(user.getUsername());
         Table updatedTable = table.get().toBuilder()
             .joiners(joiners)
             .build();
+
+        if (updatedTable.getNumOfPlayers() == game.getMaxNumPlayers()) {
+          updatedTable = updatedTable.toBuilder().status(Table.Status.IN_PROGRESS).build();
+        }
 
         tableRepository.updateTable(updatedTable);
 
@@ -71,6 +81,7 @@ public class JoinTableController {
                 .value(
                     TableUpdatedEvent.builder()
                         .id(updatedTable.getId())
+                        .status(updatedTable.getStatus())
                         .joiners(updatedTable.getJoiners())
                         .build())
                 .build());

@@ -11,4 +11,6 @@ public class GamePublishedEvent {
   private String label;
   private String name;
   private String description;
+  private int minNumPlayers;
+  private int maxNumPlayers;
 }

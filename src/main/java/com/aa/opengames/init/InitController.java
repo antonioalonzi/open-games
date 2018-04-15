@@ -51,6 +51,8 @@ public class InitController {
             .label(game.getLabel())
             .name(game.getName())
             .description(game.getDescription())
+            .minNumPlayers(game.getMinNumPlayers())
+            .maxNumPlayers(game.getMaxNumPlayers())
             .build())
         .build()));
 

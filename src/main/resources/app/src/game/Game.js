@@ -1,84 +1,27 @@
 import React from 'react'
 import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
-import {Form, Input, Submit} from '../form/Form'
-
-
-class NewTable extends React.Component {
-  constructor(props) {
-    super(props)
-    this.onFormSubmit = this.onFormSubmit.bind(this)
-  }
-
-  onFormSubmit(formData) {
-    this.props.sendMessage('/api/table/create', formData)
-  }
-
-  render() {
-    return (
-      <div className='game-table'>
-        <Form onFormSubmit={this.onFormSubmit}>
-          <Input type={'hidden'} name={'game'} value={this.props.game.label} />
-          <Submit value={'New'}/>
-        </Form>
-      </div>
-    )
-  }
-}
-
-NewTable.propTyeps = {
-  sendMessage: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
-}
-
-
-
-class GameTable extends React.Component {
-  constructor(props) {
-    super(props)
-    this.onClick = this.onClick.bind(this)
-  }
-
-  onClick() {
-    this.props.sendMessage('/api/table/join', {tableId: this.props.table.id})
-  }
-
-  render() {
-    return (
-      <div className='game-table'>
-        <div>Owner: {this.props.table.owner}</div>
-        <div>Status: {this.props.table.status}</div>
-        <div>Joiners: { this.props.table.joiners.map(joiner => <span key={joiner}>{joiner}</span>) }</div>
-        { this.props.isUserActiveInATable ? null : <input type="button" value="Join" onClick={this.onClick}/> }
-      </div>
-    )
-  }
-}
-
-GameTable.propTyeps = {
-  sendMessage: PropTypes.func.isRequired,
-  table: PropTypes.object.isRequired,
-  isUserActiveInATable: PropTypes.bool.isRequired
-}
-
+import {GameTable, NewGameTable} from './GameTable'
 
 
 export class Game extends React.Component {
   constructor(props) {
     super(props)
     this.onCreateTableResponse = this.onCreateTableResponse.bind(this)
+    this.onStartGame = this.onStartGame.bind(this)
   }
 
   componentWillMount() {
     Utils.checkAuthenticatedUser(this.props.user, this.props.router)
     Utils.addEventListener('create-table-response', this.onCreateTableResponse)
     Utils.addEventListener('join-table-response', this.onJoinTableResponse)
+    Utils.addEventListener('start-game', this.onStartGame)
   }
 
   componentWillUnmount() {
     Utils.removeEventListener('create-table-response', this.onCreateTableResponse)
     Utils.removeEventListener('join-table-response', this.onJoinTableResponse)
+    Utils.addEventListener('start-game', this.onStartGame)
   }
 
   onCreateTableResponse(createTableResponse) {
@@ -97,6 +40,10 @@ export class Game extends React.Component {
     }
   }
 
+  onStartGame(event) {
+    this.props.router.history.push('/portal/' + event.value + "/play")
+  }
+
   gameLabel() {
     return this.props.router.match.params.label
   }
@@ -111,15 +58,8 @@ export class Game extends React.Component {
       .filter(table => table.status === 'NEW')
   }
 
-  isUserActiveInATable() {
-    return this.props.tables
-      .filter(table => table.status === 'NEW' || table.status === 'IN_PROGRESS')
-      .filter(table => table.owner === this.props.user.username || table.joiners.indexOf(this.props.user.username) >= 0)
-      .length > 0
-  }
-
   render() {
-    const newTable = this.isUserActiveInATable() ? null : <NewTable user={this.props.user} game={this.game()} sendMessage={this.props.sendMessage} />
+    const newTable = GameTable.isUserActiveInATable(this.props.user, this.props.tables) ? null : <NewGameTable user={this.props.user} game={this.game()} sendMessage={this.props.sendMessage} />
     if (this.game()) {
       return (
         <div id='game-description'>
@@ -128,7 +68,7 @@ export class Game extends React.Component {
             <p>{this.game().description}</p>
             <h3>Tables ({this.tables().length}):</h3>
             <div id='game-tables-container'>
-              { this.tables().map(table => (<GameTable key={table.id} table={table} sendMessage={this.props.sendMessage} isUserActiveInATable={this.isUserActiveInATable()}/>)) }
+              { this.tables().map(table => (<GameTable key={table.id} table={table} sendMessage={this.props.sendMessage} isUserActiveInATable={GameTable.isUserActiveInATable(this.props.user, this.props.tables)}/>)) }
               { newTable }
             </div>
           </div>

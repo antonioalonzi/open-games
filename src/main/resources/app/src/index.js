@@ -10,6 +10,7 @@ import {GamesMenu} from './menu/GamesMenu'
 import {UsersMenu} from './menu/UsersMenu'
 import {Login} from './login/Login'
 import {Game} from './game/Game'
+import {GamePlay} from './game/GamePlay'
 
 class App extends React.Component {
   constructor(props) {
@@ -69,7 +70,9 @@ class App extends React.Component {
     const game = {
       label: event.value.label,
       name: event.value.name,
-      description: event.value.description
+      description: event.value.description,
+      minNumPlayers: event.value.minNumPlayers,
+      maxNumPlayers: event.value.maxNumPlayers
     }
     this.setState({
       games: [...this.state.games, game]
@@ -101,6 +104,12 @@ class App extends React.Component {
     this.setState({
       tables: tables
     })
+
+    if (table.status === 'IN_PROGRESS') {
+      if (table.owner === this.state.user.username || table.joiners.indexOf(this.state.user.username) >= 0) {
+        Utils.dispatchEvent('start-game', table.game)
+      }
+    }
   }
 
   static findTableById(tables, tableId) {
@@ -121,6 +130,7 @@ class App extends React.Component {
               <Route path="/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
               <Route path="/portal/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
               <Route path="/portal/game/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
+              <Route path="/portal/game/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
             </Switch>
           </div>
         </div>

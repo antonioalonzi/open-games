@@ -21,4 +21,8 @@ public class Table {
   private Status status;
   @Singular
   private Set<String> joiners;
+
+  public int getNumOfPlayers() {
+    return joiners.size() + 1;
+  }
 }

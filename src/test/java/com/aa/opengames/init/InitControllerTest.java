@@ -83,6 +83,8 @@ public class InitControllerTest {
             .label(gameLabel)
             .name("Tic Tac Toe")
             .description("Simple implementation of Tic Tac Toe.")
+            .minNumPlayers(2)
+            .maxNumPlayers(2)
             .build())
         .build()));
 

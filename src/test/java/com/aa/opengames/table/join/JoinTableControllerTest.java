@@ -106,6 +106,7 @@ public class JoinTableControllerTest {
         .value(TableUpdatedEvent.builder()
             .id(tableId)
             .joiners(singleton(username))
+            .status(Table.Status.IN_PROGRESS) // status changes as maxNumPlayer is reached
             .build())
         .build();
 
