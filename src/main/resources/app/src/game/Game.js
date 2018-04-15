@@ -47,9 +47,10 @@ class GameTable extends React.Component {
   render() {
     return (
       <div className='game-table'>
-        <div>owner: {this.props.table.owner}</div>
-        <div>status: {this.props.table.status}</div>
-        <input type="button" value="Join" onClick={this.onClick}/>
+        <div>Owner: {this.props.table.owner}</div>
+        <div>Status: {this.props.table.status}</div>
+        <div>Joiners: { this.props.table.joiners.map(joiner => <span key={joiner}>{joiner}</span>) }</div>
+        { this.props.isUserActiveInATable ? null : <input type="button" value="Join" onClick={this.onClick}/> }
       </div>
     )
   }
@@ -57,7 +58,8 @@ class GameTable extends React.Component {
 
 GameTable.propTyeps = {
   sendMessage: PropTypes.func.isRequired,
-  table: PropTypes.object.isRequired
+  table: PropTypes.object.isRequired,
+  isUserActiveInATable: PropTypes.bool.isRequired
 }
 
 
@@ -112,7 +114,7 @@ export class Game extends React.Component {
   isUserActiveInATable() {
     return this.props.tables
       .filter(table => table.status === 'NEW' || table.status === 'IN_PROGRESS')
-      .filter(table => table.owner === this.props.user.username)
+      .filter(table => table.owner === this.props.user.username || table.joiners.indexOf(this.props.user.username) >= 0)
       .length > 0
   }
 
@@ -126,7 +128,7 @@ export class Game extends React.Component {
             <p>{this.game().description}</p>
             <h3>Tables ({this.tables().length}):</h3>
             <div id='game-tables-container'>
-              { this.tables().map(table => (<GameTable key={table.id} table={table} sendMessage={this.props.sendMessage} />)) }
+              { this.tables().map(table => (<GameTable key={table.id} table={table} sendMessage={this.props.sendMessage} isUserActiveInATable={this.isUserActiveInATable()}/>)) }
               { newTable }
             </div>
           </div>

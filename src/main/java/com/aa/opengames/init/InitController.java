@@ -61,6 +61,7 @@ public class InitController {
             .game(table.getGame())
             .owner(table.getOwner())
             .status(table.getStatus())
+            .joiners(table.getJoiners())
             .build())
         .build()));
   }

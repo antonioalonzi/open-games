@@ -56,16 +56,18 @@ public class InitControllerTest {
     // Given
     String username = "user-1";
     String gameLabel = "tic-tac-toe";
-    UUID tableId = UUID.randomUUID();
     userRepository.addUser(User.builder().username(username).build());
-    tableRepository.addTable(Table.builder().id(tableId).game(gameLabel).owner(username).status(Table.Status.NEW).build());
+    UUID table1Id = UUID.randomUUID();
+    tableRepository.addTable(Table.builder().id(table1Id).game(gameLabel).owner(username).status(Table.Status.NEW).build());
+    UUID table2Id = UUID.randomUUID();
+    tableRepository.addTable(Table.builder().id(table2Id).game(gameLabel).owner("another-user").joiner("a-joiner").status(Table.Status.FINISHED).build());
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
 
     // When
     initController.init(sessionHeader);
 
     // Then
-    Mockito.verify(eventSender, times(3)).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
+    Mockito.verify(eventSender, times(4)).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
 
     assertThat(
         eventCaptor.getAllValues().get(0),
@@ -87,10 +89,21 @@ public class InitControllerTest {
     assertThat(eventCaptor.getAllValues().get(2), sameBeanAs(Event.builder()
         .type(TableCreatedEvent.EVENT_TYPE)
         .value(TableCreatedEvent.builder()
-            .id(tableId)
+            .id(table1Id)
             .game(gameLabel)
             .owner(username)
             .status(Table.Status.NEW)
+            .build())
+        .build()));
+
+    assertThat(eventCaptor.getAllValues().get(3), sameBeanAs(Event.builder()
+        .type(TableCreatedEvent.EVENT_TYPE)
+        .value(TableCreatedEvent.builder()
+            .id(table2Id)
+            .game(gameLabel)
+            .owner("another-user")
+            .status(Table.Status.FINISHED)
+            .joiner("a-joiner")
             .build())
         .build()));
   }

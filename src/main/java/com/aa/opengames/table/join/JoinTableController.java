@@ -9,7 +9,6 @@ import com.aa.opengames.event.EventSender;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.table.TableUpdatedEvent;
-import com.aa.opengames.table.create.CreateTableResponse;
 import com.aa.opengames.user.User;
 import java.util.HashSet;
 import java.util.Optional;

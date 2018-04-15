@@ -81,7 +81,8 @@ class App extends React.Component {
       id: event.value.id,
       game: event.value.game,
       owner: event.value.owner,
-      status: event.value.status
+      status: event.value.status,
+      joiners: event.value.joiners
     }
     this.setState({
       tables: [...this.state.tables, table]
@@ -93,6 +94,9 @@ class App extends React.Component {
     const table = App.findTableById(tables, event.value.id)
     if (event.value.status) {
       table.status = event.value.status
+    }
+    if (event.value.joiners) {
+      table.joiners = event.value.joiners
     }
     this.setState({
       tables: tables

@@ -1,9 +1,11 @@
 package com.aa.opengames.table.create;
 
 import com.aa.opengames.table.Table;
+import java.util.Set;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Singular;
 
 @Getter
 @Builder
@@ -14,4 +16,6 @@ public class TableCreatedEvent {
   private String game;
   private String owner;
   private Table.Status status;
+  @Singular
+  private Set<String> joiners;
 }
