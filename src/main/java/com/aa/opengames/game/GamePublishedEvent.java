@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class GamePublishedEvent {
-  public static final String EVENT_TYPE = "game-published";
+  public static final String EVENT_TYPE = "game-published-event";
 
   private String label;
   private String name;

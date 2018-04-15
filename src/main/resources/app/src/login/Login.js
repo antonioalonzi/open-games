@@ -49,7 +49,7 @@ export class Login extends React.Component {
             <p>Choose your username you want to use.</p>
           </div>
           <Form onFormSubmit={this.onFormSubmit}>
-            <Input type={'text'} name={'Username'} mandatory={true}/>
+            <Input type={'text'} name={'Username'} mandatory autoFocus/>
             <Submit value={'Join'}/>
           </Form>
         </div>

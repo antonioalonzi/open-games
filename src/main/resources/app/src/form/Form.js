@@ -168,9 +168,13 @@ export class Input extends React.Component {
           </div>
           <div className="form-col-75">
             <div>
-              <input type={this.props.type} id={lowerCaseName} name={lowerCaseName}
+              <input type={this.props.type}
+                     id={lowerCaseName}
+                     name={lowerCaseName}
                      placeholder={this.props.name + '...'}
-                     value={this.props.formState.fields[lowerCaseName].value} onChange={this.props.handleInputChange}/>
+                     autoFocus={this.props.autoFocus}
+                     value={this.props.formState.fields[lowerCaseName].value}
+                     onChange={this.props.handleInputChange}/>
             </div>
             <FormError errors={this.props.formState.fields[lowerCaseName].errors}/>
           </div>
@@ -184,6 +188,7 @@ Input.propTypes = {
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   mandatory: PropTypes.bool,
+  autoFocus: PropTypes.bool,
   value: PropTypes.string
 }
 

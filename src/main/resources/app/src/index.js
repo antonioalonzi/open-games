@@ -49,7 +49,7 @@ class App extends React.Component {
     })
 
     Utils.addEventListener('set-state', this.setAppState)
-    Utils.addEventListener('game-published', this.onGamePublished)
+    Utils.addEventListener('game-published-event', this.onGamePublished)
     Utils.addEventListener('table-created-event', this.onTableCreated)
   }
 

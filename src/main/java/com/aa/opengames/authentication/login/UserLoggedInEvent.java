@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UserLoggedInEvent {
-  public static final String EVENT_TYPE = "user-logged-in";
+  public static final String EVENT_TYPE = "user-logged-in-event";
 
   private String username;
 }

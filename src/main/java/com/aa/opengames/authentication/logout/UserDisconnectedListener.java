@@ -1,5 +1,7 @@
 package com.aa.opengames.authentication.logout;
 
+import com.aa.opengames.event.Event;
+import com.aa.opengames.event.EventSender;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,17 +17,25 @@ public class UserDisconnectedListener implements ApplicationListener<SessionDisc
   private static final Logger LOGGER = LoggerFactory.getLogger(UserDisconnectedListener.class);
 
   private UserRepository userRepository;
+  private EventSender eventSender;
 
   @Autowired
-  public UserDisconnectedListener(UserRepository userRepository) {
+  public UserDisconnectedListener(UserRepository userRepository, EventSender eventSender) {
     this.userRepository = userRepository;
+    this.eventSender = eventSender;
   }
 
   public void onApplicationEvent(SessionDisconnectEvent event) {
     String token = StompHeaderAccessor.wrap(event.getMessage()).getSessionId();
     userRepository.findByToken(token).ifPresent((user) -> {
-       userRepository.removeUser(user);
-       LOGGER.info("User Disconnected [username: {}].", user.getUsername());
+       eventSender.sendToAll(Event.builder()
+           .type(UserDisconnectedEvent.EVENT_TYPE)
+           .value(UserDisconnectedEvent.builder().username(user.getUsername()).build())
+           .build()
+       );
+
+      userRepository.removeUser(user);
+      LOGGER.info("User Disconnected [username: {}].", user.getUsername());
     });
   }
 }
