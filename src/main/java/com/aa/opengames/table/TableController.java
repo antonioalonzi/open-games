@@ -1,11 +1,13 @@
 package com.aa.opengames.table;
 
+import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
 
 import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.user.User;
+import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,32 +36,52 @@ public class TableController {
     User user = SecurityContextHolder.getAndCheckUser(token);
     LOGGER.info("Create Table request received from username '{}'", user.getUsername());
 
-    Table table = Table.builder()
-        .id(UUID.randomUUID())
-        .game(createTableRequest.getGame())
-        .owner(user.getUsername())
-        .status(Table.Status.NEW)
-        .build();
+    Optional<Table> existingTable = tableRepository.getActiveTableOwnedBy(user.getUsername());
 
-    tableRepository.addTable(table);
-    eventSender.sendToUser(token, Event.builder()
-        .type(CreateTableResponse.EVENT_TYPE)
-        .value(CreateTableResponse.builder()
-            .responseStatus(SUCCESS)
-            .message("Table successfully created.")
-            .build())
-        .build());
+    if (!existingTable.isPresent()) {
+      Table table =
+          Table.builder()
+              .id(UUID.randomUUID())
+              .game(createTableRequest.getGame())
+              .owner(user.getUsername())
+              .status(Table.Status.NEW)
+              .build();
 
-    eventSender.sendToAll(Event.builder()
-        .type(TableCreatedEvent.EVENT_TYPE)
-        .value(TableCreatedEvent.builder()
-            .id(table.getId())
-            .game(table.getGame())
-            .owner(table.getOwner())
-            .status(table.getStatus())
-            .build())
-        .build()
-    );
+      tableRepository.addTable(table);
+      eventSender.sendToUser(
+          token,
+          Event.builder()
+              .type(CreateTableResponse.EVENT_TYPE)
+              .value(
+                  CreateTableResponse.builder()
+                      .responseStatus(SUCCESS)
+                      .message("Table successfully created.")
+                      .build())
+              .build());
+
+      eventSender.sendToAll(
+          Event.builder()
+              .type(TableCreatedEvent.EVENT_TYPE)
+              .value(
+                  TableCreatedEvent.builder()
+                      .id(table.getId())
+                      .game(table.getGame())
+                      .owner(table.getOwner())
+                      .status(table.getStatus())
+                      .build())
+              .build());
+
+    } else {
+      eventSender.sendToUser(
+          token,
+          Event.builder()
+              .type(CreateTableResponse.EVENT_TYPE)
+              .value(
+                  CreateTableResponse.builder()
+                      .responseStatus(ERROR)
+                      .message("Cannot create a table as you already own one with id '" + existingTable.get().getId() + "' and status '" + existingTable.get().getStatus() + "'.")
+                      .build())
+              .build());
+    }
   }
-
 }

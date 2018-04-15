@@ -169,12 +169,12 @@ export class Input extends React.Component {
           <div className="form-col-75">
             <div>
               <input type={this.props.type}
-                     id={lowerCaseName}
-                     name={lowerCaseName}
-                     placeholder={this.props.name + '...'}
-                     autoFocus={this.props.autoFocus}
-                     value={this.props.formState.fields[lowerCaseName].value}
-                     onChange={this.props.handleInputChange}/>
+                id={lowerCaseName}
+                name={lowerCaseName}
+                placeholder={this.props.name + '...'}
+                autoFocus={this.props.autoFocus}
+                value={this.props.formState.fields[lowerCaseName].value}
+                onChange={this.props.handleInputChange}/>
             </div>
             <FormError errors={this.props.formState.fields[lowerCaseName].errors}/>
           </div>

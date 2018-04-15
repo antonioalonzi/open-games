@@ -73,28 +73,45 @@ export class Game extends React.Component {
     Utils.checkAuthenticatedUser(this.props.user, this.props.router)
   }
 
-  render() {
-    const gameLabel = this.props.router.match.params.label
-    const game = this.props.games.filter(game => game.label === gameLabel)[0]
-    const tables = this.props.tables
-      .filter(table => table.game === gameLabel)
+  gameLabel() {
+    return this.props.router.match.params.label
+  }
+
+  game() {
+    return this.props.games.filter(game => game.label === this.gameLabel())[0]
+  }
+
+  tables() {
+    return this.props.tables
+      .filter(table => table.game === this.gameLabel())
       .filter(table => table.status === 'NEW')
-    if (game) {
+  }
+
+  isUserActiveInATable() {
+    return this.props.tables
+      .filter(table => table.status === 'NEW' || table.status === 'IN_PROGRESS')
+      .filter(table => table.owner === this.props.user.username)
+      .length > 0
+  }
+
+  render() {
+    const newTable = this.isUserActiveInATable() ? null : <NewTable user={this.props.user} game={this.game()} sendMessage={this.props.sendMessage} />
+    if (this.game()) {
       return (
         <div id='game-description'>
           <div>
-            <h2>{game.name}</h2>
-            <p>{game.description}</p>
-            <h3>Tables ({this.props.tables.length}):</h3>
+            <h2>{this.game().name}</h2>
+            <p>{this.game().description}</p>
+            <h3>Tables ({this.tables().length}):</h3>
             <div id='game-tables-container'>
-              { tables.map(table => (<GameTable key={table.id} table={table} />)) }
-              <NewTable user={this.props.user} game={game} tables={tables} sendMessage={this.props.sendMessage} />
+              { this.tables().map(table => (<GameTable key={table.id} table={table} />)) }
+              { newTable }
             </div>
           </div>
         </div>
       )
     } else {
-      return null;
+      return null
     }
   }
 }
