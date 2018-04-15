@@ -7,10 +7,10 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(of = "id")
-@Builder
+@Builder(toBuilder = true)
 public class Table {
   public enum Status {
-    NEW, IN_PROGRESS, FINISHED
+    NEW, IN_PROGRESS, FINISHED, CANCELLED
   }
 
   private UUID id;

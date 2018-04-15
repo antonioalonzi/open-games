@@ -24,16 +24,16 @@ export class UsersMenu extends React.Component {
 
   onUserLoggedIn(event) {
     const user = {username: event.value.username}
-    this.setState(prevState => ({
-      loggedInUsers: [...prevState.loggedInUsers, user]
-    }))
+    this.setState({
+      loggedInUsers: [...this.state.loggedInUsers, user]
+    })
   }
 
   onUserDisconnected(event) {
     const user = {username: event.value.username}
-    this.setState(prevState => ({
-      loggedInUsers: prevState.loggedInUsers.splice(prevState.loggedInUsers.indexOf(user), 1)
-    }))
+    this.setState({
+      loggedInUsers: this.state.loggedInUsers.splice(this.state.loggedInUsers.indexOf(user), 1)
+    })
   }
 
   isCurrentUser(user) {

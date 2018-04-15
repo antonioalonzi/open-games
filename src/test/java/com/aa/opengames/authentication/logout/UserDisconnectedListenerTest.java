@@ -4,13 +4,18 @@ import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.table.Table;
+import com.aa.opengames.table.TableRepository;
+import com.aa.opengames.table.TableUpdatedEvent;
 import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;
 import com.aa.opengames.utils.TestUtils;
 import java.util.HashMap;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +41,9 @@ public class UserDisconnectedListenerTest {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private TableRepository tableRepository;
+
   private ArgumentCaptor<Event> eventCaptor = ArgumentCaptor.forClass(Event.class);
 
   @Before
@@ -55,6 +63,21 @@ public class UserDisconnectedListenerTest {
         .build()
     );
 
+    UUID newTableId = UUID.randomUUID();
+    tableRepository.addTable(Table.builder()
+        .id(newTableId)
+        .game("tic-tac-toe")
+        .status(Table.Status.NEW)
+        .owner(username)
+        .build());
+
+    tableRepository.addTable(Table.builder()
+        .id(UUID.randomUUID())
+        .game("tic-tac-toe")
+        .status(Table.Status.FINISHED)
+        .owner(username)
+        .build());
+
     TestUtils.loginUser(sessionHeader(userToken), username);
 
     SessionDisconnectEvent sessionDisconnectEvent = Mockito.mock(SessionDisconnectEvent.class);
@@ -64,15 +87,31 @@ public class UserDisconnectedListenerTest {
     userDisconnectedListener.onApplicationEvent(sessionDisconnectEvent);
 
     // Then
+    Mockito.verify(eventSender, times(2)).sendToAll(eventCaptor.capture());
+
+    // an user-disconnected-event is sent for that user
     Event loginEvent = Event.builder()
         .type(UserDisconnectedEvent.EVENT_TYPE)
         .value(UserDisconnectedEvent.builder()
             .username(username)
             .build())
         .build();
+    assertThat(eventCaptor.getAllValues().get(0), sameBeanAs(loginEvent));
 
-    Mockito.verify(eventSender).sendToAll(eventCaptor.capture());
-    assertThat(eventCaptor.getValue(), sameBeanAs(loginEvent));
+    // a table-updated-event with status cancelled is sent if owned a table NEW or IN_PROGRESS
+    Event tableUpdatedEvent = Event.builder()
+        .type(TableUpdatedEvent.EVENT_TYPE)
+        .value(TableUpdatedEvent.builder()
+            .id(newTableId)
+            .status(Table.Status.CANCELLED)
+            .build())
+        .build();
+
+    assertThat(eventCaptor.getAllValues().get(1), sameBeanAs(tableUpdatedEvent));
+
+    // table is cancelled in the repository too
+    Table updatedTable = tableRepository.getTableById(newTableId).orElseThrow(() -> new RuntimeException("Table not found"));
+    assertThat(updatedTable.getStatus(), sameBeanAs(Table.Status.CANCELLED));
   }
 
 
@@ -80,7 +119,7 @@ public class UserDisconnectedListenerTest {
   private static class UserDisconnectedMessage implements Message<byte[]> {
     private final String token;
 
-    public UserDisconnectedMessage(String token) {
+    UserDisconnectedMessage(String token) {
       this.token = token;
     }
 

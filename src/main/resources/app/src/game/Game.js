@@ -75,8 +75,10 @@ export class Game extends React.Component {
 
   render() {
     const gameLabel = this.props.router.match.params.label
-    const game = this.props.games.filter((game) => game.label===gameLabel)[0]
-    const tables = this.props.tables.filter((table) => table.game===gameLabel)
+    const game = this.props.games.filter(game => game.label === gameLabel)[0]
+    const tables = this.props.tables
+      .filter(table => table.game === gameLabel)
+      .filter(table => table.status === 'NEW')
     if (game) {
       return (
         <div id='game-description'>

@@ -2,6 +2,9 @@ package com.aa.opengames.authentication.logout;
 
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.table.Table;
+import com.aa.opengames.table.TableRepository;
+import com.aa.opengames.table.TableUpdatedEvent;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +20,13 @@ public class UserDisconnectedListener implements ApplicationListener<SessionDisc
   private static final Logger LOGGER = LoggerFactory.getLogger(UserDisconnectedListener.class);
 
   private UserRepository userRepository;
+  private TableRepository tableRepository;
   private EventSender eventSender;
 
   @Autowired
-  public UserDisconnectedListener(UserRepository userRepository, EventSender eventSender) {
+  public UserDisconnectedListener(UserRepository userRepository, TableRepository tableRepository, EventSender eventSender) {
     this.userRepository = userRepository;
+    this.tableRepository = tableRepository;
     this.eventSender = eventSender;
   }
 
@@ -33,6 +38,21 @@ public class UserDisconnectedListener implements ApplicationListener<SessionDisc
            .value(UserDisconnectedEvent.builder().username(user.getUsername()).build())
            .build()
        );
+
+       tableRepository.getActiveTableOwnedBy(user.getUsername()).ifPresent((table) -> {
+         Table updatedTable = table.toBuilder()
+             .status(Table.Status.CANCELLED)
+             .build();
+         tableRepository.updateTable(updatedTable);
+
+         eventSender.sendToAll(Event.builder()
+             .type(TableUpdatedEvent.EVENT_TYPE)
+             .value(TableUpdatedEvent.builder()
+                 .id(updatedTable.getId())
+                 .status(updatedTable.getStatus())
+                 .build())
+             .build());
+       });
 
       userRepository.removeUser(user);
       LOGGER.info("User Disconnected [username: {}].", user.getUsername());

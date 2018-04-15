@@ -18,6 +18,7 @@ class App extends React.Component {
     this.setAppState = this.setAppState.bind(this)
     this.onGamePublished = this.onGamePublished.bind(this)
     this.onTableCreated = this.onTableCreated.bind(this)
+    this.onTableUpdated = this.onTableUpdated.bind(this)
     this.state = {
       stompClient: null,
       user: null,
@@ -51,6 +52,7 @@ class App extends React.Component {
     Utils.addEventListener('set-state', this.setAppState)
     Utils.addEventListener('game-published-event', this.onGamePublished)
     Utils.addEventListener('table-created-event', this.onTableCreated)
+    Utils.addEventListener('table-updated-event', this.onTableUpdated)
   }
 
   sendMessage(url, message) {
@@ -69,9 +71,9 @@ class App extends React.Component {
       name: event.value.name,
       description: event.value.description
     }
-    this.setState(prevState => ({
-      games: [...prevState.games, game]
-    }))
+    this.setState({
+      games: [...this.state.games, game]
+    })
   }
 
   onTableCreated(event) {
@@ -81,9 +83,22 @@ class App extends React.Component {
       owner: event.value.owner,
       status: event.value.status
     }
-    this.setState(prevState => ({
-      tables: [...prevState.tables, table]
-    }))
+    this.setState({
+      tables: [...this.state.tables, table]
+    })
+  }
+
+  onTableUpdated(event) {
+    const tables = this.state.tables
+    const table = App.findTableById(tables, event.value.id)
+    table.status = event.value.status
+    this.setState({
+      tables: tables
+    })
+  }
+
+  static findTableById(tables, tableId) {
+    return tables.filter(table => table.id === tableId)[0]
   }
 
   render() {
