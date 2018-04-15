@@ -1,0 +1,15 @@
+#game-tables-container {
+    margin-top: 10px;
+}
+
+.game-table {
+    position: relative;
+    float: left;
+    background-color: #111;
+    border: 1px solid #444;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 250px;
+    height: 250px;
+    padding: 10px;
+}

@@ -1,3 +1,4 @@
+import './styles.css'
 import React from 'react'
 import {render} from 'react-dom'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
@@ -11,6 +12,7 @@ import {UsersMenu} from './menu/UsersMenu'
 import {Login} from './login/Login'
 import {Game} from './game/Game'
 import {GamePlay} from './game/GamePlay'
+import {GameTable} from './game/GameTable'
 
 class App extends React.Component {
   constructor(props) {
@@ -118,6 +120,8 @@ class App extends React.Component {
 
   render() {
     const hiddenIfNotLoggedIn = this.state.user ? '' : 'hidden'
+    const activeTable = GameTable.getUserActiveTable(this.state.user, this.state.tables)
+    const activeTableGame = activeTable ? Game.gameByLabel(this.state.games, activeTable.game) : null
     return (
       <Router>
         <div>
@@ -127,10 +131,9 @@ class App extends React.Component {
           <div id="content">
             <Messages />
             <Switch>
-              <Route path="/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
-              <Route path="/portal/" exact={true} render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
               <Route path="/portal/game/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
-              <Route path="/portal/game/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
+              <Route path="/portal/game/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={activeTableGame} table={activeTable} router={router} sendMessage={this.sendMessage} />} />
+              <Route render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
             </Switch>
           </div>
         </div>

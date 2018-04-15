@@ -1,0 +1,24 @@
+
+.form-col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.form-col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+.form-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.form-error {
+    color: #ff7788;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}

@@ -1,3 +1,4 @@
+import './game.css'
 import React from 'react'
 import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
@@ -40,8 +41,12 @@ export class Game extends React.Component {
     }
   }
 
+  static gameByLabel(games, label) {
+    return games.filter(game => game.label === label)[0]
+  }
+
   onStartGame(event) {
-    this.props.router.history.push('/portal/' + event.value + "/play")
+    this.props.router.history.push('/portal/game/' + event.value + "/play")
   }
 
   gameLabel() {
@@ -49,7 +54,7 @@ export class Game extends React.Component {
   }
 
   game() {
-    return this.props.games.filter(game => game.label === this.gameLabel())[0]
+    return Game.gameByLabel(this.props.games, this.gameLabel())
   }
 
   tables() {

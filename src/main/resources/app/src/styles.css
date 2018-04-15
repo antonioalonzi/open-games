@@ -53,13 +53,6 @@ h6 {
     font-size: 16px;
 }
 
-.hidden {
-    display: none;
-}
-
-
-
-/** FORM */
 input[type=text], input[type=password], select, textarea {
     width: 100%;
     padding: 12px;
@@ -103,91 +96,14 @@ input[type=submit]:hover {
     background-color: #274e27;
 }
 
-.form-col-25 {
-    float: left;
-    width: 25%;
-    margin-top: 6px;
-}
 
-.form-col-75 {
-    float: left;
-    width: 75%;
-    margin-top: 6px;
-}
 
-.form-row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.form-error {
-    color: #ff7788;
-    margin-top: 4px;
-    margin-bottom: 8px;
+.hidden {
+    display: none;
 }
 
 
 
-/**   HEADER   */
-#header {
-    background-color: #333;
-    overflow: hidden;
-    height: 40px;
-}
-
-#header a, #header span {
-    float: left;
-    display: block;
-    text-align: center;
-    padding: 12px 16px;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-#header a {
-    color: #f2f2f2;
-}
-
-#header span {
-    color: #d1d1d1;
-}
-
-#header-left {
-    position: relative;
-    float: left;
-}
-
-#header-right {
-    posiiton: relative;
-    float: right;
-}
-
-#header a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-
-
-/**   MENU   */
-#games-menu {
-    position: relative;
-    float: left;
-    width: 250px;
-    margin-top: 10px;
-}
-
-#users-menu {
-    position: relative;
-    float: right;
-    width: 250px;
-    margin-top: 10px;
-}
-
-
-
-/**   CONTENT   */
 #content {
     padding: 20px 30px 20px 270px;
 }
@@ -213,25 +129,3 @@ input[type=submit]:hover {
     background-color: #884433;
 }
 
-
-
-/**   PAGES SPECIFIC   */
-#login-form {
-    max-width: 600px;
-}
-
-#game-tables-container {
-    margin-top: 10px;
-}
-
-.game-table {
-    position: relative;
-    float: left;
-    background-color: #111;
-    border: 1px solid #444;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    width: 250px;
-    height: 250px;
-    padding: 10px;
-}

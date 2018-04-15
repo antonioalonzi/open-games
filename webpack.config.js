@@ -13,8 +13,16 @@ var config = {
   module: {
     rules: [
       {
+        test: /\.js$/,
         include: APP_DIR,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
       }
     ]
   }

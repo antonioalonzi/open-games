@@ -16,7 +16,8 @@ export class GamePlay extends React.Component {
   render() {
     return (
       <div id='game-play'>
-        Game Play
+        {this.props.game.name}
+        {this.props.table.id}
       </div>
     )
   }
@@ -26,6 +27,6 @@ GamePlay.propTyeps = {
   router: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  games: PropTypes.array.isRequired,
-  tables: PropTypes.array.isRequired
+  game: PropTypes.object.isRequired,
+  table: PropTypes.object.isRequired
 }
