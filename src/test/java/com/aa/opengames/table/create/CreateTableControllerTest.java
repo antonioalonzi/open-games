@@ -1,4 +1,4 @@
-package com.aa.opengames.table;
+package com.aa.opengames.table.create;
 
 import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
@@ -11,6 +11,8 @@ import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.table.Table;
+import com.aa.opengames.table.TableRepository;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,10 +26,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class TableControllerTest {
+public class CreateTableControllerTest {
 
   @Autowired
-  private TableController tableController;
+  private CreateTableController createTableController;
 
   @Autowired
   private EventSender eventSender;
@@ -51,7 +53,7 @@ public class TableControllerTest {
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
 
     // When
-    tableController.create(sessionHeader, createTableRequest);
+    createTableController.create(sessionHeader, createTableRequest);
   }
 
   @Test
@@ -72,7 +74,7 @@ public class TableControllerTest {
     );
 
     // When
-    tableController.create(sessionHeader, createTableRequest);
+    createTableController.create(sessionHeader, createTableRequest);
 
     // Then
     Event createTableResponse = Event.builder()
@@ -89,7 +91,7 @@ public class TableControllerTest {
     Event createTableEvent = Event.builder()
         .type(TableCreatedEvent.EVENT_TYPE)
         .value(TableCreatedEvent.builder()
-            .id(tableRepository.getAllTables().iterator().next().getId())
+            .id(tableRepository.getActiveTableForUser(username).orElseThrow(() -> new RuntimeException("No active game found")).getId())
             .game("tic-tac-toe")
             .owner(username)
             .status(Table.Status.NEW)
@@ -118,14 +120,14 @@ public class TableControllerTest {
     );
 
     // When
-    tableController.create(sessionHeader, createTableRequest);
+    createTableController.create(sessionHeader, createTableRequest);
 
     // Then
     Event createTableResponse = Event.builder()
         .type(CreateTableResponse.EVENT_TYPE)
         .value(CreateTableResponse.builder()
             .responseStatus(ERROR)
-            .message("Cannot create a table as you already own one with id '" + tableId + "' and status 'NEW'.")
+            .message("Cannot create the table as you are already active in the table with id '" + tableId + "' and status 'NEW'.")
             .build())
         .build();
 

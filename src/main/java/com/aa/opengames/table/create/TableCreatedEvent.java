@@ -1,5 +1,6 @@
-package com.aa.opengames.table;
+package com.aa.opengames.table.create;
 
+import com.aa.opengames.table.Table;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;

@@ -21,10 +21,10 @@ public class TableRepository {
         .findFirst();
   }
 
-  public Optional<Table> getActiveTableOwnedBy(String username) {
+  public Optional<Table> getActiveTableForUser(String username) {
     return tables.stream()
         .filter(table -> table.getStatus() == Table.Status.NEW || table.getStatus() == Table.Status.IN_PROGRESS)
-        .filter(table -> table.getOwner().equals(username))
+        .filter(table -> table.getOwner().equals(username) || table.getJoiners().contains(username))
         .findFirst();
   }
 

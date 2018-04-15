@@ -5,7 +5,7 @@ import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.game.GamePublishedEvent;
 import com.aa.opengames.game.GameRepository;
-import com.aa.opengames.table.TableCreatedEvent;
+import com.aa.opengames.table.create.TableCreatedEvent;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;

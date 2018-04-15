@@ -91,7 +91,9 @@ class App extends React.Component {
   onTableUpdated(event) {
     const tables = this.state.tables
     const table = App.findTableById(tables, event.value.id)
-    table.status = event.value.status
+    if (event.value.status) {
+      table.status = event.value.status
+    }
     this.setState({
       tables: tables
     })

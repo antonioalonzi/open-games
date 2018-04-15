@@ -11,7 +11,7 @@ import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.game.GamePublishedEvent;
 import com.aa.opengames.table.Table;
-import com.aa.opengames.table.TableCreatedEvent;
+import com.aa.opengames.table.create.TableCreatedEvent;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;

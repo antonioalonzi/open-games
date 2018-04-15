@@ -8,27 +8,10 @@ class NewTable extends React.Component {
   constructor(props) {
     super(props)
     this.onFormSubmit = this.onFormSubmit.bind(this)
-    this.onCreateTableResponse = this.onCreateTableResponse.bind(this)
-  }
-
-  componentWillMount() {
-    Utils.addEventListener('create-table-response', this.onCreateTableResponse)
-  }
-
-  componentWillUnmount() {
-    Utils.removeEventListener('create-table-response', this.onCreateTableResponse)
   }
 
   onFormSubmit(formData) {
-    this.props.sendMessage('/api/table', formData)
-  }
-
-  onCreateTableResponse(createTableResponse) {
-    if (createTableResponse.value.responseStatus === 'ERROR') {
-      Utils.dispatchEvent('message', {type: 'error', text: createTableResponse.value.message})
-    } else {
-      Utils.dispatchEvent('message', {type: 'info', text: createTableResponse.value.message})
-    }
+    this.props.sendMessage('/api/table/create', formData)
   }
 
   render() {
@@ -52,25 +35,64 @@ NewTable.propTyeps = {
 
 
 class GameTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.onClick = this.onClick.bind(this)
+  }
+
+  onClick() {
+    this.props.sendMessage('/api/table/join', {tableId: this.props.table.id})
+  }
+
   render() {
     return (
       <div className='game-table'>
         <div>owner: {this.props.table.owner}</div>
         <div>status: {this.props.table.status}</div>
+        <input type="button" value="Join" onClick={this.onClick}/>
       </div>
     )
   }
 }
 
 GameTable.propTyeps = {
+  sendMessage: PropTypes.func.isRequired,
   table: PropTypes.object.isRequired
 }
 
 
 
 export class Game extends React.Component {
+  constructor(props) {
+    super(props)
+    this.onCreateTableResponse = this.onCreateTableResponse.bind(this)
+  }
+
   componentWillMount() {
     Utils.checkAuthenticatedUser(this.props.user, this.props.router)
+    Utils.addEventListener('create-table-response', this.onCreateTableResponse)
+    Utils.addEventListener('join-table-response', this.onJoinTableResponse)
+  }
+
+  componentWillUnmount() {
+    Utils.removeEventListener('create-table-response', this.onCreateTableResponse)
+    Utils.removeEventListener('join-table-response', this.onJoinTableResponse)
+  }
+
+  onCreateTableResponse(createTableResponse) {
+    if (createTableResponse.value.responseStatus === 'ERROR') {
+      Utils.dispatchEvent('message', {type: 'error', text: createTableResponse.value.message})
+    } else {
+      Utils.dispatchEvent('message', {type: 'info', text: createTableResponse.value.message})
+    }
+  }
+
+  onJoinTableResponse(joinTableResponse) {
+    if (joinTableResponse.value.responseStatus === 'ERROR') {
+      Utils.dispatchEvent('message', {type: 'error', text: joinTableResponse.value.message})
+    } else {
+      Utils.dispatchEvent('message', {type: 'info', text: joinTableResponse.value.message})
+    }
   }
 
   gameLabel() {
@@ -104,7 +126,7 @@ export class Game extends React.Component {
             <p>{this.game().description}</p>
             <h3>Tables ({this.tables().length}):</h3>
             <div id='game-tables-container'>
-              { this.tables().map(table => (<GameTable key={table.id} table={table} />)) }
+              { this.tables().map(table => (<GameTable key={table.id} table={table} sendMessage={this.props.sendMessage} />)) }
               { newTable }
             </div>
           </div>

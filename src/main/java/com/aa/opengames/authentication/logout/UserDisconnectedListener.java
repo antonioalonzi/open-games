@@ -39,7 +39,7 @@ public class UserDisconnectedListener implements ApplicationListener<SessionDisc
            .build()
        );
 
-       tableRepository.getActiveTableOwnedBy(user.getUsername()).ifPresent((table) -> {
+       tableRepository.getActiveTableForUser(user.getUsername()).ifPresent((table) -> {
          Table updatedTable = table.toBuilder()
              .status(Table.Status.CANCELLED)
              .build();

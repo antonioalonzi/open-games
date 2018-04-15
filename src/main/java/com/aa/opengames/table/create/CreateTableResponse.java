@@ -1,4 +1,4 @@
-package com.aa.opengames.table;
+package com.aa.opengames.table.create;
 
 import com.aa.opengames.event.EventResponse;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.aa.opengames.table;
+package com.aa.opengames.table.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

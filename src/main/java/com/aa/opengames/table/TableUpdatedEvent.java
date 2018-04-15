@@ -1,5 +1,6 @@
 package com.aa.opengames.table;
 
+import java.util.Set;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,4 +12,5 @@ public class TableUpdatedEvent {
 
   private UUID id;
   private Table.Status status;
+  private Set<String> joiners;
 }
