@@ -117,7 +117,7 @@ export class Label extends React.Component {
   render() {
     const lowerCaseName = this.props.name.toLowerCase()
     return (
-      <label htmlFor={lowerCaseName}>{this.props.name}</label>
+      <label htmlFor={lowerCaseName} className="form">{this.props.name}</label>
     )
   }
 }
@@ -172,6 +172,7 @@ export class Input extends React.Component {
               <input type={this.props.type}
                 id={lowerCaseName}
                 name={lowerCaseName}
+                className='form'
                 placeholder={this.props.name + '...'}
                 autoFocus={this.props.autoFocus}
                 value={this.props.formState.fields[lowerCaseName].value}
@@ -195,16 +196,34 @@ Input.propTypes = {
 
 
 
-export class Submit extends React.Component {
-  constructor(props) {
-    super(props)
+export class Button extends React.Component {
+  render() {
+    const type = this.props.type ? this.props.type : 'button'
+    return (
+      <input type={type} value={this.props.value} className={this.props.className} onClick={this.props.onClick} />
+    )
   }
+}
 
+Button.propTypes = {
+  value: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  className: PropTypes.string,
+  onClick: PropTypes.func
+}
+
+
+
+export class Submit extends React.Component {
   render() {
     return (
       <div className="form-row">
-        <input type="submit" value={this.props.value}/>
+        <Button className="form" type="submit" value={this.props.value}/>
       </div>
     )
   }
+}
+
+Submit.propTypes = {
+  value: PropTypes.string.isRequired
 }

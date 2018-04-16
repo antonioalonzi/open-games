@@ -21,3 +21,46 @@
     margin-top: 4px;
     margin-bottom: 8px;
 }
+
+input.form[type=text], input.form[type=password], select.form, textarea.form {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+textarea.form {
+    height: 200px;
+}
+
+label.form {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+input.form[type=button] {
+    background-color: #646464;
+    color: white;
+    margin-top: 12px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input.form[type=submit] {
+    background-color: #376f37;
+    color: white;
+    margin-top: 12px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input.form[type=submit]:hover {
+    background-color: #274e27;
+}

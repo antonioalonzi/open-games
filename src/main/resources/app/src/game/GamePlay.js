@@ -2,6 +2,7 @@ import React from 'react'
 import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
 import {TicTacToe} from './tictactoe/TicTacToe'
+import {Button} from '../form/Form'
 
 
 export class GamePlay extends React.Component {
@@ -28,7 +29,7 @@ export class GamePlay extends React.Component {
       <div id='game-play'>
         <div id='game-play-content'>
           <div id='game-play-exit'>
-            <input type="button" value="x" onClick={this.exit} />
+            <Button value='x' onClick={this.exit} />
           </div>
 
           <TicTacToe router={this.props.router} sendMessage={this.props.sendMessage} user={this.props.user}

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
-import {Form, Input, Submit} from '../form/Form'
+import {Button, Form, Input, Submit} from '../form/Form'
 
 
 export class NewGameTable extends React.Component {
@@ -64,7 +64,7 @@ export class GameTable extends React.Component {
         <div>Owner: {this.props.table.owner}</div>
         <div>Status: {this.props.table.status}</div>
         <div>Joiners: { this.props.table.joiners.map(joiner => <span key={joiner}>{joiner}</span>) }</div>
-        { this.props.isUserActiveInATable ? null : <input type="button" value="Join" onClick={this.onClick}/> }
+        { this.props.isUserActiveInATable ? null : <Button value="Join" className={'form'} onClick={this.onClick} /> }
       </div>
     )
   }
