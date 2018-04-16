@@ -38,7 +38,7 @@ export class Login extends React.Component {
       return (
         <div>
           <p>Welcome to Open Games.</p>
-          <p>Play online for free a selection of games.</p>
+          <p>Choose a game on the left and enjoy!</p>
         </div>
       )
     } else {
@@ -47,7 +47,7 @@ export class Login extends React.Component {
           <div>
             <p>Welcome to Open Games.</p>
             <p>Play online for free a selection of games.</p>
-            <p>Choose your username you want to use.</p>
+            <p>Choose your username to start.</p>
           </div>
           <Form onFormSubmit={this.onFormSubmit}>
             <Input type={'text'} name={'Username'} mandatory autoFocus/>

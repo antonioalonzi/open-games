@@ -61,9 +61,19 @@ h6 {
 
 
 
-#content {
-    padding: 20px 30px 20px 270px;
+@media only screen and (min-width: 768px) {
+    #content {
+        padding: 10px 10px 10px 10px;
+    }
 }
+
+@media only screen and (min-width: 768px) {
+    #content {
+        padding: 20px 250px 20px 250px;
+    }
+}
+
+
 
 #messages-container {
     margin-bottom: 16px;
@@ -85,4 +95,3 @@ h6 {
 #messages-container .message-error {
     background-color: #884433;
 }
-

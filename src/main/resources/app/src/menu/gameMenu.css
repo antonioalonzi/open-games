@@ -1,13 +1,25 @@
-#games-menu {
-    position: relative;
-    float: left;
-    width: 250px;
-    margin-top: 10px;
+@media only screen and (max-width: 768px) {
+    #games-menu {
+        display: none;
+    }
+
+    #users-menu {
+        display: none;
+    }
 }
 
-#users-menu {
-    position: relative;
-    float: right;
-    width: 250px;
-    margin-top: 10px;
+@media only screen and (min-width: 768px) {
+    #games-menu {
+        position: relative;
+        float: left;
+        width: 230px;
+        margin-top: 10px;
+    }
+
+    #users-menu {
+        position: relative;
+        float: right;
+        width: 230px;
+        margin-top: 10px;
+    }
 }

@@ -117,7 +117,7 @@ export class Label extends React.Component {
   render() {
     const lowerCaseName = this.props.name.toLowerCase()
     return (
-      <label htmlFor={lowerCaseName} className="form">{this.props.name}</label>
+      <label htmlFor={lowerCaseName} className="form">{this.props.name}:</label>
     )
   }
 }
