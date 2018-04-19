@@ -6,6 +6,11 @@
     #users-menu {
         display: none;
     }
+
+    #left-menu-icons {
+        width: 20%;
+        float: left;
+    }
 }
 
 @media only screen and (min-width: 900px) {
@@ -21,5 +26,9 @@
         float: right;
         width: 230px;
         margin-top: 10px;
+    }
+
+    #left-menu-icons {
+        display: none;
     }
 }

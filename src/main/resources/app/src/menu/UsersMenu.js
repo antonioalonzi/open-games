@@ -3,39 +3,6 @@ import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
 
 export class UsersMenu extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loggedInUsers: []
-    }
-    this.onUserLoggedIn = this.onUserLoggedIn.bind(this)
-    this.onUserDisconnected = this.onUserDisconnected.bind(this)
-  }
-
-  componentWillMount() {
-    Utils.addEventListener('user-logged-in-event', this.onUserLoggedIn)
-    Utils.addEventListener('user-disconnected-event', this.onUserDisconnected)
-  }
-
-  componentWillUnmount() {
-    Utils.removeEventListener('user-logged-in-event', this.onUserLoggedIn)
-    Utils.removeEventListener('user-disconnected-event', this.onUserDisconnected)
-  }
-
-  onUserLoggedIn(event) {
-    const user = {username: event.value.username}
-    this.setState({
-      loggedInUsers: [...this.state.loggedInUsers, user]
-    })
-  }
-
-  onUserDisconnected(event) {
-    const user = {username: event.value.username}
-    this.setState({
-      loggedInUsers: this.state.loggedInUsers.splice(this.state.loggedInUsers.indexOf(user), 1)
-    })
-  }
-
   isCurrentUser(user) {
     if (!this.props.user) {
       return false
@@ -47,10 +14,10 @@ export class UsersMenu extends React.Component {
   render() {
     return (
       <div id="users-menu" className={this.props.className}>
-        Other logged in users ({this.state.loggedInUsers.length - 1}):
+        Other logged in users ({this.props.loggedInUsers.length - 1}):
         <ul>
           {
-            this.state.loggedInUsers
+            this.props.loggedInUsers
               .filter(user => !this.isCurrentUser(user))
               .map(user => (<li key={user.username}>{user.username}</li>))
           }
@@ -62,5 +29,6 @@ export class UsersMenu extends React.Component {
 
 UsersMenu.propTyeps = {
   className: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  loggedInUsers: PropTypes.array.isRequired
 }

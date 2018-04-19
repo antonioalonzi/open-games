@@ -6,9 +6,8 @@ import SockJs from 'sockjs-client'
 import Stomp from '@stomp/stompjs'
 import {Utils} from './utils/Utils'
 import {Messages} from './messages/Messages'
-import {Header} from './menu/Header'
-import {GamesMenu} from './menu/GamesMenu'
-import {UsersMenu} from './menu/UsersMenu'
+import {Header} from './header/Header'
+import {Menu} from './menu/Menu'
 import {Login} from './login/Login'
 import {Game} from './game/Game'
 import {GamePlay} from './game/GamePlay'
@@ -22,9 +21,12 @@ class App extends React.Component {
     this.onGamePublished = this.onGamePublished.bind(this)
     this.onTableCreated = this.onTableCreated.bind(this)
     this.onTableUpdated = this.onTableUpdated.bind(this)
+    this.onUserLoggedIn = this.onUserLoggedIn.bind(this)
+    this.onUserDisconnected = this.onUserDisconnected.bind(this)
     this.state = {
       stompClient: null,
       user: null,
+      loggedInUsers: [],
       games: [],
       tables: []
     }
@@ -56,10 +58,26 @@ class App extends React.Component {
     Utils.addEventListener('game-published-event', this.onGamePublished)
     Utils.addEventListener('table-created-event', this.onTableCreated)
     Utils.addEventListener('table-updated-event', this.onTableUpdated)
+    Utils.addEventListener('user-logged-in-event', this.onUserLoggedIn)
+    Utils.addEventListener('user-disconnected-event', this.onUserDisconnected)
   }
 
   sendMessage(url, message) {
     this.state.stompClient.send(url, {}, JSON.stringify(message))
+  }
+
+  onUserLoggedIn(event) {
+    const user = {username: event.value.username}
+    this.setState({
+      loggedInUsers: [...this.state.loggedInUsers, user]
+    })
+  }
+
+  onUserDisconnected(event) {
+    const user = {username: event.value.username}
+    this.setState({
+      loggedInUsers: this.state.loggedInUsers.splice(this.state.loggedInUsers.indexOf(user), 1)
+    })
   }
 
   setAppState(event) {
@@ -126,8 +144,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Header user={this.state.user} />
-          <GamesMenu className={hiddenIfNotLoggedIn} games={this.state.games} />
-          <UsersMenu className={hiddenIfNotLoggedIn} user={this.state.user} />
+          <Menu className={hiddenIfNotLoggedIn} games={this.state.games} user={this.state.user} loggedInUsers={this.state.loggedInUsers} />
           <div id="content">
             <Messages />
             <Switch>

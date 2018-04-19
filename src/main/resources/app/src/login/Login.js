@@ -38,7 +38,7 @@ export class Login extends React.Component {
       return (
         <div>
           <p>Welcome to Open Games.</p>
-          <p>Choose a game on the left and enjoy!</p>
+          <p>Choose a game from the menu and enjoy!</p>
         </div>
       )
     } else {
