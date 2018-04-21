@@ -78,10 +78,8 @@ export class Message extends React.Component {
 
   render() {
     return (
-      <div>
-        <span className={'message-' + this.props.type}>
-          {this.props.children}
-        </span>
+      <div className={'message-' + this.props.type}>
+        {this.props.children}
       </div>
     )
   }

@@ -60,18 +60,26 @@ h6 {
 }
 
 
-
-#messages-container {
-    margin-bottom: 16px;
-    margin-left: 20px
+@media only screen and (max-width: 900px) {
+    #messages-container {
+        width: 100%;
+    }
 }
+
+@media only screen and (min-width: 900px) {
+    #messages-container {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
 
 #messages-container div {
-    margin-bottom: 16px;
-}
-
-#messages-container span {
-    padding: 6px 12px 6px 12px;
+    position: relative;
+    float: left;
+    clear: both;
+    min-height: 36px;
+    vertical-align: middle;
 }
 
 #messages-container .message-info {

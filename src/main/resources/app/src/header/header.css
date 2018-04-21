@@ -4,11 +4,25 @@
     height: 40px;
 }
 
-#header a, #header span {
+#open-menu-icon-link {
+    float: left;
+    display: block;
+    padding: 4px;
+}
+
+#open-menu-icon {
+    fill: #d0d0d0
+}
+
+#open-menu-icon:hover {
+    fill: black
+}
+
+#header a.header-link, #header span.header-info {
     float: left;
     display: block;
     text-align: center;
-    padding: 12px 16px;
+    padding: 8px 12px;
     text-decoration: none;
     font-size: 18px;
 }
