@@ -23,8 +23,10 @@ class App extends React.Component {
     this.onTableUpdated = this.onTableUpdated.bind(this)
     this.onUserLoggedIn = this.onUserLoggedIn.bind(this)
     this.onUserDisconnected = this.onUserDisconnected.bind(this)
+    this.onToggleMenu = this.onToggleMenu.bind(this)
     this.state = {
       stompClient: null,
+      menuMobileExpanded: false,
       user: null,
       loggedInUsers: [],
       games: [],
@@ -60,10 +62,17 @@ class App extends React.Component {
     Utils.addEventListener('table-updated-event', this.onTableUpdated)
     Utils.addEventListener('user-logged-in-event', this.onUserLoggedIn)
     Utils.addEventListener('user-disconnected-event', this.onUserDisconnected)
+    Utils.addEventListener('toggle-menu-event', this.onToggleMenu)
   }
 
   sendMessage(url, message) {
     this.state.stompClient.send(url, {}, JSON.stringify(message))
+  }
+
+  onToggleMenu() {
+    this.setState({
+      menuMobileExpanded: !this.state.menuMobileExpanded
+    })
   }
 
   onUserLoggedIn(event) {
@@ -144,7 +153,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Header user={this.state.user} />
-          <Menu className={hiddenIfNotLoggedIn} games={this.state.games} user={this.state.user} loggedInUsers={this.state.loggedInUsers} />
+          <Menu className={hiddenIfNotLoggedIn} games={this.state.games} user={this.state.user} loggedInUsers={this.state.loggedInUsers} menuMobileExpanded={this.state.menuMobileExpanded} />
           <div id="content">
             <Messages />
             <Switch>

@@ -1,34 +1,21 @@
-@media only screen and (max-width: 900px) {
-    #games-menu {
-        display: none;
-    }
-
-    #users-menu {
-        display: none;
-    }
-
-    #left-menu-icons {
-        width: 20%;
-        float: left;
-    }
+#games-menu {
+    position: relative;
+    float: left;
+    width: 230px;
+    margin-top: 10px;
 }
 
-@media only screen and (min-width: 900px) {
-    #games-menu {
-        position: relative;
-        float: left;
-        width: 230px;
-        margin-top: 10px;
-    }
+#users-menu {
+    position: relative;
+    float: right;
+    width: 230px;
+    margin-top: 10px;
+}
 
-    #users-menu {
-        position: relative;
-        float: right;
-        width: 230px;
-        margin-top: 10px;
-    }
-
-    #left-menu-icons {
-        display: none;
-    }
+#mobile-menu {
+    position: absolute;
+    top: 40px;
+    width: 80%;
+    background-color: #333;
+    height: 100%;
 }

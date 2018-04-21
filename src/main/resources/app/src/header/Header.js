@@ -2,11 +2,30 @@ import './header.css'
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 import PropTypes from 'prop-types'
+import {Utils} from '../utils/Utils'
 
 export class HeaderLeft extends React.Component {
+  constructor(props) {
+    super(props)
+    this.toggleMenu = this.toggleMenu.bind(this)
+  }
+
+  toggleMenu() {
+    Utils.dispatchEvent("toggle-menu-event")
+  }
+
+  isMenuIconToBeDisplayed() {
+    if (this.props.user && Utils.isMobile()) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   render() {
     return (
       <div id="header-left">
+        { this.isMenuIconToBeDisplayed() ? <a href="#" onClick={this.toggleMenu}>Menu</a> : null }
         <NavLink to="/portal/">Open Games</NavLink>
       </div>
     )
@@ -40,7 +59,7 @@ export class Header extends React.Component {
   render() {
     return (
       <div id="header">
-        <HeaderLeft/>
+        <HeaderLeft user={this.props.user}/>
         <HeaderRight user={this.props.user}/>
       </div>
     )

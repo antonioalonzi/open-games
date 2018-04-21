@@ -25,4 +25,12 @@ export class Utils extends React.Component {
       router.history.push('/portal/')
     }
   }
+
+  static isMobile() {
+    return window.innerWidth < 900
+  }
+
+  static isDesktop() {
+    return window.innerWidth >= 900
+  }
 }
