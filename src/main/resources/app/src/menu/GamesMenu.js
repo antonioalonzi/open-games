@@ -5,14 +5,16 @@ import PropTypes from 'prop-types'
 export class GamesMenu extends React.Component {
   render() {
     return (
-      <div id="games-menu" className={this.props.className}>
-        Games ({this.props.games.length}):
-        <ul>
-          {
-            this.props.games
-              .map(game => (<li key={game.label}><NavLink to={`/portal/game/${game.label}`}>{game.name}</NavLink></li>))
-          }
-        </ul>
+      <div id="games-menu">
+        <div className={this.props.className}>
+          Games ({this.props.games.length}):
+          <ul>
+            {
+              this.props.games
+                .map(game => (<li key={game.label}><NavLink to={`/portal/game/${game.label}`}>{game.name}</NavLink></li>))
+            }
+          </ul>
+        </div>
       </div>
     )
   }

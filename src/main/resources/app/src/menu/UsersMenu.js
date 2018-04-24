@@ -1,5 +1,4 @@
 import React from 'react'
-import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
 
 export class UsersMenu extends React.Component {
@@ -13,15 +12,17 @@ export class UsersMenu extends React.Component {
 
   render() {
     return (
-      <div id="users-menu" className={this.props.className}>
-        Other logged in users ({this.props.loggedInUsers.length - 1}):
-        <ul>
-          {
-            this.props.loggedInUsers
-              .filter(user => !this.isCurrentUser(user))
-              .map(user => (<li key={user.username}>{user.username}</li>))
-          }
-        </ul>
+      <div id="users-menu">
+        <div className={this.props.className}>
+          Other logged in users ({this.props.loggedInUsers.length - 1}):
+          <ul>
+            {
+              this.props.loggedInUsers
+                .filter(user => !this.isCurrentUser(user))
+                .map(user => (<li key={user.username}>{user.username}</li>))
+            }
+          </ul>
+        </div>
       </div>
     )
   }
