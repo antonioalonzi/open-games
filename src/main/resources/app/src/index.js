@@ -9,9 +9,10 @@ import {Messages} from './messages/Messages'
 import {Header} from './header/Header'
 import {Menu} from './menu/Menu'
 import {Login} from './login/Login'
-import {Game} from './game/Game'
-import {GamePlay} from './game/GamePlay'
-import {GameTable} from './game/GameTable'
+import {Game} from './games/Game'
+import {GamePlay} from './games/GamePlay'
+import {GameTable} from './games/GameTable'
+import {GamesPage} from './menu/GamesMenu'
 
 class App extends React.Component {
   constructor(props) {
@@ -158,8 +159,9 @@ class App extends React.Component {
             <Messages />
             <div id="content">
               <Switch>
-                <Route path="/portal/game/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
-                <Route path="/portal/game/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={activeTableGame} table={activeTable} router={router} sendMessage={this.sendMessage} />} />
+                <Route path="/portal/games" exact={true} render={(router) => <GamesPage user={this.state.user} games={this.state.games} router={router}/>} />
+                <Route path="/portal/games/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
+                <Route path="/portal/games/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={activeTableGame} table={activeTable} router={router} sendMessage={this.sendMessage} />} />
                 <Route render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
               </Switch>
             </div>

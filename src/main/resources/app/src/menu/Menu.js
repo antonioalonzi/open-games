@@ -24,6 +24,7 @@ export class Menu extends React.Component {
             <ul>
               <li><NavLink className="header-link" to="/portal/games" onClick={this.closeMenu}>Games</NavLink></li>
               <li><NavLink className="header-link" to="/portal/users" onClick={this.closeMenu}>Users</NavLink></li>
+              <li><a className="header-link" href={'/portal'}>Logout</a></li>
             </ul>
           </div>
         )

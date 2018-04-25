@@ -55,10 +55,11 @@ HeaderLeft.propTyeps = {
 export class HeaderRight extends React.Component {
   render() {
     if (this.props.user) {
+      Utils.isMobile()
       return (
         <div id="header-right">
           <span className="header-info">Welcome {this.props.user.username}</span>
-          <a className="header-link" href={'/portal'}>Logout</a>
+          { Utils.isDesktop() ? (<a className="header-link" href={'/portal'}>Logout</a>) : null }
         </div>
       )
     } else {
