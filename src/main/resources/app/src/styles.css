@@ -61,35 +61,17 @@ h6 {
 
 
 
-#content {
+#central-container {
     position: relative;
     float: left;
-    width: calc(100% - 460px);
     height: 100%;
 }
-
-
-
-@media only screen and (max-width: 900px) {
-    #messages-container {
-        width: 100%;
-    }
-}
-
-@media only screen and (min-width: 900px) {
-    #messages-container {
-        margin-left: 20px;
-        margin-right: 20px;
-    }
-}
-
 
 #messages-container div {
     position: relative;
     float: left;
     clear: both;
-    min-height: 36px;
-    vertical-align: middle;
+    padding: 10px;
 }
 
 #messages-container .message-info {
@@ -99,3 +81,35 @@ h6 {
 #messages-container .message-error {
     background-color: #884433;
 }
+
+#content {
+    position: relative;
+    float: left;
+    clear: both;
+    width: 100%;
+}
+
+
+
+@media only screen and (max-width: 900px) {
+    #central-container {
+        width: 100%;
+    }
+
+    #messages-container {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    #central-container {
+        width: calc(100% - 460px);
+    }
+
+    #messages-container {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+

@@ -154,13 +154,15 @@ class App extends React.Component {
         <div>
           <Header user={this.state.user} />
           <Menu className={hiddenIfNotLoggedIn} games={this.state.games} user={this.state.user} loggedInUsers={this.state.loggedInUsers} menuMobileExpanded={this.state.menuMobileExpanded} />
-          <div id="content">
+          <div id="central-container">
             <Messages />
-            <Switch>
-              <Route path="/portal/game/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
-              <Route path="/portal/game/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={activeTableGame} table={activeTable} router={router} sendMessage={this.sendMessage} />} />
-              <Route render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
-            </Switch>
+            <div id="content">
+              <Switch>
+                <Route path="/portal/game/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
+                <Route path="/portal/game/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={activeTableGame} table={activeTable} router={router} sendMessage={this.sendMessage} />} />
+                <Route render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
+              </Switch>
+            </div>
           </div>
         </div>
       </Router>
