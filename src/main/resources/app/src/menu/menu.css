@@ -17,7 +17,9 @@
 #mobile-menu {
     position: absolute;
     top: 40px;
-    width: 75%;
+    min-width: 50%;
+    padding-right: 10px;
     background-color: #333;
     height: 100%;
+    z-index: 10;
 }
