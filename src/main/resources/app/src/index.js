@@ -13,6 +13,7 @@ import {Game} from './games/Game'
 import {GamePlay} from './games/GamePlay'
 import {GameTable} from './games/GameTable'
 import {GamesPage} from './menu/GamesMenu'
+import {UsersPage} from './menu/UsersMenu'
 
 class App extends React.Component {
   constructor(props) {
@@ -160,6 +161,7 @@ class App extends React.Component {
             <div id="content">
               <Switch>
                 <Route path="/portal/games" exact={true} render={(router) => <GamesPage user={this.state.user} games={this.state.games} router={router}/>} />
+                <Route path="/portal/users" exact={true} render={(router) => <UsersPage user={this.state.user} loggedInUsers={this.state.loggedInUsers} router={router}/>} />
                 <Route path="/portal/games/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
                 <Route path="/portal/games/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={activeTableGame} table={activeTable} router={router} sendMessage={this.sendMessage} />} />
                 <Route render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
