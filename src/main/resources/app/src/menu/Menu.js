@@ -16,21 +16,23 @@ export class Menu extends React.Component {
     Utils.dispatchEvent("toggle-menu-event")
   }
 
+  menuWidth() {
+    if (this.props.menuMobileExpanded) {
+      return '50%'
+    } else {
+      return '0'
+    }
+  }
+
   render() {
     if (Utils.isMobile()) {
-      if (this.props.menuMobileExpanded) {
-        return (
-          <div id="mobile-menu">
-            <ul>
-              <li><NavLink className="header-link" to="/portal/games" onClick={this.closeMenu}>Games</NavLink></li>
-              <li><NavLink className="header-link" to="/portal/users" onClick={this.closeMenu}>Users</NavLink></li>
-              <li><a className="header-link" href={'/portal'}>Logout</a></li>
-            </ul>
-          </div>
-        )
-      } else {
-        return null
-      }
+      return (
+        <div id="mobile-menu" style={ {width: this.menuWidth()} } >
+          <NavLink className="header-link" to="/portal/games" onClick={this.closeMenu}>Games</NavLink>
+          <NavLink className="header-link" to="/portal/users" onClick={this.closeMenu}>Users</NavLink>
+          <a className="header-link" href={'/portal'}>Logout</a>
+        </div>
+      )
 
     } else if (Utils.isDesktop()) {
       return (

@@ -15,11 +15,19 @@
 }
 
 #mobile-menu {
-    position: absolute;
+    position: fixed;
     top: 40px;
-    min-width: 50%;
-    padding-right: 10px;
+    left: 0;
+    overflow-x: hidden;
     background-color: #333;
     height: 100%;
-    z-index: 10;
+    z-index: 1;
+    transition: 0.5s;
+}
+
+#mobile-menu a {
+    padding: 8px 8px 8px 12px;
+    text-decoration: none;
+    font-size: larger;
+    display: block;
 }
