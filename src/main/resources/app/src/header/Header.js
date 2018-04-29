@@ -58,7 +58,7 @@ export class HeaderRight extends React.Component {
       Utils.isMobile()
       return (
         <div id="header-right">
-          <span className="header-info">Welcome {this.props.user.username}</span>
+          <span className="header-info">{this.props.user.username}</span>
           { Utils.isDesktop() ? (<a className="header-link" href={'/portal'}>Logout</a>) : null }
         </div>
       )

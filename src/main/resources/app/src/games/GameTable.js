@@ -1,5 +1,4 @@
 import React from 'react'
-import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
 import {Button, Form, Input, Submit} from '../form/Form'
 
@@ -45,6 +44,10 @@ export class GameTable extends React.Component {
   }
 
   static getUserActiveTable(user, tables) {
+    if (user == null) {
+      return null
+    }
+
     return tables
       .filter(table => table.status === 'NEW' || table.status === 'IN_PROGRESS')
       .filter(table => table.owner === user.username || table.joiners.indexOf(user.username) >= 0)[0]
