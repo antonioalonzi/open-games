@@ -1,7 +1,8 @@
 package com.aa.opengames.table;
 
-import com.aa.opengames.game.GamePlay;
+import com.aa.opengames.game.play.GamePlay;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Builder;
@@ -14,7 +15,10 @@ import lombok.Singular;
 @Builder(toBuilder = true)
 public class Table {
   public enum Status {
-    NEW, IN_PROGRESS, FINISHED, CANCELLED;
+    NEW,
+    IN_PROGRESS,
+    FINISHED,
+    CANCELLED;
 
     public boolean isActive() {
       return this == NEW || this == IN_PROGRESS;
@@ -34,5 +38,12 @@ public class Table {
 
   public int getNumOfPlayers() {
     return joiners.size() + 1;
+  }
+
+  public ArrayList<String> getPlayers() {
+    ArrayList<String> players = new ArrayList<>();
+    players.add(owner);
+    players.addAll(joiners);
+    return players;
   }
 }

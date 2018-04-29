@@ -1,4 +1,4 @@
-package com.aa.opengames.game;
+package com.aa.opengames.game.play;
 
 import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
 

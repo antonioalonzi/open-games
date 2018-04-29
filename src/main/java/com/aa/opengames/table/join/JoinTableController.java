@@ -7,7 +7,7 @@ import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.game.Game;
-import com.aa.opengames.game.GamePlayFactory;
+import com.aa.opengames.game.play.GamePlayFactory;
 import com.aa.opengames.game.GameRepository;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;

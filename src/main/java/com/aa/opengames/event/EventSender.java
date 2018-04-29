@@ -33,7 +33,7 @@ public class EventSender {
 
   public void sendToUser(String sessionId, Event event) {
     String eventString = serializeToString(event);
-    LOGGER.info("Sending event: {}", eventString);
+    LOGGER.info("Sending event to {}: {}", sessionId, eventString);
     webSocketTemplate.convertAndSendToUser(sessionId, "/events", eventString);
   }
 

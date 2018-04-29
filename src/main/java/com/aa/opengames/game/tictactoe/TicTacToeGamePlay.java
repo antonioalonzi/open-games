@@ -1,9 +1,12 @@
 package com.aa.opengames.game.tictactoe;
 
-import com.aa.opengames.game.GamePlay;
-import java.util.UUID;
+import com.aa.opengames.game.play.GamePlay;
+import com.aa.opengames.game.play.GamePlayPlayerInfo;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 @Getter
 public class TicTacToeGamePlay extends GamePlay {
@@ -11,8 +14,8 @@ public class TicTacToeGamePlay extends GamePlay {
     public static final String TIC_TAC_TOE_LABEL = "tic-tac-toe";
 
     @Builder(toBuilder = true)
-    private TicTacToeGamePlay(UUID id, UUID tableId, boolean isInitialized) {
-        super(id, tableId, isInitialized);
+    private TicTacToeGamePlay(UUID id, UUID tableId, boolean isInitialized, ArrayList<? extends GamePlayPlayerInfo> playersInfo, int currentPlayerIndex) {
+        super(id, tableId, isInitialized, playersInfo, currentPlayerIndex);
     }
 
 }
