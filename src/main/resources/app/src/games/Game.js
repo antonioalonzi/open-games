@@ -46,7 +46,7 @@ export class Game extends React.Component {
   }
 
   onStartGame(event) {
-    this.props.router.history.push('/portal/game/' + event.value + "/play")
+    this.props.router.history.push('/portal/games/' + event.value + "/play")
   }
 
   gameLabel() {

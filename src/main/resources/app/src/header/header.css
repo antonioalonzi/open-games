@@ -7,11 +7,12 @@
 #open-menu-icon-link {
     float: left;
     display: block;
-    padding: 6px;
+    padding: 8px;
 }
 
 #open-menu-icon {
-    fill: #d0d0d0
+    fill: #d0d0d0;
+    font-size: 24px;
 }
 
 #open-menu-icon:hover {
