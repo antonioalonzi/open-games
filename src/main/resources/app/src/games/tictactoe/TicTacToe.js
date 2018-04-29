@@ -1,6 +1,7 @@
 import './tictactoe.css'
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Utils} from "../../utils/Utils";
 
 
 export class TicTacToe extends React.Component {
@@ -9,9 +10,11 @@ export class TicTacToe extends React.Component {
   }
 
   componentWillMount() {
+    Utils.addEventListener('ltic-tac-toe-initialization-event', this.onLoginResponse)
   }
 
   componentWillUnmount() {
+    Utils.removeEventListener('tic-tac-toe-initialization-event', this.onLoginResponse)
   }
 
   opponent() {
