@@ -28,9 +28,9 @@ export class Menu extends React.Component {
     if (Utils.isMobile()) {
       return (
         <div id="mobile-menu" style={ {width: this.menuWidth()} } >
-          <NavLink className="header-link" to="/portal/games" onClick={this.closeMenu}>Games</NavLink>
-          <NavLink className="header-link" to="/portal/users" onClick={this.closeMenu}>Users</NavLink>
-          <a className="header-link" href={'/portal'}>Logout</a>
+          <i className="fa fa-gamepad" /><NavLink className="header-link" to="/portal/games" onClick={this.closeMenu}>Games</NavLink>
+          <i className="fa fa-users" /><NavLink className="header-link" to="/portal/users" onClick={this.closeMenu}>Users</NavLink>
+          <i className="fa fa-power-off" /><a className="header-link" href={'/portal'}>Logout</a>
         </div>
       )
 

@@ -77,14 +77,17 @@ h6 {
     float: left;
     clear: both;
     padding: 10px;
+    margin-bottom: 2px;
 }
 
 #messages-container .message-info {
     background-color: #274e27;
+    border: 1px solid #275e27;
 }
 
 #messages-container .message-error {
     background-color: #884433;
+    border: 1px solid #984433;
 }
 
 #content {

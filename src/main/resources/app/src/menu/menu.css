@@ -25,7 +25,25 @@
     transition: 0.5s;
 }
 
+#mobile-menu i {
+    position: relative;
+    float: left;
+    clear: left;
+    padding-top: 8px;
+    padding-left: 8px;
+    text-decoration: none;
+    font-size: larger;
+    display: block;
+}
+
+#mobile-menu i.fa-power-off {
+    padding-left: 10px;
+    padding-right: 2px;
+}
+
 #mobile-menu a {
+    position: relative;
+    float: left;
     padding: 8px 8px 8px 12px;
     text-decoration: none;
     font-size: larger;

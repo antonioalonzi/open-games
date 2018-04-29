@@ -28,8 +28,9 @@ export class GamePlay extends React.Component {
     return (
       <div id='game-play'>
         <div id='game-play-content'>
-          <div id='game-play-exit'>
-            <Button value='x' onClick={this.exit} />
+          <div id='game-play-icons'>
+            { Utils.isDesktop() ? (<i id='game-play-maximize' className="fa fa-window-maximize" onClick={this.maximize} />) : null }
+            <i id='game-play-exit' className="fa fa-window-close" onClick={this.exit} />
           </div>
 
           <TicTacToe router={this.props.router} sendMessage={this.props.sendMessage} user={this.props.user}
