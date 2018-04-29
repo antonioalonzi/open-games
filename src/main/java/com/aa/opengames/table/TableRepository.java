@@ -23,7 +23,7 @@ public class TableRepository {
 
   public Optional<Table> getActiveTableForUser(String username) {
     return tables.stream()
-        .filter(table -> table.getStatus() == Table.Status.NEW || table.getStatus() == Table.Status.IN_PROGRESS)
+        .filter(table -> table.getStatus().isActive())
         .filter(table -> table.getOwner().equals(username) || table.getJoiners().contains(username))
         .findFirst();
   }

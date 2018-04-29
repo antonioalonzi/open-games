@@ -2,6 +2,7 @@ package com.aa.opengames.table.create;
 
 import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
+import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
 import static com.aa.opengames.utils.TestUtils.loginUser;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
@@ -60,14 +61,14 @@ public class CreateTableControllerTest {
   public void shouldCreateATableForExistingGame() {
     // Given
     String username = "user";
-    CreateTableRequest createTableRequest = CreateTableRequest.builder().game("tic-tac-toe").build();
+    CreateTableRequest createTableRequest = CreateTableRequest.builder().game(TIC_TAC_TOE_LABEL).build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
     loginUser(sessionHeader, username);
 
     // it works even if the user already owns a finished table
     tableRepository.addTable(Table.builder()
         .id(UUID.randomUUID())
-        .game("tic-tac-toe")
+        .game(TIC_TAC_TOE_LABEL)
         .owner(username)
         .status(Table.Status.FINISHED)
         .build()
@@ -92,7 +93,7 @@ public class CreateTableControllerTest {
         .type(TableCreatedEvent.EVENT_TYPE)
         .value(TableCreatedEvent.builder()
             .id(tableRepository.getActiveTableForUser(username).orElseThrow(() -> new RuntimeException("No active game found")).getId())
-            .game("tic-tac-toe")
+            .game(TIC_TAC_TOE_LABEL)
             .owner(username)
             .status(Table.Status.NEW)
             .build())
@@ -106,14 +107,14 @@ public class CreateTableControllerTest {
   public void shouldFailIfUserOwnsAlreadyAGame() {
     // Given
     String user = "user";
-    CreateTableRequest createTableRequest = CreateTableRequest.builder().game("tic-tac-toe").build();
+    CreateTableRequest createTableRequest = CreateTableRequest.builder().game(TIC_TAC_TOE_LABEL).build();
     SimpMessageHeaderAccessor sessionHeader = sessionHeader("sessionId");
     loginUser(sessionHeader, user);
 
     UUID tableId = UUID.randomUUID();
     tableRepository.addTable(Table.builder()
         .id(tableId)
-        .game("tic-tac-toe")
+        .game(TIC_TAC_TOE_LABEL)
         .owner(user)
         .status(Table.Status.NEW)
         .build()

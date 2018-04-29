@@ -1,5 +1,6 @@
 package com.aa.opengames.init;
 
+import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
@@ -55,7 +56,7 @@ public class InitControllerTest {
   public void shouldRespondToInit() {
     // Given
     String username = "user-1";
-    String gameLabel = "tic-tac-toe";
+    String gameLabel = TIC_TAC_TOE_LABEL;
     userRepository.addUser(User.builder().username(username).build());
     UUID table1Id = UUID.randomUUID();
     tableRepository.addTable(Table.builder().id(table1Id).game(gameLabel).owner(username).status(Table.Status.NEW).build());

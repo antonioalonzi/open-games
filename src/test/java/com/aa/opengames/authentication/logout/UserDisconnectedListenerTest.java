@@ -1,5 +1,6 @@
 package com.aa.opengames.authentication.logout;
 
+import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
@@ -66,14 +67,14 @@ public class UserDisconnectedListenerTest {
     UUID newTableId = UUID.randomUUID();
     tableRepository.addTable(Table.builder()
         .id(newTableId)
-        .game("tic-tac-toe")
+        .game(TIC_TAC_TOE_LABEL)
         .status(Table.Status.NEW)
         .owner(username)
         .build());
 
     tableRepository.addTable(Table.builder()
         .id(UUID.randomUUID())
-        .game("tic-tac-toe")
+        .game(TIC_TAC_TOE_LABEL)
         .status(Table.Status.FINISHED)
         .owner(username)
         .build());

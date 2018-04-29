@@ -1,5 +1,7 @@
 package com.aa.opengames.game;
 
+import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -13,7 +15,7 @@ public class GameRepository {
 
   public GameRepository() {
     games.add(Game.builder()
-        .label("tic-tac-toe")
+        .label(TIC_TAC_TOE_LABEL)
         .name("Tic Tac Toe")
         .description("Simple implementation of Tic Tac Toe.")
         .minNumPlayers(2)

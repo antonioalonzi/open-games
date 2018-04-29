@@ -2,6 +2,7 @@ package com.aa.opengames.table.join;
 
 import static com.aa.opengames.event.EventResponse.ResponseStatus.ERROR;
 import static com.aa.opengames.event.EventResponse.ResponseStatus.SUCCESS;
+import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
 import static com.aa.opengames.utils.TestUtils.loginUser;
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
@@ -71,7 +72,7 @@ public class JoinTableControllerTest {
     // it works even if the user is already active in a finished table
     tableRepository.addTable(Table.builder()
         .id(UUID.randomUUID())
-        .game("tic-tac-toe")
+        .game(TIC_TAC_TOE_LABEL)
         .owner(username)
         .status(Table.Status.FINISHED)
         .build()
@@ -80,7 +81,7 @@ public class JoinTableControllerTest {
     // other-user table to join in
     tableRepository.addTable(Table.builder()
         .id(tableId)
-        .game("tic-tac-toe")
+        .game(TIC_TAC_TOE_LABEL)
         .owner(otherUser)
         .status(Table.Status.NEW)
         .build()
@@ -126,7 +127,7 @@ public class JoinTableControllerTest {
     tableRepository.addTable(
         Table.builder()
             .id(tableId)
-            .game("tic-tac-toe")
+            .game(TIC_TAC_TOE_LABEL)
             .owner("other-player")
             .joiner(username)
             .status(Table.Status.NEW)

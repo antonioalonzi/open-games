@@ -7,11 +7,13 @@ import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.game.Game;
+import com.aa.opengames.game.GamePlayFactory;
 import com.aa.opengames.game.GameRepository;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.table.TableUpdatedEvent;
 import com.aa.opengames.user.User;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -27,15 +29,17 @@ public class JoinTableController {
 
   private final Logger LOGGER = LoggerFactory.getLogger(JoinTableController.class);
 
-  private TableRepository tableRepository;
-  private GameRepository gameRepository;
-  private EventSender eventSender;
+  private final TableRepository tableRepository;
+  private final GameRepository gameRepository;
+  private final EventSender eventSender;
+  private final GamePlayFactory gamePlayFactory;
 
   @Autowired
-  public JoinTableController(TableRepository tableRepository, GameRepository gameRepository, EventSender eventSender) {
+  public JoinTableController(TableRepository tableRepository, GameRepository gameRepository, EventSender eventSender, GamePlayFactory gamePlayFactory) {
     this.tableRepository = tableRepository;
     this.gameRepository = gameRepository;
     this.eventSender = eventSender;
+    this.gamePlayFactory = gamePlayFactory;
   }
 
   @MessageMapping("/table/join")
@@ -59,7 +63,11 @@ public class JoinTableController {
             .build();
 
         if (updatedTable.getNumOfPlayers() == game.getMaxNumPlayers()) {
-          updatedTable = updatedTable.toBuilder().status(Table.Status.IN_PROGRESS).build();
+          updatedTable = updatedTable.toBuilder()
+                  .status(Table.Status.IN_PROGRESS)
+                  .startedDateTime(LocalDateTime.now())
+                  .gamePlay(gamePlayFactory.createGamePlay(updatedTable.getGame(), updatedTable.getId()))
+                  .build();
         }
 
         tableRepository.updateTable(updatedTable);

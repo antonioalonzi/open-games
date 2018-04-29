@@ -9,6 +9,7 @@ import com.aa.opengames.event.EventSender;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.user.User;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ public class CreateTableController {
       Table table =
           Table.builder()
               .id(UUID.randomUUID())
+              .createdDateTime(LocalDateTime.now())
               .game(createTableRequest.getGame())
               .owner(user.getUsername())
               .status(Table.Status.NEW)
