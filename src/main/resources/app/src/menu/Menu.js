@@ -16,18 +16,18 @@ export class Menu extends React.Component {
     Utils.dispatchEvent("toggle-menu-event")
   }
 
-  menuWidth() {
+  menuLeftPosition() {
     if (this.props.menuMobileExpanded) {
-      return '50%'
-    } else {
       return '0'
+    } else {
+      return '-50%'
     }
   }
 
   render() {
     if (Utils.isMobile()) {
       return (
-        <div id="mobile-menu" style={ {width: this.menuWidth()} } >
+        <div id="mobile-menu" style={ {left: this.menuLeftPosition()} } >
           <i className="fa fa-gamepad" /><NavLink className="header-link" to="/portal/games" onClick={this.closeMenu}>Games</NavLink>
           <i className="fa fa-users" /><NavLink className="header-link" to="/portal/users" onClick={this.closeMenu}>Users</NavLink>
           <i className="fa fa-power-off" /><a className="header-link" href={'/portal'}>Logout</a>
@@ -50,5 +50,5 @@ Menu.propTyeps = {
   games: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
   loggedInUsers: PropTypes.array.isRequired,
-  menuMobileExpanded: PropTypes.array.isRequired
+  menuMobileExpanded: PropTypes.bool.isRequired
 }

@@ -21,6 +21,7 @@
     overflow-x: hidden;
     background-color: #333;
     height: 100%;
+    width: 50%;
     z-index: 1;
     transition: 0.5s;
 }
