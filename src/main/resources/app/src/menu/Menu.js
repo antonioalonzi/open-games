@@ -13,7 +13,7 @@ export class Menu extends React.Component {
   }
 
   closeMenu() {
-    Utils.dispatchEvent("toggle-menu-event")
+    Utils.dispatchEvent('toggle-menu-event')
   }
 
   menuLeftPosition() {

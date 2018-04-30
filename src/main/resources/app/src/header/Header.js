@@ -11,7 +11,7 @@ export class OpenMenuIcon extends React.Component {
   }
 
   toggleMenu() {
-    Utils.dispatchEvent("toggle-menu-event")
+    Utils.dispatchEvent('toggle-menu-event')
   }
 
   render() {
