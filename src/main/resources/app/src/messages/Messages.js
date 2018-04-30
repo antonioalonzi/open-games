@@ -1,6 +1,22 @@
 import React from 'react'
 import {Utils} from '../utils/Utils'
 
+
+export class Message extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      <div className={'message-' + this.props.type}>
+        {this.props.children}
+      </div>
+    )
+  }
+}
+
+
 export class Messages extends React.Component {
   constructor(props) {
     super(props)
@@ -71,16 +87,3 @@ export class Messages extends React.Component {
   }
 }
 
-export class Message extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    return (
-      <div className={'message-' + this.props.type}>
-        {this.props.children}
-      </div>
-    )
-  }
-}
