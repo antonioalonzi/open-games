@@ -8,7 +8,8 @@
     "build-dev": "./node_modules/.bin/webpack -d",
     "build-prod": "./node_modules/.bin/webpack -p",
     "lint": "eslint src/main/resources/app/src/*.js src/main/resources/app/src/**/*.js --ignore-pattern node_modules/",
-    "lint-fix": "eslint src/main/resources/app/src/*.js src/main/resources/app/src/**/*.js --fix"
+    "lint-fix": "eslint src/main/resources/app/src/*.js src/main/resources/app/src/**/*.js --fix",
+    "postinstall" : "npm run build-prod"
   },
   "author": "Antonio Alonzi",
   "license": "",
