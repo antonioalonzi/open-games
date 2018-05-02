@@ -7,18 +7,38 @@
     float: left;
     background-color: #f2f2f2;
     border: 1px solid #333333;
+    color: black;
+}
+
+.tic-tac-toe-symbol {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.tic-tac-toe-cell .fa-times {
+    padding-left: 10%;
+}
+
+.tic-tac-toe-cell .fa-genderless {
+    padding-left: 19%;
+    -webkit-text-stroke: 9px black;
 }
 
 @media only screen and (max-width: 900px) {
     .tic-tac-toe-cell {
         width: 33%;
         padding-top: 33%;
+        font-size: 30vw;
     }
 }
 
 @media only screen and (min-width: 900px) {
     .tic-tac-toe-cell {
         width: 150px;
-        height: 150px;
+        font-size: 150px;
+        padding-top: 150px;
     }
 }

@@ -12,7 +12,7 @@ public class TicTacToeInitializationEvent {
   public static final String EVENT_TYPE = "tic-tac-toe-initialization-event";
 
   private int currentPlayerIndex;
-  private ArrayList playersInfo;
+  private ArrayList<PlayerInfo> playersInfo;
 
   @Getter
   @Builder
