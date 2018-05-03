@@ -1,3 +1,17 @@
+#tic-tac-toe-status .fa-genderless {
+    -webkit-text-stroke: 2px #d0d0d0;
+}
+
+#tic-tac-toe-status-players {
+    font-size: larger;
+}
+
+#tic-tac-toe-status-players span {
+    padding-left: 15px;
+}
+
+
+
 .tic-tac-toe-row {
     clear: both;
 }

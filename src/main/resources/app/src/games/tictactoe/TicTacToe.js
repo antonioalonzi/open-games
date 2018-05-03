@@ -3,6 +3,56 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Utils} from "../../utils/Utils";
 
+class TicTacToeIcon extends React.Component {
+  render () {
+    switch (this.props.symbol) {
+      case 'X':
+        return <i className={`fa fa-times ${this.props.className}`} />
+      case 'O':
+        return <i className={`fa fa-genderless ${this.props.className}`} />
+      default:
+        return null
+    }
+  }
+}
+
+TicTacToeIcon.propTyeps = {
+  symbol: PropTypes.string.isRequired,
+  className: PropTypes.string
+}
+
+
+
+class TicTacToePlayerStatus extends React.Component {
+  playerStatus(i) {
+    return (
+      <span><TicTacToeIcon symbol={this.props.playersInfo[i].symbol} /> {this.props.playersInfo[i].username}</span>
+    )
+  }
+
+  render () {
+    if (this.props.playersInfo.length > 0) {
+      return (
+        <div id='tic-tac-toe-status-players'>
+          { this.playerStatus(0) }
+          <span>{ this.props.currentPlayerIndex === 0 ? <i className={'fa fa-hand-o-left'} /> : null }</span>
+          <span>vs</span>
+          <span>{ this.props.currentPlayerIndex === 1 ? <i className={'fa fa-hand-o-right'} /> : null }</span>
+          { this.playerStatus(1) }
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+}
+
+TicTacToeIcon.propTyeps = {
+  playersInfo: PropTypes.array.isRequired,
+  currentPlayerIndex: PropTypes.number.isRequired
+}
+
+
 
 export class TicTacToe extends React.Component {
   constructor(props) {
@@ -47,22 +97,15 @@ export class TicTacToe extends React.Component {
   }
 
   icon(i, j) {
-    const symbol = this.state.board[i][j];
-    switch (symbol) {
-      case 'X':
-        return <i className={'fa fa-times tic-tac-toe-symbol'} />
-      case 'O':
-        return <i className={'fa fa-genderless tic-tac-toe-symbol'} />
-      default:
-        return null
-    }
+    const symbol = this.state.board[i][j]
+    return <TicTacToeIcon symbol={symbol} className={'tic-tac-toe-symbol'} />
   }
 
   render() {
     return (
       <div>
         <div id='tic-tac-toe-status'>
-          <span>{this.props.user.username}</span> vs <span>{this.opponent()}</span>
+          <TicTacToePlayerStatus playersInfo={this.state.playersInfo} currentPlayerIndex={this.state.currentPlayerIndex}/>
         </div>
 
         <div id='tic-tac-toe-scheme'>
