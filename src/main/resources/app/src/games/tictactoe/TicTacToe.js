@@ -77,14 +77,6 @@ export class TicTacToe extends React.Component {
     Utils.removeEventListener('tic-tac-toe-initialization-event', this.onInitializationEvent)
   }
 
-  opponent() {
-    if (this.props.user.username === this.props.table.owner) {
-      return this.props.table.joiners[0]
-    } else {
-      return this.props.table.owner
-    }
-  }
-
   onInitializationEvent(event) {
     this.setState({
       playersInfo: event.value.playersInfo,
@@ -92,8 +84,16 @@ export class TicTacToe extends React.Component {
     })
   }
 
+  isUserTurn() {
+    return this.props.user.username === this.state.playersInfo[this.state.currentPlayerIndex].username
+  }
+
   selectCell(i, j) {
-    alert(i + '-' + j)
+    if (this.isUserTurn()) {
+      if (this.state.board[i][j] === '') {
+        this.props.sendMessage('/api/games/tic-tac-toe/actions', {i: i, j: j})
+      }
+    }
   }
 
   icon(i, j) {

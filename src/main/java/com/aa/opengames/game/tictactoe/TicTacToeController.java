@@ -1,14 +1,18 @@
 package com.aa.opengames.game.tictactoe;
 
+import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.init.InitController;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
+import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
@@ -63,6 +67,13 @@ public class TicTacToeController {
 
             sendInitializationEvent(players, playersInfo, initializedGamePlay);
         });
+    }
+
+    @MessageMapping("/games/tic-tac-toe/actions")
+    public void create(SimpMessageHeaderAccessor headerAccessor, TicTacToeActionRequest ticTacToeActionRequest) {
+        String token = headerAccessor.getSessionId();
+        User user = SecurityContextHolder.getAndCheckUser(token);
+        LOGGER.info("TicTacToeActionRequest '{}' request received from username '{}'", ticTacToeActionRequest, user.getUsername());
     }
 
     private ArrayList<TicTacToeGamePlayPlayerInfo> createPlayersInfo(ArrayList<String> players) {
