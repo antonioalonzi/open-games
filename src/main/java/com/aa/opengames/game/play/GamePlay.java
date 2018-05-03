@@ -10,9 +10,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class GamePlay {
-    protected UUID id;
-    protected UUID tableId;
-    protected boolean isInitialized;
-    protected ArrayList<? extends GamePlayPlayerInfo> playersInfo;
-    protected int currentPlayerIndex;
+    public UUID id;
+    public UUID tableId;
+    public boolean isInitialized;
+    public ArrayList<? extends GamePlayPlayerInfo> playersInfo;
+    public int currentPlayerIndex;
 }

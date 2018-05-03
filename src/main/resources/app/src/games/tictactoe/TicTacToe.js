@@ -58,6 +58,7 @@ export class TicTacToe extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      gamePlayId: '',
       board: [
         ['', '', ''],
         ['', 'X', 'O'],
@@ -79,6 +80,7 @@ export class TicTacToe extends React.Component {
 
   onInitializationEvent(event) {
     this.setState({
+      gamePlayId: event.value.id,
       playersInfo: event.value.playersInfo,
       currentPlayerIndex: event.value.currentPlayerIndex
     })
@@ -91,7 +93,11 @@ export class TicTacToe extends React.Component {
   selectCell(i, j) {
     if (this.isUserTurn()) {
       if (this.state.board[i][j] === '') {
-        this.props.sendMessage('/api/games/tic-tac-toe/actions', {i: i, j: j})
+        const action = {
+          id: this.state.gamePlayId,
+          action: {i: i, j: j}
+        }
+        this.props.sendMessage('/api/games/tic-tac-toe/actions', action)
       }
     }
   }

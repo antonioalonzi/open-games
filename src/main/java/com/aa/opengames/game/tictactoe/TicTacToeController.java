@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -74,6 +75,9 @@ public class TicTacToeController {
         String token = headerAccessor.getSessionId();
         User user = SecurityContextHolder.getAndCheckUser(token);
         LOGGER.info("TicTacToeActionRequest '{}' request received from username '{}'", ticTacToeActionRequest, user.getUsername());
+
+        TicTacToeGamePlay gamePlay = ticTacToeGamePlayRepository.getById(ticTacToeActionRequest.getId()).orElseThrow(() -> new RuntimeException("GamePlay with id " + ticTacToeActionRequest.getId() + " not found."));
+        // TODO continue from here.
     }
 
     private ArrayList<TicTacToeGamePlayPlayerInfo> createPlayersInfo(ArrayList<String> players) {
@@ -105,6 +109,7 @@ public class TicTacToeController {
                 .forEach((user) -> eventSender.sendToUser(user.getToken(), Event.builder()
                         .type(TicTacToeInitializationEvent.EVENT_TYPE)
                         .value(TicTacToeInitializationEvent.builder()
+                                .id(initializedGamePlay.getId())
                                 .playersInfo(playersInfoEvent)
                                 .currentPlayerIndex(initializedGamePlay.getCurrentPlayerIndex())
                                 .build())
