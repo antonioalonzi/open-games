@@ -12,6 +12,14 @@ public class TicTacToeGameState implements GameState {
             new String[] {"", "", ""}
     };
 
+    public String[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(String[][] board) {
+        this.board = board;
+    }
+
     public String getSymbol(int i, int j) {
         return board[i][j];
     }

@@ -91,7 +91,8 @@ export class TicTacToe extends React.Component {
 
   onUpdateEvent(event) {
     this.setState({
-      currentPlayerIndex: event.value.currentPlayerIndex
+      currentPlayerIndex: event.value.gameState.currentPlayerIndex,
+      board: event.value.gameState.board
     })
   }
 

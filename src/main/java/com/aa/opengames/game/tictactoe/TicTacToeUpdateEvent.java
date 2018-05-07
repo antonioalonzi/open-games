@@ -12,7 +12,6 @@ public class TicTacToeUpdateEvent {
   public static final String EVENT_TYPE = "tic-tac-toe-update-event";
 
   private UUID gameId;
-  private int currentPlayerIndex;
   private TicTacToeGameState gameState;
 
 }

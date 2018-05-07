@@ -76,7 +76,9 @@ public class TicTacToeController {
         Table table = tableRepository.getTableById(gamePlay.getTableId());
         TicTacToeGameState gameState = (TicTacToeGameState)gamePlay.getGameState();
 
+        TicTacToeGamePlayPlayerInfo playerInfo = (TicTacToeGamePlayPlayerInfo)gamePlay.getPlayerInfo(user.getUsername());
         gameState.setCurrentPlayerIndex((gameState.getCurrentPlayerIndex() + 1) % 2);
+        gameState.setSymbol(ticTacToeActionRequest.getAction().getI(), ticTacToeActionRequest.getAction().getJ(), playerInfo.getSymbol());
 
         TicTacToeUpdateEvent ticTacToeUpdateEvent = TicTacToeUpdateEvent.builder()
                 .gameId(gamePlay.getId())
