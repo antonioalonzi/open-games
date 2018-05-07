@@ -7,7 +7,6 @@ import com.aa.opengames.init.InitController;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
 import com.aa.opengames.user.User;
-import com.aa.opengames.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,14 +30,12 @@ public class TicTacToeController {
 
     private final TicTacToeGamePlayRepository ticTacToeGamePlayRepository;
     private final TableRepository tableRepository;
-    private final UserRepository userRepository;
     private final EventSender eventSender;
 
     @Autowired
-    public TicTacToeController(TicTacToeGamePlayRepository ticTacToeGamePlayRepository, TableRepository tableRepository, UserRepository userRepository, EventSender eventSender) {
+    public TicTacToeController(TicTacToeGamePlayRepository ticTacToeGamePlayRepository, TableRepository tableRepository, EventSender eventSender) {
         this.ticTacToeGamePlayRepository = ticTacToeGamePlayRepository;
         this.tableRepository = tableRepository;
-        this.userRepository = userRepository;
         this.eventSender = eventSender;
     }
 
@@ -50,7 +46,7 @@ public class TicTacToeController {
                 .collect(Collectors.toSet());
 
         gamePlayToInitialize.forEach((gamePlay) -> {
-            Table table = tableRepository.getTableById(gamePlay.getTableId()).orElseThrow(() -> new RuntimeException("Table not found"));
+            Table table = tableRepository.getTableById(gamePlay.getTableId());
 
             ArrayList<String> players = table.getPlayers();
             Collections.shuffle(players);
@@ -77,7 +73,20 @@ public class TicTacToeController {
         LOGGER.info("TicTacToeActionRequest '{}' request received from username '{}'", ticTacToeActionRequest, user.getUsername());
 
         TicTacToeGamePlay gamePlay = ticTacToeGamePlayRepository.getById(ticTacToeActionRequest.getId()).orElseThrow(() -> new RuntimeException("GamePlay with id " + ticTacToeActionRequest.getId() + " not found."));
-        // TODO continue from here.
+        Table table = tableRepository.getTableById(gamePlay.getTableId());
+        TicTacToeGameState gameState = (TicTacToeGameState)gamePlay.getGameState();
+
+        gameState.setCurrentPlayerIndex((gameState.getCurrentPlayerIndex() + 1) % 2);
+
+        TicTacToeUpdateEvent ticTacToeUpdateEvent = TicTacToeUpdateEvent.builder()
+                .gameId(gamePlay.getId())
+                .gameState(gameState)
+                .build();
+
+        eventSender.sendToUsers(table.getPlayers(), Event.builder()
+                .type(TicTacToeUpdateEvent.EVENT_TYPE)
+                .value(ticTacToeUpdateEvent)
+                .build());
     }
 
     private ArrayList<TicTacToeGamePlayPlayerInfo> createPlayersInfo(ArrayList<String> players) {
@@ -94,8 +103,6 @@ public class TicTacToeController {
         return playerInfos;
     }
 
-
-
     private void sendInitializationEvent(ArrayList<String> players, ArrayList<TicTacToeGamePlayPlayerInfo> playersInfo, TicTacToeGamePlay initializedGamePlay) {
         ArrayList<TicTacToeInitializationEvent.PlayerInfo> playersInfoEvent = playersInfo.stream()
                 .map((playerInfo) -> TicTacToeInitializationEvent.PlayerInfo.builder()
@@ -104,15 +111,13 @@ public class TicTacToeController {
                         .build())
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        userRepository.getAllUsers().stream()
-                .filter((user) -> players.contains(user.getUsername()))
-                .forEach((user) -> eventSender.sendToUser(user.getToken(), Event.builder()
-                        .type(TicTacToeInitializationEvent.EVENT_TYPE)
-                        .value(TicTacToeInitializationEvent.builder()
-                                .id(initializedGamePlay.getId())
-                                .playersInfo(playersInfoEvent)
-                                .currentPlayerIndex(initializedGamePlay.getCurrentPlayerIndex())
-                                .build())
-                        .build()));
+        eventSender.sendToUsers(players, Event.builder()
+                .type(TicTacToeInitializationEvent.EVENT_TYPE)
+                .value(TicTacToeInitializationEvent.builder()
+                        .id(initializedGamePlay.getId())
+                        .playersInfo(playersInfoEvent)
+                        .currentPlayerIndex(initializedGamePlay.getCurrentPlayerIndex())
+                        .build())
+                .build());
     }
 }

@@ -61,27 +61,36 @@ export class TicTacToe extends React.Component {
       gamePlayId: '',
       board: [
         ['', '', ''],
-        ['', 'X', 'O'],
+        ['', '', ''],
         ['', '', '']
       ],
       playersInfo: [],
       currentPlayerIndex: 0
     }
     this.onInitializationEvent = this.onInitializationEvent.bind(this)
+    this.onUpdateEvent = this.onUpdateEvent.bind(this)
   }
 
   componentWillMount() {
     Utils.addEventListener('tic-tac-toe-initialization-event', this.onInitializationEvent)
+    Utils.addEventListener('tic-tac-toe-update-event', this.onUpdateEvent)
   }
 
   componentWillUnmount() {
     Utils.removeEventListener('tic-tac-toe-initialization-event', this.onInitializationEvent)
+    Utils.removeEventListener('tic-tac-toe-update-event', this.onUpdateEvent)
   }
 
   onInitializationEvent(event) {
     this.setState({
       gamePlayId: event.value.id,
       playersInfo: event.value.playersInfo,
+      currentPlayerIndex: event.value.currentPlayerIndex
+    })
+  }
+
+  onUpdateEvent(event) {
+    this.setState({
       currentPlayerIndex: event.value.currentPlayerIndex
     })
   }

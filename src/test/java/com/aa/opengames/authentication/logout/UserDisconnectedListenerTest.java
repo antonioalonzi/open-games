@@ -111,7 +111,7 @@ public class UserDisconnectedListenerTest {
     assertThat(eventCaptor.getAllValues().get(1), sameBeanAs(tableUpdatedEvent));
 
     // table is cancelled in the repository too
-    Table updatedTable = tableRepository.getTableById(newTableId).orElseThrow(() -> new RuntimeException("Table not found"));
+    Table updatedTable = tableRepository.getTableById(newTableId);
     assertThat(updatedTable.getStatus(), sameBeanAs(Table.Status.CANCELLED));
   }
 

@@ -5,6 +5,8 @@ import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABE
 import com.aa.opengames.game.tictactoe.TicTacToeGamePlay;
 import com.aa.opengames.game.tictactoe.TicTacToeGamePlayRepository;
 import java.util.UUID;
+
+import com.aa.opengames.game.tictactoe.TicTacToeGameState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class GamePlayFactory {
                 TicTacToeGamePlay ticTacToeGamePlay = TicTacToeGamePlay.builder()
                         .id(UUID.randomUUID())
                         .tableId(tableId)
+                        .gameState(new TicTacToeGameState())
                         .build();
                 ticTacToeGamePlayRepository.add(ticTacToeGamePlay);
                 return ticTacToeGamePlay;

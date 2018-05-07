@@ -15,10 +15,11 @@ public class TableRepository {
     return tables;
   }
 
-  public Optional<Table> getTableById(UUID id) {
+  public Table getTableById(UUID id) {
     return tables.stream()
         .filter(table -> table.getId().equals(id))
-        .findFirst();
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("Cannot find table with id " + id));
   }
 
   public Optional<Table> getActiveTableForUser(String username) {

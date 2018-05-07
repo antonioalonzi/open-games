@@ -1,10 +1,11 @@
 package com.aa.opengames.game.play;
 
-import java.util.ArrayList;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
@@ -15,4 +16,5 @@ public class GamePlay {
     public boolean isInitialized;
     public ArrayList<? extends GamePlayPlayerInfo> playersInfo;
     public int currentPlayerIndex;
+    public GameState gameState;
 }

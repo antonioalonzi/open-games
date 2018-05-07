@@ -51,49 +51,47 @@ public class JoinTableController {
     Optional<Table> existingActiveTable = tableRepository.getActiveTableForUser(user.getUsername());
 
     if (!existingActiveTable.isPresent()) {
-      Optional<Table> table = tableRepository.getTableById(joinTableRequest.getTableId());
+      Table table = tableRepository.getTableById(joinTableRequest.getTableId());
 
-      if (table.isPresent()) {
-        Game game = gameRepository.getGameByLabel(table.get().getGame()).orElseThrow(() -> new RuntimeException("Game with label " + table.get().getGame() + " not found."));
+      Game game = gameRepository.getGameByLabel(table.getGame()).orElseThrow(() -> new RuntimeException("Game with label " + table.getGame() + " not found."));
 
-        Set<String> joiners = new HashSet<>(table.get().getJoiners());
-        joiners.add(user.getUsername());
-        Table updatedTable = table.get().toBuilder()
-            .joiners(joiners)
-            .build();
+      Set<String> joiners = new HashSet<>(table.getJoiners());
+      joiners.add(user.getUsername());
+      Table updatedTable = table.toBuilder()
+          .joiners(joiners)
+          .build();
 
-        if (updatedTable.getNumOfPlayers() == game.getMaxNumPlayers()) {
-          updatedTable = updatedTable.toBuilder()
-                  .status(Table.Status.IN_PROGRESS)
-                  .startedDateTime(LocalDateTime.now())
-                  .gamePlay(gamePlayFactory.createGamePlay(updatedTable.getGame(), updatedTable.getId()))
-                  .build();
-        }
-
-        tableRepository.updateTable(updatedTable);
-
-        eventSender.sendToUser(
-            token,
-            Event.builder()
-                .type(JoinTableResponse.EVENT_TYPE)
-                .value(
-                    JoinTableResponse.builder()
-                        .responseStatus(SUCCESS)
-                        .message("Table successfully joined.")
-                        .build())
-                .build());
-
-        eventSender.sendToAll(
-            Event.builder()
-                .type(TableUpdatedEvent.EVENT_TYPE)
-                .value(
-                    TableUpdatedEvent.builder()
-                        .id(updatedTable.getId())
-                        .status(updatedTable.getStatus())
-                        .joiners(updatedTable.getJoiners())
-                        .build())
-                .build());
+      if (updatedTable.getNumOfPlayers() == game.getMaxNumPlayers()) {
+        updatedTable = updatedTable.toBuilder()
+                .status(Table.Status.IN_PROGRESS)
+                .startedDateTime(LocalDateTime.now())
+                .gamePlay(gamePlayFactory.createGamePlay(updatedTable.getGame(), updatedTable.getId()))
+                .build();
       }
+
+      tableRepository.updateTable(updatedTable);
+
+      eventSender.sendToUser(
+          token,
+          Event.builder()
+              .type(JoinTableResponse.EVENT_TYPE)
+              .value(
+                  JoinTableResponse.builder()
+                      .responseStatus(SUCCESS)
+                      .message("Table successfully joined.")
+                      .build())
+              .build());
+
+      eventSender.sendToAll(
+          Event.builder()
+              .type(TableUpdatedEvent.EVENT_TYPE)
+              .value(
+                  TableUpdatedEvent.builder()
+                      .id(updatedTable.getId())
+                      .status(updatedTable.getStatus())
+                      .joiners(updatedTable.getJoiners())
+                      .build())
+              .build());
 
     } else {
       eventSender.sendToUser(
