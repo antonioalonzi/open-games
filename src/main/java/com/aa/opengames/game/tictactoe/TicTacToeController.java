@@ -81,7 +81,6 @@ public class TicTacToeController {
         gameState.setSymbol(ticTacToeActionRequest.getAction().getI(), ticTacToeActionRequest.getAction().getJ(), playerInfo.getSymbol());
 
         TicTacToeUpdateEvent ticTacToeUpdateEvent = TicTacToeUpdateEvent.builder()
-                .gameId(gamePlay.getId())
                 .gameState(gameState)
                 .build();
 
@@ -89,6 +88,16 @@ public class TicTacToeController {
                 .type(TicTacToeUpdateEvent.EVENT_TYPE)
                 .value(ticTacToeUpdateEvent)
                 .build());
+
+        TicTacToaBoardUtils.GameFinishStatus gameFinishStatus = TicTacToaBoardUtils.isGameFinished(gameState.getBoard());
+        if (gameFinishStatus.isFinished()) {
+            eventSender.sendToUsers(table.getPlayers(), Event.builder()
+                    .type(TicTacToeFinishEvent.EVENT_TYPE)
+                    .value(TicTacToeFinishEvent.builder()
+                            .winningSymbol(gameFinishStatus.getWinningSymbol())
+                            .build())
+                    .build());
+        }
     }
 
     private ArrayList<TicTacToeGamePlayPlayerInfo> createPlayersInfo(ArrayList<String> players) {

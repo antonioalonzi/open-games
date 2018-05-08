@@ -69,16 +69,19 @@ export class TicTacToe extends React.Component {
     }
     this.onInitializationEvent = this.onInitializationEvent.bind(this)
     this.onUpdateEvent = this.onUpdateEvent.bind(this)
+    this.onFinishEvent = this.onFinishEvent.bind(this)
   }
 
   componentWillMount() {
     Utils.addEventListener('tic-tac-toe-initialization-event', this.onInitializationEvent)
     Utils.addEventListener('tic-tac-toe-update-event', this.onUpdateEvent)
+    Utils.addEventListener('tic-tac-toe-finish-event', this.onFinishEvent)
   }
 
   componentWillUnmount() {
     Utils.removeEventListener('tic-tac-toe-initialization-event', this.onInitializationEvent)
     Utils.removeEventListener('tic-tac-toe-update-event', this.onUpdateEvent)
+    Utils.removeEventListener('tic-tac-toe-finish-event', this.onFinishEvent)
   }
 
   onInitializationEvent(event) {
@@ -94,6 +97,10 @@ export class TicTacToe extends React.Component {
       currentPlayerIndex: event.value.gameState.currentPlayerIndex,
       board: event.value.gameState.board
     })
+  }
+
+  onFinishEvent(event) {
+    alert(event.value.winningSymbol + ' Won!')
   }
 
   isUserTurn() {

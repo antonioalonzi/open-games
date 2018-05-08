@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class TicTacToeGamePlayPlayerInfo extends GamePlayPlayerInfo {
 
+    public static final String TIC_TAC_TOE_SYMBOL_EMPTY = "";
     public static final String TIC_TAC_TOE_SYMBOL_X = "X";
     public static final String TIC_TAC_TOE_SYMBOL_O = "O";
 
