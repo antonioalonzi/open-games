@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 public class TicTacToeInitializationEvent {
 
-  public static final String EVENT_TYPE = "tic-tac-toe-initialization-event";
+  public static final String EVENT_TYPE = "tic-tac-toe-init-event";
 
   private UUID id;
   private int currentPlayerIndex;

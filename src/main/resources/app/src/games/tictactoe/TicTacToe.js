@@ -73,13 +73,13 @@ export class TicTacToe extends React.Component {
   }
 
   componentWillMount() {
-    Utils.addEventListener('tic-tac-toe-initialization-event', this.onInitializationEvent)
+    Utils.addEventListener('tic-tac-toe-init-event', this.onInitializationEvent)
     Utils.addEventListener('tic-tac-toe-update-event', this.onUpdateEvent)
     Utils.addEventListener('tic-tac-toe-finish-event', this.onFinishEvent)
   }
 
   componentWillUnmount() {
-    Utils.removeEventListener('tic-tac-toe-initialization-event', this.onInitializationEvent)
+    Utils.removeEventListener('tic-tac-toe-init-event', this.onInitializationEvent)
     Utils.removeEventListener('tic-tac-toe-update-event', this.onUpdateEvent)
     Utils.removeEventListener('tic-tac-toe-finish-event', this.onFinishEvent)
   }
