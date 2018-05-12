@@ -42,9 +42,9 @@ public class EventSender {
     webSocketTemplate.convertAndSendToUser(sessionId, "/events", eventString);
   }
 
-  public void sendToUsers(List<String> users, Event event) {
+  public void sendToUsers(List<String> usernames, Event event) {
     userRepository.getAllUsers().stream()
-            .filter((user) -> users.contains(user.getUsername()))
+            .filter((user) -> usernames.contains(user.getUsername()))
             .forEach((user) -> sendToUser(user.getToken(), event));
   }
 

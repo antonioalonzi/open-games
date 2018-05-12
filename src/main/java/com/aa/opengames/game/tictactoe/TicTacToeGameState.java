@@ -1,10 +1,8 @@
 package com.aa.opengames.game.tictactoe;
 
-import com.aa.opengames.game.play.GameState;
+import com.aa.opengames.game.play.TurnBasedGameState;
 
-public class TicTacToeGameState implements GameState {
-
-    private int currentPlayerIndex;
+public class TicTacToeGameState extends TurnBasedGameState {
 
     private String[][] board = new String[][] {
             new String[] {"", "", ""},
@@ -28,11 +26,4 @@ public class TicTacToeGameState implements GameState {
         board[i][j] = symbol;
     }
 
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
-    }
-
-    public void setCurrentPlayerIndex(int currentPlayerIndex) {
-        this.currentPlayerIndex = currentPlayerIndex;
-    }
 }

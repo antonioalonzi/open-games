@@ -56,7 +56,6 @@ public class TicTacToeController {
             TicTacToeGamePlay initializedGamePlay = gamePlay.toBuilder()
                     .isInitialized(true)
                     .playersInfo(playersInfo)
-                    .currentPlayerIndex(0)
                     .build();
 
             ticTacToeGamePlayRepository.update(initializedGamePlay);
@@ -67,16 +66,15 @@ public class TicTacToeController {
     }
 
     @MessageMapping("/games/tic-tac-toe/actions")
-    public void create(SimpMessageHeaderAccessor headerAccessor, TicTacToeActionRequest ticTacToeActionRequest) {
+    public synchronized void create(SimpMessageHeaderAccessor headerAccessor, TicTacToeActionRequest ticTacToeActionRequest) {
         String token = headerAccessor.getSessionId();
         User user = SecurityContextHolder.getAndCheckUser(token);
         LOGGER.info("TicTacToeActionRequest '{}' request received from username '{}'", ticTacToeActionRequest, user.getUsername());
 
         TicTacToeGamePlay gamePlay = ticTacToeGamePlayRepository.getById(ticTacToeActionRequest.getId()).orElseThrow(() -> new RuntimeException("GamePlay with id " + ticTacToeActionRequest.getId() + " not found."));
-        Table table = tableRepository.getTableById(gamePlay.getTableId());
-        TicTacToeGameState gameState = (TicTacToeGameState)gamePlay.getGameState();
+        TicTacToeGamePlayPlayerInfo playerInfo = gamePlay.getCurrentPlayerInfoAndCheckUser(user);
 
-        TicTacToeGamePlayPlayerInfo playerInfo = (TicTacToeGamePlayPlayerInfo)gamePlay.getPlayerInfo(user.getUsername());
+        TicTacToeGameState gameState = (TicTacToeGameState)gamePlay.getGameState();
         gameState.setCurrentPlayerIndex((gameState.getCurrentPlayerIndex() + 1) % 2);
         gameState.setSymbol(ticTacToeActionRequest.getAction().getI(), ticTacToeActionRequest.getAction().getJ(), playerInfo.getSymbol());
 
@@ -84,14 +82,14 @@ public class TicTacToeController {
                 .gameState(gameState)
                 .build();
 
-        eventSender.sendToUsers(table.getPlayers(), Event.builder()
+        eventSender.sendToUsers(gamePlay.getPlayersUsername(), Event.builder()
                 .type(TicTacToeUpdateEvent.EVENT_TYPE)
                 .value(ticTacToeUpdateEvent)
                 .build());
 
         TicTacToaBoardUtils.GameFinishStatus gameFinishStatus = TicTacToaBoardUtils.isGameFinished(gameState.getBoard());
         if (gameFinishStatus.isFinished()) {
-            eventSender.sendToUsers(table.getPlayers(), Event.builder()
+            eventSender.sendToUsers(gamePlay.getPlayersUsername(), Event.builder()
                     .type(TicTacToeFinishEvent.EVENT_TYPE)
                     .value(TicTacToeFinishEvent.builder()
                             .winningSymbol(gameFinishStatus.getWinningSymbol())
@@ -127,7 +125,7 @@ public class TicTacToeController {
                 .value(TicTacToeInitializationEvent.builder()
                         .id(initializedGamePlay.getId())
                         .playersInfo(playersInfoEvent)
-                        .currentPlayerIndex(initializedGamePlay.getCurrentPlayerIndex())
+                        .currentPlayerIndex(initializedGamePlay.getGameState().getCurrentPlayerIndex())
                         .build())
                 .build());
     }
