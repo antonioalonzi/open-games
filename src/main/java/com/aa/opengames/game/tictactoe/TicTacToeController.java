@@ -75,7 +75,7 @@ public class TicTacToeController {
         TicTacToeGamePlayPlayerInfo playerInfo = gamePlay.getCurrentPlayerInfoAndCheckUser(user);
 
         TicTacToeGameState gameState = (TicTacToeGameState)gamePlay.getGameState();
-        gameState.setCurrentPlayerIndex((gameState.getCurrentPlayerIndex() + 1) % 2);
+        gameState.updateToNextPlayer();
         gameState.setSymbol(ticTacToeActionRequest.getAction().getI(), ticTacToeActionRequest.getAction().getJ(), playerInfo.getSymbol());
 
         TicTacToeUpdateEvent ticTacToeUpdateEvent = TicTacToeUpdateEvent.builder()

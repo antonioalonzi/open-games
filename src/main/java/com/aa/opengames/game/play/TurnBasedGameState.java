@@ -12,4 +12,7 @@ public class TurnBasedGameState implements GameState {
         this.currentPlayerIndex = currentPlayerIndex;
     }
 
+    public void updateToNextPlayer() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % 2;
+    }
 }
