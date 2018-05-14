@@ -3,6 +3,7 @@ package com.aa.opengames.game.tictactoe;
 import com.aa.opengames.authentication.context.SecurityContextHolder;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
+import com.aa.opengames.game.play.GamePlayResult;
 import com.aa.opengames.init.InitController;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
@@ -20,6 +21,8 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.aa.opengames.game.play.GamePlayResult.GamePlayResultType.DRAW;
+import static com.aa.opengames.game.play.GamePlayResult.GamePlayResultType.WIN_LOSS;
 import static com.aa.opengames.game.tictactoe.TicTacToeGamePlayPlayerInfo.TIC_TAC_TOE_SYMBOL_O;
 import static com.aa.opengames.game.tictactoe.TicTacToeGamePlayPlayerInfo.TIC_TAC_TOE_SYMBOL_X;
 
@@ -89,6 +92,14 @@ public class TicTacToeController {
 
         TicTacToaBoardUtils.GameFinishStatus gameFinishStatus = TicTacToaBoardUtils.isGameFinished(gameState.getBoard());
         if (gameFinishStatus.isFinished()) {
+            gameState.setFinished(true);
+            GamePlayResult gamePlayResult = GamePlayResult.builder()
+                    .winner(user.getUsername())
+                    .gamePlayResultType(gameFinishStatus.getWinningSymbol().isEmpty() ? DRAW : WIN_LOSS)
+                    .build();
+            TicTacToeGamePlay finishedGamePlay = gamePlay.toBuilder().gamePlayResult(gamePlayResult).build();
+            ticTacToeGamePlayRepository.update(finishedGamePlay);
+
             eventSender.sendToUsers(gamePlay.getPlayersUsername(), Event.builder()
                     .type(TicTacToeFinishEvent.EVENT_TYPE)
                     .value(TicTacToeFinishEvent.builder()

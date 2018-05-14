@@ -1,13 +1,12 @@
 package com.aa.opengames.game.play;
 
-import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
-
 import com.aa.opengames.game.tictactoe.TicTacToeGamePlayFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
 
 @Service
 public class GamePlayFactory {
@@ -22,7 +21,7 @@ public class GamePlayFactory {
     public GamePlay createGamePlay(String label, UUID tableId) {
         switch (label) {
             case TIC_TAC_TOE_LABEL:
-                ticTacToeGamePlayFactory.create(UUID.randomUUID(), tableId);
+                return ticTacToeGamePlayFactory.create(UUID.randomUUID(), tableId);
 
             default:
                 throw new RuntimeException("Game with label " + label + " is not valid.");

@@ -1,6 +1,7 @@
 package com.aa.opengames.game.tictactoe;
 
 import com.aa.opengames.game.play.GamePlayPlayerInfo;
+import com.aa.opengames.game.play.GamePlayResult;
 import com.aa.opengames.game.play.TurnBasedGamePlay;
 import com.aa.opengames.game.play.TurnBasedGameState;
 import com.aa.opengames.user.User;
@@ -16,16 +17,19 @@ public class TicTacToeGamePlay extends TurnBasedGamePlay {
     public static final String TIC_TAC_TOE_LABEL = "tic-tac-toe";
 
     @Builder(toBuilder = true)
-    private TicTacToeGamePlay(UUID id, UUID tableId, boolean isInitialized, ArrayList<? extends GamePlayPlayerInfo> playersInfo, TurnBasedGameState gameState) {
-        super(id, tableId, isInitialized, playersInfo, gameState);
+    private TicTacToeGamePlay(UUID id, UUID tableId, boolean isInitialized, ArrayList<? extends GamePlayPlayerInfo> playersInfo, TurnBasedGameState gameState, GamePlayResult gamePlayResult) {
+        super(id, tableId, isInitialized, playersInfo, gameState, gamePlayResult);
     }
 
     public TicTacToeGamePlayPlayerInfo getCurrentPlayerInfo() {
-        int currentPlayerIndex = gameState.getCurrentPlayerIndex();
-        return (TicTacToeGamePlayPlayerInfo)playersInfo.get(currentPlayerIndex);
+        int currentPlayerIndex = getGameState().getCurrentPlayerIndex();
+        return (TicTacToeGamePlayPlayerInfo)getPlayersInfo().get(currentPlayerIndex);
     }
 
     public TicTacToeGamePlayPlayerInfo getCurrentPlayerInfoAndCheckUser(User user) {
+        if (gameState.isFinished()) {
+            throw new RuntimeException("No action can be executed by " + user.getUsername() + " as game is finished.");
+        }
         TicTacToeGamePlayPlayerInfo playerInfo = getCurrentPlayerInfo();
         if (playerInfo.getUsername().equals(user.getUsername())) {
             return playerInfo;

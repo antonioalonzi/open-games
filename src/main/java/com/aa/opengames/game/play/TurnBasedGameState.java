@@ -1,16 +1,13 @@
 package com.aa.opengames.game.play;
 
-public class TurnBasedGameState implements GameState {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class TurnBasedGameState extends GameState {
 
     private int currentPlayerIndex;
-
-    public int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
-    }
-
-    public void setCurrentPlayerIndex(int currentPlayerIndex) {
-        this.currentPlayerIndex = currentPlayerIndex;
-    }
 
     public void updateToNextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % 2;

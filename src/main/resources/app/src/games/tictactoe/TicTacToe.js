@@ -34,11 +34,14 @@ class TicTacToePlayerStatus extends React.Component {
     if (this.props.playersInfo.length > 0) {
       return (
         <div id='tic-tac-toe-status-players'>
-          { this.playerStatus(0) }
-          <span>{ this.props.currentPlayerIndex === 0 ? <i className={'fa fa-hand-o-left'} /> : null }</span>
-          <span>vs</span>
-          <span>{ this.props.currentPlayerIndex === 1 ? <i className={'fa fa-hand-o-right'} /> : null }</span>
-          { this.playerStatus(1) }
+          <div id='tic-tac-toe-status-players-current'>
+            { this.playerStatus(0) }
+            <span>{ this.props.currentPlayerIndex === 0 ? <i className={'fa fa-hand-o-left'} /> : null }</span>
+            <span>vs</span>
+            <span>{ this.props.currentPlayerIndex === 1 ? <i className={'fa fa-hand-o-right'} /> : null }</span>
+            { this.playerStatus(1) }
+          </div>
+          { this.props.finished ? <div id='tic-tac-toe-status-players-winner'>{this.props.finished.winningPlayer} won!</div> : null }
         </div>
       )
     } else {
@@ -49,7 +52,8 @@ class TicTacToePlayerStatus extends React.Component {
 
 TicTacToeIcon.propTyeps = {
   playersInfo: PropTypes.array.isRequired,
-  currentPlayerIndex: PropTypes.number.isRequired
+  currentPlayerIndex: PropTypes.number.isRequired,
+  finished: PropTypes.object.isRequired
 }
 
 
@@ -65,7 +69,8 @@ export class TicTacToe extends React.Component {
         ['', '', '']
       ],
       playersInfo: [],
-      currentPlayerIndex: 0
+      currentPlayerIndex: 0,
+      finished: false
     }
     this.onInitializationEvent = this.onInitializationEvent.bind(this)
     this.onUpdateEvent = this.onUpdateEvent.bind(this)
@@ -99,8 +104,16 @@ export class TicTacToe extends React.Component {
     })
   }
 
+  getPlayerWithSymbol(symbol) {
+    return this.state.playersInfo.filter((playerInfo) => playerInfo.symbol === symbol)[0].username
+  }
+
   onFinishEvent(event) {
-    alert(event.value.winningSymbol + ' Won!')
+    this.setState({
+      finished: {
+        winningPlayer: this.getPlayerWithSymbol(event.value.winningSymbol)
+      }
+    })
   }
 
   isUserTurn() {
@@ -128,7 +141,7 @@ export class TicTacToe extends React.Component {
     return (
       <div>
         <div id='tic-tac-toe-status'>
-          <TicTacToePlayerStatus playersInfo={this.state.playersInfo} currentPlayerIndex={this.state.currentPlayerIndex}/>
+          <TicTacToePlayerStatus playersInfo={this.state.playersInfo} currentPlayerIndex={this.state.currentPlayerIndex} finished={this.state.finished}/>
         </div>
 
         <div id='tic-tac-toe-scheme'>

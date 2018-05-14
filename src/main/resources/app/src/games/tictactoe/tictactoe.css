@@ -4,13 +4,18 @@
 
 #tic-tac-toe-status-players {
     font-size: larger;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-#tic-tac-toe-status-players span {
+#tic-tac-toe-status-players-current span {
     padding-left: 15px;
 }
 
-
+#tic-tac-toe-status-players-winner {
+    margin: 5px 0px 5px 35px;
+    color: #67af32;
+}
 
 .tic-tac-toe-row {
     clear: both;

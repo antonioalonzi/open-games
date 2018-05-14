@@ -13,11 +13,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class GamePlay<GS extends GameState> {
-    public UUID id;
-    public UUID tableId;
-    public boolean isInitialized;
-    public ArrayList<? extends GamePlayPlayerInfo> playersInfo;
-    public GS gameState;
+    protected UUID id;
+    protected UUID tableId;
+    protected boolean isInitialized;
+    protected ArrayList<? extends GamePlayPlayerInfo> playersInfo;
+    protected GS gameState;
+    protected GamePlayResult gamePlayResult;
 
     public List<String> getPlayersUsername() {
         return playersInfo.stream()
