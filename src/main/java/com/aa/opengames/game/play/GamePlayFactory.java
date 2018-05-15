@@ -1,5 +1,6 @@
 package com.aa.opengames.game.play;
 
+import com.aa.opengames.exceptions.HandledRuntimeException;
 import com.aa.opengames.game.tictactoe.TicTacToeGamePlayFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class GamePlayFactory {
                 return ticTacToeGamePlayFactory.create(UUID.randomUUID(), tableId);
 
             default:
-                throw new RuntimeException("Game with label " + label + " is not valid.");
+                throw new HandledRuntimeException("Game with label " + label + " is not valid.");
         }
     }
 }

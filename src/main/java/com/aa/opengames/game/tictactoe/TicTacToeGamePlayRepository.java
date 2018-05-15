@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import com.aa.opengames.exceptions.HandledRuntimeException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,7 @@ public class TicTacToeGamePlayRepository {
             ticTacToeGamePlays.remove(gamePlay);
             ticTacToeGamePlays.add(gamePlay);
         } else {
-            throw new RuntimeException("TicTacToeGamePlay with id " + gamePlay.getId() + " does not exist.");
+            throw new HandledRuntimeException("TicTacToeGamePlay with id " + gamePlay.getId() + " does not exist.");
         }
     }
 }
