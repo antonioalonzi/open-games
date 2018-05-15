@@ -9,7 +9,7 @@
     "build-prod": "./node_modules/.bin/webpack -p",
     "lint": "eslint src/main/resources/app/src/*.js src/main/resources/app/src/**/*.js --ignore-pattern node_modules/",
     "lint-fix": "eslint src/main/resources/app/src/*.js src/main/resources/app/src/**/*.js --fix",
-    "postinstall" : "npm run build-prod"
+    "postinstall": "npm run build-prod"
   },
   "author": "Antonio Alonzi",
   "license": "",
@@ -41,9 +41,12 @@
     "webpack-cli": "^2.0.9"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>jest-setup.js",
+    "setupTestFrameworkScriptFile": "<rootDir>/jest-setup.js",
     "roots": [
       "<rootDir>/src/main/resources/app/src"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.css$": "<rootDir>/src/main/resources/__mocks__/styleMock.js"
+    }
   }
 }

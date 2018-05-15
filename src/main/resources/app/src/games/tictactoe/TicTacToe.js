@@ -35,11 +35,11 @@ class TicTacToePlayerStatus extends React.Component {
       return (
         <div id='tic-tac-toe-status-players'>
           <div id='tic-tac-toe-status-players-current'>
-            { this.playerStatus(0) }
+            <span>{ this.playerStatus(0) }</span>
             <span>{ this.props.currentPlayerIndex === 0 ? <i className={'fa fa-hand-o-left'} /> : null }</span>
             <span>vs</span>
             <span>{ this.props.currentPlayerIndex === 1 ? <i className={'fa fa-hand-o-right'} /> : null }</span>
-            { this.playerStatus(1) }
+            <span>{ this.playerStatus(1) }</span>
           </div>
           { this.props.finished ? <div id='tic-tac-toe-status-players-winner'>{this.props.finished.winningPlayer} won!</div> : null }
         </div>
@@ -116,12 +116,16 @@ export class TicTacToe extends React.Component {
     })
   }
 
+  isFinished() {
+
+  }
+
   isUserTurn() {
     return this.props.user.username === this.state.playersInfo[this.state.currentPlayerIndex].username
   }
 
   selectCell(i, j) {
-    if (this.isUserTurn()) {
+    if (this.isUserTurn() && !this.isFinished()) {
       if (this.state.board[i][j] === '') {
         const action = {
           id: this.state.gamePlayId,

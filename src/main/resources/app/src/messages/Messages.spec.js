@@ -16,11 +16,11 @@ describe('test messages', () => {
     component.update()
 
     // Then
-    let errors = component.find('span.message-error')
+    let errors = component.find('div.message-error')
     expect(errors.length).toEqual(2)
     expect(errors.at(0).text()).toEqual('First error.')
     expect(errors.at(1).text()).toEqual('Second error.')
-    let infos = component.find('span.message-info')
+    let infos = component.find('div.message-info')
     expect(infos.at(0).text()).toEqual('First message.')
     expect(infos.at(1).text()).toEqual('Second message.')
     expect(infos.length).toEqual(2)

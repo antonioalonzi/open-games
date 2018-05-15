@@ -215,15 +215,19 @@ Button.propTypes = {
 
 
 export class Submit extends React.Component {
+  submitValue() {
+    return this.props.value ? this.props.value : 'Submit'
+  }
+
   render() {
     return (
       <div className="form-row">
-        <Button className="form" type="submit" value={this.props.value}/>
+        <Button className="form" type="submit" value={this.submitValue()}/>
       </div>
     )
   }
 }
 
 Submit.propTypes = {
-  value: PropTypes.string.isRequired
+  value: PropTypes.string
 }
