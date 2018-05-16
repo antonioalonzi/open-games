@@ -37,5 +37,9 @@ Run from command line:
 
 ## Deployment
 
- * Application is deployed at: https://open-games.herokuapp.com/
- * Can be managed with heroku at: https://dashboard.heroku.com/apps/open-games
+Application is deployed at: https://open-games.herokuapp.com/
+
+The deploy happens automatically after each commit on master if the build passed. 
+
+ * Heroku: https://dashboard.heroku.com/apps/open-games
+ * Travis: https://travis-ci.com/antonioalonzi/open-games
