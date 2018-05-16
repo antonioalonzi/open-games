@@ -37,12 +37,5 @@ Run from command line:
 
 ## Deployment
 
-Application is deployed at: https://open-games.herokuapp.com/
-
-To deploy latest code:
-
-    git push heroku master
-
-To see production logs
-    
-    heroku logs
+ * Application is deployed at: https://open-games.herokuapp.com/
+ * Can be managed with heroku at: https://dashboard.heroku.com/apps/open-games

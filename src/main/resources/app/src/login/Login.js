@@ -47,7 +47,7 @@ export class Login extends React.Component {
           <div>
             <p>Welcome to Open Games.</p>
             <p>Play online for free a selection of games.</p>
-            <p>Choose your username to start.</p>
+            <p>Choose your username to play.</p>
           </div>
           <Form onFormSubmit={this.onFormSubmit}>
             <Input type={'text'} name={'Username'} mandatory autoFocus/>
