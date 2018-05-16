@@ -1,6 +1,7 @@
 /.idea
 /open-games.iml
-/target
-node_modules
+/target/
+node/
+node_modules/
 npm-debug.log
-/src/main/resources/public/js
+/src/main/resources/public/js/

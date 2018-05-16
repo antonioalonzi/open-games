@@ -1,22 +1,15 @@
 package com.aa.opengames.init;
 
-import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
-import static com.aa.opengames.utils.TestUtils.sessionHeader;
-import static com.shazam.shazamcrest.MatcherAssert.assertThat;
-import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
-import static org.mockito.Mockito.times;
-import static org.mockito.hamcrest.MockitoHamcrest.argThat;
-
 import com.aa.opengames.authentication.login.UserLoggedInEvent;
 import com.aa.opengames.event.Event;
 import com.aa.opengames.event.EventSender;
 import com.aa.opengames.game.GamePublishedEvent;
 import com.aa.opengames.table.Table;
-import com.aa.opengames.table.create.TableCreatedEvent;
 import com.aa.opengames.table.TableRepository;
+import com.aa.opengames.table.create.TableCreatedEvent;
 import com.aa.opengames.user.User;
 import com.aa.opengames.user.UserRepository;
-import java.util.UUID;
+import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashSet;
+import java.util.UUID;
+
+import static com.aa.opengames.game.tictactoe.TicTacToeGamePlay.TIC_TAC_TOE_LABEL;
+import static com.aa.opengames.utils.TestUtils.sessionHeader;
+import static com.shazam.shazamcrest.MatcherAssert.assertThat;
+import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
+import static org.mockito.Mockito.times;
+import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -78,36 +81,43 @@ public class InitControllerTest {
                 .value(UserLoggedInEvent.builder().username(username).build())
                 .build()));
 
-    assertThat(eventCaptor.getAllValues().get(1), sameBeanAs(Event.builder()
-        .type(GamePublishedEvent.EVENT_TYPE)
-        .value(GamePublishedEvent.builder()
-            .label(gameLabel)
-            .name("Tic Tac Toe")
-            .description("Simple implementation of Tic Tac Toe.")
-            .minNumPlayers(2)
-            .maxNumPlayers(2)
-            .build())
-        .build()));
 
-    assertThat(eventCaptor.getAllValues().get(2), sameBeanAs(Event.builder()
-        .type(TableCreatedEvent.EVENT_TYPE)
-        .value(TableCreatedEvent.builder()
-            .id(table1Id)
-            .game(gameLabel)
-            .owner(username)
-            .status(Table.Status.NEW)
-            .build())
-        .build()));
-
-    assertThat(eventCaptor.getAllValues().get(3), sameBeanAs(Event.builder()
-        .type(TableCreatedEvent.EVENT_TYPE)
-        .value(TableCreatedEvent.builder()
-            .id(table2Id)
-            .game(gameLabel)
-            .owner("another-user")
-            .status(Table.Status.FINISHED)
-            .joiner("a-joiner")
-            .build())
-        .build()));
+    assertThat(new HashSet<>(eventCaptor.getAllValues()), sameBeanAs(Sets.newHashSet(
+            Event.builder()
+                    .type(UserLoggedInEvent.EVENT_TYPE)
+                    .value(UserLoggedInEvent.builder()
+                            .username("user-1")
+                            .build())
+                    .build(),
+            Event.builder()
+                    .type(GamePublishedEvent.EVENT_TYPE)
+                    .value(GamePublishedEvent.builder()
+                            .label(gameLabel)
+                            .name("Tic Tac Toe")
+                            .description("Simple implementation of Tic Tac Toe.")
+                            .minNumPlayers(2)
+                            .maxNumPlayers(2)
+                            .build())
+                    .build(),
+            Event.builder()
+                    .type(TableCreatedEvent.EVENT_TYPE)
+                    .value(TableCreatedEvent.builder()
+                            .id(table1Id)
+                            .game(gameLabel)
+                            .owner(username)
+                            .status(Table.Status.NEW)
+                            .build())
+                    .build(),
+            Event.builder()
+                    .type(TableCreatedEvent.EVENT_TYPE)
+                    .value(TableCreatedEvent.builder()
+                            .id(table2Id)
+                            .game(gameLabel)
+                            .owner("another-user")
+                            .status(Table.Status.FINISHED)
+                            .joiner("a-joiner")
+                            .build())
+                    .build()
+    )));
   }
 }
