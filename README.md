@@ -19,6 +19,12 @@ The application is written using:
  * Install npm
 
 ### Build & Run
+
+#### Build on Travis
+
+[![Build Status](https://travis-ci.com/antonioalonzi/open-games.svg?branch=master)](https://travis-ci.com/antonioalonzi/open-games)
+
+#### Build locally
     
 Build js:
 
