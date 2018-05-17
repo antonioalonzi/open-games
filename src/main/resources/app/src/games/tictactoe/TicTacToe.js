@@ -41,7 +41,7 @@ class TicTacToePlayerStatus extends React.Component {
             <span>{ this.props.currentPlayerIndex === 1 ? <i className={'fa fa-hand-o-right'} /> : null }</span>
             <span>{ this.playerStatus(1) }</span>
           </div>
-          { this.props.finished ? <div id='tic-tac-toe-status-players-winner'>{this.props.finished.winningPlayer} won!</div> : null }
+          { this.props.finished ? <div id='tic-tac-toe-status-players-winner'>{this.props.finished.winningPlayer} win!</div> : null }
         </div>
       )
     } else {
