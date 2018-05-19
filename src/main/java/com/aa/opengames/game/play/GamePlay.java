@@ -3,6 +3,7 @@ package com.aa.opengames.game.play;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
+@ToString
 @EqualsAndHashCode(of = "id")
 public class GamePlay<GS extends GameState> {
     protected UUID id;

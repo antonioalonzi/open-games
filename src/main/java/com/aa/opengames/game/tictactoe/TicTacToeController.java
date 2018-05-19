@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,7 @@ public class TicTacToeController {
             ticTacToeGamePlayRepository.update(initializedGamePlay);
             LOGGER.info("Initialized TicTacToeGamePlay with id " + gamePlay.getId());
 
-            sendInitializationEvent(players, playersInfo, initializedGamePlay);
+            sendInitializationEvent(new HashSet<>(players), playersInfo, initializedGamePlay);
         });
     }
 
@@ -85,7 +86,7 @@ public class TicTacToeController {
                 .gameState(gameState)
                 .build();
 
-        eventSender.sendToUsers(gamePlay.getPlayersUsername(), Event.builder()
+        eventSender.sendToUsers(new HashSet<>(gamePlay.getPlayersUsername()), Event.builder()
                 .type(TicTacToeUpdateEvent.EVENT_TYPE)
                 .value(ticTacToeUpdateEvent)
                 .build());
@@ -100,7 +101,7 @@ public class TicTacToeController {
             TicTacToeGamePlay finishedGamePlay = gamePlay.toBuilder().gamePlayResult(gamePlayResult).build();
             ticTacToeGamePlayRepository.update(finishedGamePlay);
 
-            eventSender.sendToUsers(gamePlay.getPlayersUsername(), Event.builder()
+            eventSender.sendToUsers(new HashSet<>(gamePlay.getPlayersUsername()), Event.builder()
                     .type(TicTacToeFinishEvent.EVENT_TYPE)
                     .value(TicTacToeFinishEvent.builder()
                             .winningSymbol(gameFinishStatus.getWinningSymbol())
@@ -123,7 +124,7 @@ public class TicTacToeController {
         return playerInfos;
     }
 
-    private void sendInitializationEvent(ArrayList<String> players, ArrayList<TicTacToeGamePlayPlayerInfo> playersInfo, TicTacToeGamePlay initializedGamePlay) {
+    private void sendInitializationEvent(Set<String> players, ArrayList<TicTacToeGamePlayPlayerInfo> playersInfo, TicTacToeGamePlay initializedGamePlay) {
         ArrayList<TicTacToeInitializationEvent.PlayerInfo> playersInfoEvent = playersInfo.stream()
                 .map((playerInfo) -> TicTacToeInitializationEvent.PlayerInfo.builder()
                         .username(playerInfo.getUsername())

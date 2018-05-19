@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Sends events to the browser.
@@ -42,7 +42,7 @@ public class EventSender {
         webSocketTemplate.convertAndSendToUser(sessionId, "/events", eventString);
     }
 
-    public void sendToUsers(List<String> usernames, Event event) {
+    public void sendToUsers(Set<String> usernames, Event event) {
         userRepository.getAllUsers().stream()
                 .filter((user) -> usernames.contains(user.getUsername()))
                 .forEach((user) -> sendToUser(user.getToken(), event));

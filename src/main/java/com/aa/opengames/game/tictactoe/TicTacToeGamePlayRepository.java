@@ -33,4 +33,8 @@ public class TicTacToeGamePlayRepository {
             throw new HandledRuntimeException("TicTacToeGamePlay with id " + gamePlay.getId() + " does not exist.");
         }
     }
+
+    public void removeAllGamePlays() {
+        ticTacToeGamePlays.clear();
+    }
 }

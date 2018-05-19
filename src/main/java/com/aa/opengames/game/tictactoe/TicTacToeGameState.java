@@ -1,7 +1,11 @@
 package com.aa.opengames.game.tictactoe;
 
 import com.aa.opengames.game.play.TurnBasedGameState;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@ToString
+@EqualsAndHashCode
 public class TicTacToeGameState extends TurnBasedGameState {
 
     private String[][] board = new String[][] {
