@@ -30,15 +30,35 @@ class TicTacToePlayerStatus extends React.Component {
     )
   }
 
+  currentPlayerIcon(leftOrRight) {
+    if (this.props.finished) {
+      if (this.props.finished.winningPlayer === this.props.playersInfo[0].username && leftOrRight === 'left') {
+        return <i className={'fa fa-angellist'} />
+      } else if (this.props.finished.winningPlayer === this.props.playersInfo[1].username && leftOrRight === 'right') {
+        return <i className={'fa fa-angellist'} />
+      } else {
+        return null
+      }
+    }
+
+    if (this.props.currentPlayerIndex === 0 && leftOrRight === 'left') {
+      return <i className={'fa fa-hand-o-left'} />
+    } else if (this.props.currentPlayerIndex === 1 && leftOrRight === 'right') {
+      return <i className={'fa fa-hand-o-right'} />
+    } else {
+      return null
+    }
+  }
+
   render () {
     if (this.props.playersInfo.length > 0) {
       return (
         <div id='tic-tac-toe-status-players'>
           <div id='tic-tac-toe-status-players-current'>
             <span>{ this.playerStatus(0) }</span>
-            <span>{ this.props.currentPlayerIndex === 0 ? <i className={'fa fa-hand-o-left'} /> : null }</span>
+            <span>{ this.currentPlayerIcon('left') }</span>
             <span>vs</span>
-            <span>{ this.props.currentPlayerIndex === 1 ? <i className={'fa fa-hand-o-right'} /> : null }</span>
+            <span>{ this.currentPlayerIcon('right') }</span>
             <span>{ this.playerStatus(1) }</span>
           </div>
           { this.props.finished ? <div id='tic-tac-toe-status-players-winner'>{this.props.finished.winningPlayer} win!</div> : null }
@@ -117,7 +137,7 @@ export class TicTacToe extends React.Component {
   }
 
   isFinished() {
-
+    return this.state.finished
   }
 
   isUserTurn() {

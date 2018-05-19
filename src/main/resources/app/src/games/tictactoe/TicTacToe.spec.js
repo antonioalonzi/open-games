@@ -105,7 +105,8 @@ describe('TicTacToe', () => {
     })
     component.update()
 
-    //expect(component.find('#tic-tac-toe-status-players-current span').at(2).children().first().props()).toEqual({"className": "fa fa-hand-o-right"})
+    expect(component.find('#tic-tac-toe-status-players-current span').at(2).children().first().props()).toEqual({"className": "fa fa-angellist"})
+    expect(component.find('#tic-tac-toe-status-players-current span').at(4).children().length).toEqual(0)
     expect(component.find('#tic-tac-toe-status-players-winner').text()).toEqual('User1 win!')
 
 
@@ -113,7 +114,6 @@ describe('TicTacToe', () => {
     component.find('#tic-tac-toe-cell-22').simulate('click')
 
     // Then nothing happens
-    // TODO next lines if uncommented fails as the code is not already implemented
-    //expect(sendMessage.mock.calls.length).toEqual(1)
+    expect(sendMessage.mock.calls.length).toEqual(1)
   })
 })

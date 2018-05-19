@@ -9,6 +9,7 @@ Wonderful gaming platform application.
 The application is written using:
  * Java (Spring)
  * Javascript (React)
+ * [Font Awsome Icons](https://www.w3schools.com/icons/fontawesome_icons_brand.asp)
 
 
 
