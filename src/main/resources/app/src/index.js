@@ -32,7 +32,8 @@ class App extends React.Component {
       user: null,
       loggedInUsers: [],
       games: [],
-      tables: []
+      tables: [],
+      lastPlayedTable: null
     }
   }
 
@@ -125,25 +126,37 @@ class App extends React.Component {
 
   onTableUpdated(event) {
     const tables = this.state.tables
+
     const table = App.findTableById(tables, event.value.id)
     if (event.value.status) {
-      if (event.value.status === 'IN_PROGRESS') {
-        table.status = event.value.status
-      } else if (event.value.status === 'FINISHED') {
-        tables.splice(tables.indexOf(table), 1)
-      }
+      table.status = event.value.status
     }
     if (event.value.joiners) {
       table.joiners = event.value.joiners
     }
-    this.setState({
-      tables: tables
-    })
 
     if (table.status === 'IN_PROGRESS') {
       if (table.owner === this.state.user.username || table.joiners.indexOf(this.state.user.username) >= 0) {
         Utils.dispatchEvent('start-game', table.game)
       }
+    } else if (table.status === 'FINISHED') {
+      this.setState({
+        lastPlayedTable: table
+      })
+    }
+
+    this.setState({
+      tables: tables
+    })
+  }
+
+  getUserActiveOrLastPlayedTable() {
+    const activeTable = GameTable.getUserActiveTable(this.state.user, this.state.tables)
+    if (!activeTable) {
+      console.log(this.state)
+      return this.state.lastPlayedTable
+    } else {
+      return activeTable
     }
   }
 
@@ -153,8 +166,8 @@ class App extends React.Component {
 
   render() {
     const hiddenIfNotLoggedIn = this.state.user ? '' : 'hidden'
-    const activeTable = GameTable.getUserActiveTable(this.state.user, this.state.tables)
-    const activeTableGame = activeTable ? Game.gameByLabel(this.state.games, activeTable.game) : null
+    const table = this.getUserActiveOrLastPlayedTable(this.state.user, this.state.tables)
+    const tableGame = table ? Game.gameByLabel(this.state.games, table.game) : null
     return (
       <Router>
         <div>
@@ -167,7 +180,7 @@ class App extends React.Component {
                 <Route path="/portal/games" exact={true} render={(router) => <GamesPage user={this.state.user} games={this.state.games} router={router}/>} />
                 <Route path="/portal/users" exact={true} render={(router) => <UsersPage user={this.state.user} loggedInUsers={this.state.loggedInUsers} router={router}/>} />
                 <Route path="/portal/games/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
-                <Route path="/portal/games/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={activeTableGame} table={activeTable} router={router} sendMessage={this.sendMessage} />} />
+                <Route path="/portal/games/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={tableGame} table={table} router={router} sendMessage={this.sendMessage} />} />
                 <Route render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
               </Switch>
             </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import {Prompt} from 'react-router-dom'
 import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
 import {TicTacToe} from './tictactoe/TicTacToe'
@@ -16,16 +17,21 @@ export class GamePlay extends React.Component {
   }
 
   exit() {
-    alert('exit')
+    this.props.router.history.push('/portal')
   }
 
   maximize() {
     alert('maximize')
   }
 
+  isTableInProgress() {
+    return this.props.table && this.props.table.status==='IN_PROGRESS'
+  }
+
   render() {
     return (
       <div id='game-play'>
+        <Prompt when={this.isTableInProgress()} message="Are you sure you want to leave the game?" />
         <div id='game-play-content'>
           <div id='game-play-icons'>
             { Utils.isDesktop() ? (<i id='game-play-maximize' className="fa fa-window-maximize" onClick={this.maximize} />) : null }

@@ -164,7 +164,7 @@ public class TicTacToeControllerTest {
                 .action(TicTacToeActionRequest.TicTacToeAction.builder().i(0).j(2).build())
                 .build());
 
-        // Then the game is updated as finished
+        // Then the game and the table are updated as finished
         TicTacToeGamePlay finishedTacToeGamePlay = ticTacToeGamePlayRepository.getById(gamePlayId).orElseThrow(RuntimeException::new);
         assertThat(finishedTacToeGamePlay.getGameState().isFinished(), sameBeanAs(true));
         assertThat(finishedTacToeGamePlay.getGamePlayResult(), sameBeanAs(GamePlayResult.builder()
@@ -172,6 +172,10 @@ public class TicTacToeControllerTest {
                 .winner(firstPlayer)
                 .build()));
 
+        Table table = tableRepository.getTableById(tableId);
+        assertThat(table.getStatus(), sameBeanAs(Table.Status.FINISHED));
+
+        // And a finished tableEvent is sent to all users
         Event updatedTableEvent = Event.builder()
                 .type(TableUpdatedEvent.EVENT_TYPE)
                 .value(TableUpdatedEvent.builder()

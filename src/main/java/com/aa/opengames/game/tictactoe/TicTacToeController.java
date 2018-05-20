@@ -109,6 +109,11 @@ public class TicTacToeController {
                             .build())
                     .build());
 
+            Table table = tableRepository.getTableById(gamePlay.getTableId());
+            tableRepository.updateTable(table.toBuilder()
+                    .status(Table.Status.FINISHED)
+                    .build());
+
             eventSender.sendToAll(
                     Event.builder()
                             .type(TableUpdatedEvent.EVENT_TYPE)
