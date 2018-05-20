@@ -6,6 +6,7 @@ import com.aa.opengames.exceptions.HandledRuntimeException;
 import com.aa.opengames.game.play.GamePlayResult;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
+import com.aa.opengames.table.TableUpdatedEvent;
 import com.aa.opengames.utils.TestUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -68,7 +69,7 @@ public class TicTacToeControllerTest {
                 .build());
 
         UUID gamePlayId = UUID.randomUUID();
-        TicTacToeGamePlay ticTacToeGamePlay = ticTacToeGamePlayFactory.create(gamePlayId, tableId);
+        ticTacToeGamePlayFactory.create(gamePlayId, tableId);
 
         // When game is initialized
         ticTacToeController.initialize();
@@ -106,7 +107,7 @@ public class TicTacToeControllerTest {
         TestUtils.loginUser(secondPlayerSessionHeader, secondPlayer);
 
         // When sends an action
-        ticTacToeController.create(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
+        ticTacToeController.execute(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
                 .id(gamePlayId)
                 .action(TicTacToeActionRequest.TicTacToeAction.builder().i(0).j(0).build())
                 .build());
@@ -134,7 +135,7 @@ public class TicTacToeControllerTest {
 
         // When same player sends an action
         try {
-            ticTacToeController.create(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
+            ticTacToeController.execute(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
                     .id(gamePlayId)
                     .action(TicTacToeActionRequest.TicTacToeAction.builder().i(0).j(0).build())
                     .build());
@@ -146,29 +147,40 @@ public class TicTacToeControllerTest {
 
 
         // When Game finishes
-        ticTacToeController.create(secondPlayerSessionHeader, TicTacToeActionRequest.builder()
+        ticTacToeController.execute(secondPlayerSessionHeader, TicTacToeActionRequest.builder()
                 .id(gamePlayId)
                 .action(TicTacToeActionRequest.TicTacToeAction.builder().i(1).j(0).build())
                 .build());
-        ticTacToeController.create(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
+        ticTacToeController.execute(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
                 .id(gamePlayId)
                 .action(TicTacToeActionRequest.TicTacToeAction.builder().i(0).j(1).build())
                 .build());
-        ticTacToeController.create(secondPlayerSessionHeader, TicTacToeActionRequest.builder()
+        ticTacToeController.execute(secondPlayerSessionHeader, TicTacToeActionRequest.builder()
                 .id(gamePlayId)
                 .action(TicTacToeActionRequest.TicTacToeAction.builder().i(1).j(1).build())
                 .build());
-        ticTacToeController.create(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
+        ticTacToeController.execute(firstPlayerSessionHeader, TicTacToeActionRequest.builder()
                 .id(gamePlayId)
                 .action(TicTacToeActionRequest.TicTacToeAction.builder().i(0).j(2).build())
                 .build());
 
-        // Then the board is updated and control is passed to the other player
+        // Then the game is updated as finished
         TicTacToeGamePlay finishedTacToeGamePlay = ticTacToeGamePlayRepository.getById(gamePlayId).orElseThrow(RuntimeException::new);
         assertThat(finishedTacToeGamePlay.getGameState().isFinished(), sameBeanAs(true));
         assertThat(finishedTacToeGamePlay.getGamePlayResult(), sameBeanAs(GamePlayResult.builder()
                 .gamePlayResultType(GamePlayResult.GamePlayResultType.WIN_LOSS)
                 .winner(firstPlayer)
                 .build()));
+
+        Event updatedTableEvent = Event.builder()
+                .type(TableUpdatedEvent.EVENT_TYPE)
+                .value(TableUpdatedEvent.builder()
+                        .id(tableId)
+                        .status(Table.Status.FINISHED)
+                        .build())
+                .build();
+
+        Mockito.verify(eventSender).sendToAll(eventCaptor.capture());
+        assertThat(eventCaptor.getValue(), sameBeanAs(updatedTableEvent));
     }
 }

@@ -7,6 +7,7 @@ import com.aa.opengames.game.play.GamePlayResult;
 import com.aa.opengames.init.InitController;
 import com.aa.opengames.table.Table;
 import com.aa.opengames.table.TableRepository;
+import com.aa.opengames.table.TableUpdatedEvent;
 import com.aa.opengames.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +71,7 @@ public class TicTacToeController {
     }
 
     @MessageMapping("/games/tic-tac-toe/actions")
-    public synchronized void create(SimpMessageHeaderAccessor headerAccessor, TicTacToeActionRequest ticTacToeActionRequest) {
+    public synchronized void execute(SimpMessageHeaderAccessor headerAccessor, TicTacToeActionRequest ticTacToeActionRequest) {
         String token = headerAccessor.getSessionId();
         User user = SecurityContextHolder.getAndCheckUser(token);
         LOGGER.info("TicTacToeActionRequest '{}' request received from username '{}'", ticTacToeActionRequest, user.getUsername());
@@ -107,6 +108,15 @@ public class TicTacToeController {
                             .winningSymbol(gameFinishStatus.getWinningSymbol())
                             .build())
                     .build());
+
+            eventSender.sendToAll(
+                    Event.builder()
+                            .type(TableUpdatedEvent.EVENT_TYPE)
+                            .value(TableUpdatedEvent.builder()
+                                    .id(gamePlay.getTableId())
+                                    .status(Table.Status.FINISHED)
+                                    .build())
+                            .build());
         }
     }
 

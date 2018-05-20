@@ -127,7 +127,11 @@ class App extends React.Component {
     const tables = this.state.tables
     const table = App.findTableById(tables, event.value.id)
     if (event.value.status) {
-      table.status = event.value.status
+      if (event.value.status === 'IN_PROGRESS') {
+        table.status = event.value.status
+      } else if (event.value.status === 'FINISHED') {
+        tables.splice(tables.indexOf(table), 1)
+      }
     }
     if (event.value.joiners) {
       table.joiners = event.value.joiners

@@ -71,7 +71,7 @@ public class InitControllerTest {
     initController.init(sessionHeader);
 
     // Then
-    Mockito.verify(eventSender, times(4)).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
+    Mockito.verify(eventSender, times(3)).sendToUser(argThat(sameBeanAs("sessionId")), eventCaptor.capture());
 
     assertThat(
         eventCaptor.getAllValues().get(0),
@@ -106,16 +106,6 @@ public class InitControllerTest {
                             .game(gameLabel)
                             .owner(username)
                             .status(Table.Status.NEW)
-                            .build())
-                    .build(),
-            Event.builder()
-                    .type(TableCreatedEvent.EVENT_TYPE)
-                    .value(TableCreatedEvent.builder()
-                            .id(table2Id)
-                            .game(gameLabel)
-                            .owner("another-user")
-                            .status(Table.Status.FINISHED)
-                            .joiner("a-joiner")
                             .build())
                     .build()
     )));
