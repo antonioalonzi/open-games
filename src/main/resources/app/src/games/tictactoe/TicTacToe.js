@@ -50,6 +50,14 @@ class TicTacToePlayerStatus extends React.Component {
     }
   }
 
+  winnerText() {
+    if (this.props.finished.winningPlayer) {
+      return <div id='tic-tac-toe-status-players-winner'>{this.props.finished.winningPlayer} win!</div>
+    } else {
+      return <div id='tic-tac-toe-status-players-winner'>It's a draw!</div>
+    }
+  }
+
   render () {
     if (this.props.playersInfo.length > 0) {
       return (
@@ -61,7 +69,7 @@ class TicTacToePlayerStatus extends React.Component {
             <span>{ this.currentPlayerIcon('right') }</span>
             <span>{ this.playerStatus(1) }</span>
           </div>
-          { this.props.finished ? <div id='tic-tac-toe-status-players-winner'>{this.props.finished.winningPlayer} win!</div> : null }
+          { this.props.finished ? this.winnerText() : null }
         </div>
       )
     } else {
@@ -125,7 +133,12 @@ export class TicTacToe extends React.Component {
   }
 
   getPlayerWithSymbol(symbol) {
-    return this.state.playersInfo.filter((playerInfo) => playerInfo.symbol === symbol)[0].username
+    const user = this.state.playersInfo.find((playerInfo) => playerInfo.symbol === symbol)
+    if (user) {
+      return user.username
+    } else {
+      return null
+    }
   }
 
   onFinishEvent(event) {

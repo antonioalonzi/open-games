@@ -116,4 +116,39 @@ describe('TicTacToe', () => {
     // Then nothing happens
     expect(sendMessage.mock.calls.length).toEqual(1)
   })
+
+  it('should play the game with a draw', () => {
+    // Given
+    const sendMessage = jest.fn()
+
+    const component = mount(<TicTacToe user={{username: 'User1'}} sendMessage={sendMessage}/>)
+
+    // When the server sends the initialize event
+    Utils.dispatchEvent('tic-tac-toe-init-event', {
+      id: 'game-play-id',
+      gamePlayId: 1,
+      playersInfo: [
+        {
+          username: 'User1',
+          symbol: 'X'
+        },
+        {
+          username: 'User2',
+          symbol: 'O'
+        }
+      ],
+      currentPlayerIndex: 0
+    })
+    component.update()
+
+    // When the server sends the finish event
+    Utils.dispatchEvent('tic-tac-toe-finish-event', {
+      winningSymbol: ''
+    })
+    component.update()
+
+    expect(component.find('#tic-tac-toe-status-players-current span').at(2).children().length).toEqual(0)
+    expect(component.find('#tic-tac-toe-status-players-current span').at(4).children().length).toEqual(0)
+    expect(component.find('#tic-tac-toe-status-players-winner').text()).toEqual("It's a draw!")
+  })
 })
