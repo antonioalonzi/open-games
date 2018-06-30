@@ -17,6 +17,8 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,12 +38,14 @@ public class TicTacToeController {
     private final TicTacToeGamePlayRepository ticTacToeGamePlayRepository;
     private final TableRepository tableRepository;
     private final EventSender eventSender;
+    private final Clock clock;
 
     @Autowired
-    public TicTacToeController(TicTacToeGamePlayRepository ticTacToeGamePlayRepository, TableRepository tableRepository, EventSender eventSender) {
+    public TicTacToeController(TicTacToeGamePlayRepository ticTacToeGamePlayRepository, TableRepository tableRepository, EventSender eventSender, Clock clock) {
         this.ticTacToeGamePlayRepository = ticTacToeGamePlayRepository;
         this.tableRepository = tableRepository;
         this.eventSender = eventSender;
+        this.clock = clock;
     }
 
     @Scheduled(fixedRate = 1000)
@@ -112,6 +116,7 @@ public class TicTacToeController {
             Table table = tableRepository.getTableById(gamePlay.getTableId());
             tableRepository.updateTable(table.toBuilder()
                     .status(Table.Status.FINISHED)
+                    .finishedDateTime(LocalDateTime.now(clock))
                     .build());
 
             eventSender.sendToAll(

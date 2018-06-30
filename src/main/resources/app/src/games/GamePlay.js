@@ -19,6 +19,12 @@ export class GamePlay extends React.Component {
     Utils.checkAuthenticatedUser(this.props.user, this.props.router)
   }
 
+  componentWillUnmount() {
+    if (this.isTableInProgress()) {
+      alert('send leave event')
+    }
+  }
+
   exit() {
     this.setState({displayPrompt: true})
     setTimeout(() => this.props.router.history.push('/portal'), 250);

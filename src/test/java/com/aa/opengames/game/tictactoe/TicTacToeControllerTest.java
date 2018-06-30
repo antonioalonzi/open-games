@@ -16,9 +16,16 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 import static com.aa.opengames.utils.TestUtils.sessionHeader;
@@ -174,6 +181,7 @@ public class TicTacToeControllerTest {
 
         Table table = tableRepository.getTableById(tableId);
         assertThat(table.getStatus(), sameBeanAs(Table.Status.FINISHED));
+        assertThat(table.getFinishedDateTime(), sameBeanAs(LocalDateTime.parse("1970-01-01T01:00:00.000")));
 
         // And a finished tableEvent is sent to all users
         Event updatedTableEvent = Event.builder()
@@ -186,5 +194,14 @@ public class TicTacToeControllerTest {
 
         Mockito.verify(eventSender).sendToAll(eventCaptor.capture());
         assertThat(eventCaptor.getValue(), sameBeanAs(updatedTableEvent));
+    }
+
+    @TestConfiguration
+    public static class TicTacToeControllerTestConfiguration {
+        @Bean
+        @Primary
+        public Clock clock () {
+            return Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("Europe/London"));
+        }
     }
 }
