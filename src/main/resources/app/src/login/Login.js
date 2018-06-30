@@ -3,6 +3,7 @@ import React from 'react'
 import {Form, Input, Submit} from '../form/Form'
 import {Utils} from '../utils/Utils'
 import PropTypes from 'prop-types'
+import {GamesContent, GamesList} from '../menu/GamesMenu'
 
 export class Login extends React.Component {
   constructor(props) {
@@ -38,7 +39,8 @@ export class Login extends React.Component {
       return (
         <div>
           <p>Welcome to Open Games.</p>
-          <p>Choose a game from the menu and enjoy!</p>
+          <p>Choose a game and enjoy!</p>
+          { Utils.isMobile() ? <div id="welcome-games-list"><GamesContent games={this.props.games}/></div> : null }
         </div>
       )
     } else {
@@ -53,6 +55,12 @@ export class Login extends React.Component {
             <Input type={'text'} name={'Username'} mandatory autoFocus/>
             <Submit value={'Join'}/>
           </Form>
+          <div id="welcome-games-list">
+            <div>
+              <h2>Available games are: </h2>
+              <GamesList games={this.props.games} showLinks={false}/>
+            </div>
+          </div>
         </div>
       )
     }
@@ -62,5 +70,6 @@ export class Login extends React.Component {
 Login.propTyeps = {
   router: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  games: PropTypes.array.isRequired
 }

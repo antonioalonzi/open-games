@@ -181,7 +181,7 @@ class App extends React.Component {
                 <Route path="/portal/users" exact={true} render={(router) => <UsersPage user={this.state.user} loggedInUsers={this.state.loggedInUsers} router={router}/>} />
                 <Route path="/portal/games/:label" exact={true} render={(router) => <Game user={this.state.user} games={this.state.games} tables={this.state.tables} router={router} sendMessage={this.sendMessage} />} />
                 <Route path="/portal/games/:label/play" exact={true} render={(router) => <GamePlay user={this.state.user} game={tableGame} table={table} router={router} sendMessage={this.sendMessage} />} />
-                <Route render={(router) => <Login user={this.state.user} router={router} sendMessage={this.sendMessage} />} />
+                <Route render={(router) => <Login user={this.state.user} games={this.state.games} router={router} sendMessage={this.sendMessage} />} />
               </Switch>
             </div>
           </div>

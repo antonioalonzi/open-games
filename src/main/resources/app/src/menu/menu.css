@@ -6,6 +6,10 @@
     margin-top: 10px;
 }
 
+li.games-list-inlined {
+    display: inline-block;
+}
+
 #users-menu {
     position: relative;
     float: right;

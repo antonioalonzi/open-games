@@ -4,17 +4,41 @@ import PropTypes from 'prop-types'
 import {Utils} from '../utils/Utils'
 
 
+export class GamesList extends React.Component {
+  gameListItem(label, name) {
+    if (this.props.showLinks) {
+      return <NavLink to={`/portal/games/${label}`}>{name}</NavLink>
+    } else {
+      return <span>{name}</span>
+    }
+  }
+
+  render() {
+    return (
+      <ul>
+        {
+          this.props.games
+            .map(game => (<li key={game.label} className={this.props.showLinks ? '' : 'games-list-inlined'}>{this.gameListItem(game.label, game.label)}</li>))
+        }
+      </ul>
+    )
+  }
+}
+
+GamesList.propTypes = {
+  games: PropTypes.array.isRequired,
+  showLinks: PropTypes.bool.isRequired,
+  router: PropTypes.object
+}
+
+
+
 export class GamesContent extends React.Component {
   render() {
     return (
       <div>
         Games ({this.props.games.length}):
-        <ul>
-          {
-            this.props.games
-              .map(game => (<li key={game.label}><NavLink to={`/portal/games/${game.label}`}>{game.name}</NavLink></li>))
-          }
-        </ul>
+        <GamesList games={this.props.games} showLinks router={this.props.router}/>
       </div>
     )
   }
