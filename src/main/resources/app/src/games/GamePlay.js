@@ -10,6 +10,9 @@ export class GamePlay extends React.Component {
     super(props)
     this.exit = this.exit.bind(this)
     this.maximize = this.maximize.bind(this)
+    this.state = {
+      displayPrompt: false
+    }
   }
 
   componentWillMount() {
@@ -17,7 +20,8 @@ export class GamePlay extends React.Component {
   }
 
   exit() {
-    this.props.router.history.push('/portal')
+    this.setState({displayPrompt: true})
+    setTimeout(() => this.props.router.history.push('/portal'), 250);
   }
 
   maximize() {
@@ -31,7 +35,7 @@ export class GamePlay extends React.Component {
   render() {
     return (
       <div id='game-play'>
-        <Prompt when={this.isTableInProgress()} message="Are you sure you want to leave the game?" />
+        { this.state.displayPrompt ? <Prompt when={this.isTableInProgress()} message="Are you sure you want to leave the game?" /> : null }
         <div id='game-play-content'>
           <div id='game-play-icons'>
             { Utils.isDesktop() ? (<i id='game-play-maximize' className="fa fa-window-maximize" onClick={this.maximize} />) : null }
